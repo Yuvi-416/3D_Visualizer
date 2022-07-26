@@ -237,6 +237,7 @@ const vtkMouseCameraTrackballZoomManipulator = vtk.Interaction.Manipulators.vtkM
 const vtkInteractorStyleManipulator = vtk.Interaction.Style.vtkInteractorStyleManipulator;
 const vtkMouseCameraTrackballRotateManipulator = vtk.Interaction.Manipulators.vtkMouseCameraTrackballRotateManipulator;
 
+container.style.display = 'flex';
 openglRenderWindow.setContainer(container);
 const { width, height } = container.getBoundingClientRect(); /////////////////////////
 openglRenderWindow.setSize(width, height);
@@ -597,7 +598,7 @@ const vtkMouseCameraTrackballZoomManipulator = vtk.Interaction.Manipulators.vtkM
 const vtkInteractorStyleManipulator = vtk.Interaction.Style.vtkInteractorStyleManipulator;
 const vtkMouseCameraTrackballRotateManipulator = vtk.Interaction.Manipulators.vtkMouseCameraTrackballRotateManipulator;
 
-
+container.style.display = 'flex';
 openglRenderWindow.setContainer(container);
 const { width, height } = container.getBoundingClientRect(); /////////////////////////
 openglRenderWindow.setSize(width, height);
@@ -683,7 +684,7 @@ console.log(surface_iso_dataRange)
           mapper.setScalarRange(0, 10);
           actor.setMapper(mapper);
           // actor.getProperty().setDiffuseColor(diffuse_color) //////////////// (222/256., 184/256., 135/256.)
-          actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.)
+          actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.) // Color Transfer Function
           // actor.getProperty().setDiffuseColor(preset);
           // actor.getProperty().setDiffuseColor(ctfun);
           actor.getProperty().setEdgeVisibility(0.0, 0.0, 0.0);
@@ -846,7 +847,6 @@ function trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_opacity
         edge = !(edge);
     });
 }
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // Tri-planar Rendering by Yubraj Gupta/////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -878,6 +878,12 @@ const vtkImageMapper = vtk.Rendering.Core.vtkImageMapper;
 const PiecewiseFun = vtk.Common.DataModel.vtkPiecewiseFunction.newInstance();
 const ColorTransFun = vtk.Rendering.Core.vtkColorTransferFunction.newInstance();
 
+
+//const element = document.createElement('div');
+//// element.setAttribute('class', 'view');
+//element.style.display = 'flex';
+//container.appendChild(element);
+container.style.display = 'flex';
 openglRenderWindow.setContainer(container);
 renderWindow.addView(openglRenderWindow);
 const { width, height } = container.getBoundingClientRect(); /////////////////////////
@@ -1266,6 +1272,7 @@ const showDebugActors = true;
 // container.appendChild(controlContainer);
 
 const container = document.getElementById('viewContainer');
+container.style.display = 'wrap';
 // const container = document.querySelector('body');
 // const controlContainer = document.createElement('div');
 // controlContainer.innerHTML = controlPanel;
@@ -1288,8 +1295,8 @@ for (let i = 0; i < 4; i++) {
   const element = document.createElement('div');
   element.setAttribute('class', 'view');
   element.style.width = '50%';
-  element.style.height = '400px';
-  element.style.display = 'block';
+  element.style.height = '350px';
+  element.style.display = 'inline-block';
   container.appendChild(element);
 
   const grw = vtkGenericRenderWindow.newInstance();
