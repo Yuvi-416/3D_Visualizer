@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    {% load static %}
+    <title>CLSM & FIB-SEM Imaging Modalities 3D Visualizer</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Links -->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static '/css/stylesheet-1_0.css' %}">
+
+    <!-- Scripts  .css -->
+    <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
+    <script type="text/javascript" src="{% static '/js/Color_map_vol.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/vtk.js' %}"></script>
+<!--    <script type="text/javascript" src="{% static '/js/itk.js' %}"></script>-->
+
+</head>
+<body>
+<!-- HEADER -->
+<div class="light col-md-auto">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #c6ebdcad;">
+        <a style="margin-left:4px;" href="http://image-in-itn.eu/" title="Image-In Pathogen Niche Cell Viewer">
+            <img src="{% static '/images/Image-In (1).png' %}" style="width: 80px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" style="color:#141314c7" href="#">Cell Explorer</a>
+                </li>
+                <!--          <li class="hide_mobile"><span>|</span></li>-->
+                <span class="style__vertical-bar--gcXcn">|</span>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:#141314c7" href="#">Image Analysis</a>
+                </li>
+                <!--          <li class="hide_mobile"><span>|</span></li>-->
+                <span class="style__vertical-bar--gcXcn">|</span>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:#141314c7" href="#">About</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <div>
+        <p style="padding: 0px 18px; background-color: #388b6c; color: rgb(236, 236, 236); margin-top: 1.5px; margin-bottom: 1.5px"
+        >Currently only CLSM & FIB-SEM imaging modalities can be visualized (other modalities will be added in future)
+        </p>
+    </div>
+</div>
+<!-- BODY -->
+<div class="wrapper">
+    <nav id="sidebar">
+        <!-- Selection of desire viewer -->
+        <div class="section_header_1" style="height:105px; background: #6f585a; margin-top: 3px; margin-bottom:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_head_1">
+                <div class="section_internal_layout_card_head_wrapper_1">
+                    <div class="section_internal_layout_card_head_title_1">
+                        <div class="section_internal_radio_button_group_head_1">
+                            <p>Select your desire viewer:</p>
+                            <input class="desire_viewer" type="Checkbox" name="Viewers" id="v1" value="3D">
+                            <label for="v1">3D</label>
+                            <input class="desire_viewer" type="Checkbox" name="Viewers" id="v2" value="TRI-Planar">
+                            <label for="v2">TRI-Planar</label>
+                            <input class="desire_viewer" type="Checkbox" name="Viewers" id="v3" value="MPR">
+                            <label for="v3">MPR</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Implement render method -->
+        <div id="select_render_method" class="section_header_2" style="height:102px; background-color: #6f585a; background: #6f585a; margin-top: 3px; margin-bottom:4px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none;">
+            <div class="section_internal_layout_card_middle_body_2" >
+                <div class="section_internal_layout_card_middle_body_wrapper_2" >
+                    <div class="section_internal_layout_card_middle_body_title_2" >
+                        <div class="section_internal_radio_button_group_middle_body_2">
+                            <p>Rendering method selection:</p>
+                            <input class="method_selection" type="Checkbox" name="Render" id="r1" value="Volume" >
+                            <label for="r1">Volume</label>
+                            <input class="method_selection" type="Checkbox" name="Render" id="r2" value="Surface" >
+                            <label for="r2">Surface</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- DICOM TITLE -->
+        <div class="section_header_3" style="height:30px; margin-bottom: -1px; margin-top: -2px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_middle_body_3" >
+                <div class="section_internal_layout_card_middle_body_wrapper_3" >
+                    <div class="section_internal_layout_card_middle_body_title_3" >
+                        <label>DICOM Files Loader</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Select the number of inputs-->
+        <div class="section_header_4" style="height:126px; background-color: #6f585a; margin-top:3px; border-top: 4px solid #c3a0a0;border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; ">
+            <div class="section_internal_layout_card_middle_body_4" >
+                <div class="section_internal_layout_card_middle_body_wrapper_4" >
+                    <div id="divInput" class="section_internal_layout_card_middle_body_title_4" >
+                        <table style="height:31px;">
+                            <tbody>
+                            <td>Select the number of inputs:</td>
+                            <td>
+                                <input min=1 max=10 type="number" id="f" value="1" style="width: 43px; height: 25px;">
+                            </td>
+                            </tbody>
+                        </table>
+                        <div>
+                            <input name="inputFile" type="file" multiple id="btn1" style="margin-left: 1px; margin-top: 30px; padding: 0px; border: none; z-index: 1;">
+                        </div>
+                        <div>
+                            <button name="render" id="btn2" style="margin-top: -4px; margin-left:374px; width: 80px; font-size: 14pt; border: none; z-index: 1; margin-bottom: 7px;"> Render </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
+        <!-- //////////////Volume Rendering features//////////////-->
+        <div id="VOL_OPTIONS" class="section_header_5" style="height:412px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_middle_body_5" >
+                <div class="section_internal_layout_card_middle_body_wrapper_5" >
+                    <div id="set_opacity_distance_bm_Color" class="section_internal_layout_card_middle_body_title_5">
+                        <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--////////////// Surface Rendering features//////////////-->
+        <div id="SUR_OPTIONS" class="section_header_6" style="height:412px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_middle_body_6" >
+                <div class="section_internal_layout_card_middle_body_wrapper_6" >
+                    <div id="set_iso_Color" class="section_internal_layout_card_middle_body_title_6">
+                        <p>&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--////////////// TRI-Planar features//////////////-->
+        <div id="TRI_PLANAR_OPTIONS" class="section_header_7" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_middle_body_7" >
+                <div class="section_internal_layout_card_middle_body_wrapper_7" >
+                    <table style="margin-left: 11px;">
+                        <tbody>
+                        <tr>
+                            <td> <input id="XY_button" type="checkbox"> XY </td>
+                            <td>
+                                <input class="XY" type="range" min="0" max="119" step="1" value="0"> <!-- sliceI -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <input id="XZ_button" type="checkbox"> XZ </td>
+                            <td>
+                                <input class="XZ" type="range" min="0" max="119" step="1" value="0"> <!-- sliceJ -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <input id="YZ_button" type="checkbox"> YZ </td>
+                            <td>
+                                <input  class="YZ" type="range" min="0" max="119" step="1" value="0"> <!-- sliceK -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Color level</td>
+                            <td>
+                                <input class="colorLevel" type="range" min="0" max="255" step="1" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ColorWindow</td>
+                            <td>
+                                <input class="colorWindow" type="range" min="0" max="255" step="1" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mouse Selector</td>
+                            <td>
+                                <select class="leftButton" style="width:100%">
+                                    <option value="None">None</option>
+                                    <option value="Rotate" selected="selected">Rotate</option>
+
+                                </select>
+                            </td>
+                            <td>
+                                <select class="rightButton" style="width:100%">
+                                    <option value="None">None</option>
+                                    <option value="Pan" selected="selected">Pan</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="scrollMiddleButton" style="width:100%">
+                                    <option value="None">None</option>
+                                    <option value="Zoom" selected="selected">Zoom</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--////////////// MPR Rendering features//////////////-->
+        <div id="MPR_OPTIONS" class="section_header_8" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_internal_layout_card_middle_body_8" >
+                <div class="section_internal_layout_card_middle_body_wrapper_8" >
+                    <table style="margin-left: 11px;">
+                        <tbody>
+                        <tr>
+                            <td>Scale in pixels:</td>
+                            <td>
+                                <input type="checkbox" id="checkboxScaleInPixels" checked="checked">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="buttonReset">Reset views:</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--////////////// XY Rendering features//////////////-->
+
+        <!-- 3D rendered SLICER viewer-->
+        <div id="rendered_SLICER" class="rendered_SLICER_viewer_9" style="height:106px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_rendered_SLICER_viewer_card_middle_body_9" >
+                <div class="section_rendered_SLICER_viewer_card_middle_body_wrapper_9" >
+                    <div class="section_rendered_SLICER_viewer_card_middle_body_title_9" >
+                        <label>Image Clip Plane</label>
+                            <table style="margin-left: 71px; background-color: #6f585a;">
+                                <tbody>
+                                <tr>
+                                    <td>XY</td>
+                                    <td>
+                                        <input class="Imin" type="range" min="0" max="63" step="1" value="0">
+                                    </td>
+                                    <td>
+                                        <input class="Imax" type="range" min="0" max="63" step="1" value="63">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>XZ</td>
+                                    <td>
+                                        <input class="Jmin" type="range" min="0" max="63" step="1" value="0">
+                                    </td>
+                                    <td>
+                                        <input class="Jmax" type="range" min="0" max="63" step="1" value="63">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>YZ</td>
+                                    <td>
+                                        <input class="Kmin" type="range" min="0" max="92" step="1" value="0">
+                                    </td>
+                                    <td>
+                                        <input class="Kmax" type="range" min="0" max="92" step="1" value="92">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+        <!-- CANVAS_IMPLEMENTATION -->
+    <div id="content" style="background:black; padding:12px; width:100%;">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-dark">
+                    <i class="fas fa-bars"></i><span><></span>
+                </button>
+            </div>
+        </nav>
+        <div id="viewContainer" style=" display: flex; height:877px; cursor:pointer; padding: 1px 2px;"></div>
+    </div>
+<!--    </div>-->
+
+</div>
+<!-- Scripts-->
+<!-- Scripts to load render JS file-->
+<script type="text/javascript" src="{% static '/js/index_render_options_copied.js' %}"></script>
+
+<!-- Script for a side_bar_Collapse-->
+<script>
+    $(document).ready(function() {
+      $("#sidebarCollapse").on('click',function() {
+        $("#sidebar").toggleClass('active');
+      });
+    });
+</script>
+
+<!-- Scripts comment showing Handled events-->
+<script>
+/** Handled events */
+/** This interactor style handles the following events: */
+/** InteractorStyleTrackballCamera */
+/** Left Mouse: Rotate */
+/** Left Mouse + Shift: Pan */
+/** Left Mouse + Ctrl/Alt: Spin */
+/** Left Mouse + Shift + Ctrl/Alt: Dolly */
+/** Mouse Wheel: Dolly */
+/** Multi-Touch Rotate: Rotate */
+/** Multi-Touch Pinch: Dolly */
+/** Multi-Touch Pan: Pan */
+/** 3D Events: Camera Pose */
+</script>
+
+<!-- Scripts for calling render functions and rendering it into CANVAS-->
+<script>
+ID_3D_render_selection = "#v1"
+ID_tri_planar = "#v2"
+ID_mpr_selection = "#v3"
+ID_vol_selection = "#r1"
+ID_sur_selection = "#r2"
+
+// Document ready event handler should never be nested inside other handlers.
+$(document).ready(function() {
+
+    // Volume-related variables we need to be able to access later
+    var vol_opacity, vol_distance, vol_blending, sel;
+
+    $('#v1').change(function() {
+        $('#select_render_method').slideToggle("slow");
+    });
+
+    $("#v2").change(function() {
+        $('#TRI_PLANAR_OPTIONS').slideToggle("slow");
+        $('#rendered_SLICER').slideToggle("hide");
+    });
+
+    $("#v3").change(function() {
+        $('#MPR_OPTIONS').slideToggle("slow");
+        $('#rendered_SLICER').slideToggle("hide");
+    });
+
+    $("#v4").change(function() {
+        $('#XY_OPTIONS').slideToggle("slow");
+    });
+
+    $('#r1').change(function() {
+
+        if ($(this).is(':checked')) {
+            addVolumeStuff();
+        } else {
+            deleteVolumeStuff();
+        }
+
+        $('#VOL_OPTIONS').slideToggle("slow");
+    });
+
+    /**
+     * Add some HTML when the vol checkbox is ticked
+     */
+    function addVolumeStuff() {
+        vol_edge_vis = $('<input class=vol_set_vis type="checkbox" id="visibility0" >').appendTo('#set_opacity_distance_bm_Color');
+        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0" max="100" step="0.5" value="3">').appendTo('#set_opacity_distance_bm_Color');
+        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.1" max="10" step="0.1" value="0.4">').appendTo('#set_opacity_distance_bm_Color');
+
+        vol_blending = $('<select class=vol_blending_mode id=blendMode0 >').appendTo('#set_opacity_distance_bm_Color');
+        vol_blending.append($("<option>").attr('value',"0").text("Composite"));
+        vol_blending.append($("<option>").attr('value',"1").text("MaxIn"));
+        vol_blending.append($("<option>").attr('value',"2").text("MinIn"));
+
+        sel = $('<select class=colors_channels >').appendTo('#set_opacity_distance_bm_Color');
+            sel.append($("<option>").attr('value',"Reds").text("Reds"));
+            sel.append($("<option>").attr('value',"Blues").text("Blues"));
+            sel.append($("<option>").attr('value',"Greens").text("Greens"));
+            sel.append($("<option>").attr('value',"magma").text("magma"));
+            sel.append($("<option>").attr('value',"Oranges").text("Oranges"));
+            sel.append($("<option>").attr('value',"Purples").text("Purples"));
+            sel.append($("<option>").attr('value',"gray").text("gray"));
+            sel.append($("<option>").attr('value',"pink").text("pink"));
+            sel.append($("<option>").attr('value',"cool").text("cool"));
+            sel.append($("<option>").attr('value',"hot").text("hot"));
+            sel.append($("<option>").attr('value',"jet").text("jet"));
+            sel.append($("<option>").attr('value',"hsv").text("hsv"));
+            sel.append($("<option>").attr('value',"Wistia").text("Wistia"));
+
+        $( "#f" ).change(function() {
+            $('.vol_set_opacity').remove();
+            $('.vol_set_distance').remove();
+            $('.vol_blending_mode').remove();
+            $('.colors_channels').remove();
+            $('.vol_set_vis').remove();
+
+                for(i=0; i<$('#f').val(); i++){
+                    vol_edge_vis = $('<input class=vol_set_vis type="checkbox" id="visibility'+ i +'"'+ ' >').appendTo('#set_opacity_distance_bm_Color');
+                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0" max="100" step="0.5" value="3">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.1" max="10" step="0.1" value="0.4">').appendTo('#set_opacity_distance_bm_Color');
+
+                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' >').appendTo('#set_opacity_distance_bm_Color');
+                    vol_blending.append($("<option>").attr('value',"0").text("Composite"));
+                    vol_blending.append($("<option>").attr('value',"1").text("MaxIn"));
+                    vol_blending.append($("<option>").attr('value',"2").text("MinIn"));
+
+                    sel = $('<select class=colors_channels >').appendTo('#set_opacity_distance_bm_Color');
+                        sel.append($("<option>").attr('value',"Reds").text("Reds"));
+                        sel.append($("<option>").attr('value',"Blues").text("Blues"));
+                        sel.append($("<option>").attr('value',"Greens").text("Greens"));
+                        sel.append($("<option>").attr('value',"magma").text("magma"));
+                        sel.append($("<option>").attr('value',"Oranges").text("Oranges"));
+                        sel.append($("<option>").attr('value',"Purples").text("Purples"));
+                        sel.append($("<option>").attr('value',"gray").text("gray"));
+                        sel.append($("<option>").attr('value',"pink").text("pink"));
+                        sel.append($("<option>").attr('value',"cool").text("cool"));
+                        sel.append($("<option>").attr('value',"hot").text("hot"));
+                        sel.append($("<option>").attr('value',"jet").text("jet"));
+                        sel.append($("<option>").attr('value',"hsv").text("hsv"));
+                        sel.append($("<option>").attr('value',"Wistia").text("Wistia"));
+
+                }
+        })
+
+    }
+
+    /**
+     * Delete the volume controls when vol checkbox is unticked
+     */
+    function deleteVolumeStuff() {
+        vol_edge_vis.remove();
+        vol_opacity.remove();
+        vol_distance.remove();
+        vol_blending.remove();
+        sel.remove();
+    }
+
+    $('#r2').change(function() {
+
+        if ($(this).is(':checked')) {
+            addSurfaceStuff();
+        } else {
+            deleteSurfaceStuff();
+        }
+
+        $('#SUR_OPTIONS').slideToggle("slow");
+    });
+
+    /**
+     * Add some HTML when the sur checkbox is ticked
+     */
+    function addSurfaceStuff() {
+        sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" id="sur_edge_visibility0" >').appendTo('#set_iso_Color');
+        sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.2">').appendTo('#set_iso_Color');
+        sur_isovalue = $('<input class=sur_iso_Value id="isoValue0" type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
+        sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7">').appendTo('#set_iso_Color');
+
+        $( "#f" ).change(function() {
+            $('.sur_set_opacity').remove();
+            $('.sur_iso_Value').remove();
+            $('.col_sur').remove();
+            $('.sur_edge_vis').remove();
+
+                for(j=0; j<$('#f').val(); j++){
+                    sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" id="sur_edge_visibility'+ j +'"'+ ' >').appendTo('#set_iso_Color');
+                    sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.00" max="1.0" step="0.01" value="0.2">').appendTo('#set_iso_Color');
+                    sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
+                    sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7">').appendTo('#set_iso_Color');
+                }
+        })
+
+    }
+
+    /**
+     * Delete the surface controls when surface checkbox is unticked
+     */
+    function deleteSurfaceStuff() {
+        sur_opacity.remove();
+        sur_isovalue.remove();
+        sur_col.remove();
+        sur_edge_vis.remove();
+    }
+
+});
+
+/**
+ * Volume rendering
+*/
+vol_arr = []
+vol_arr2 = []
+
+$("#btn1").change(function() {
+    // Maybe this should only happen if a certain checkbox is checked
+    $('.method_selection:checked').each(function(i) {
+        var vol_value = $(this).val();
+        console.log(vol_value)
+        if (vol_value == "Volume") {
+            vol_myFile = $('#btn1').prop('files');
+            vol_arr.push(vol_myFile)
+
+            $( "#btn2" ).click(function() {
+                vol_Picked_color = $(".colors_channels");
+
+                for(var i = 0; i < vol_Picked_color.length; i++){
+                    vol_arr2.push($(vol_Picked_color[i]).val());
+                }
+
+                if (vol_arr.length==vol_arr2.length) {
+                    vol_processFile(vol_arr, vol_arr2)
+                } else {
+                    alert("Please check the number of input vs the number of channels ")
+                }
+
+            })
+        }
+    });
+});
+
+/**
+ * Surface rendering
+*/
+sur_arr = []
+sur_arr2 = []
+
+$("#btn1").change(function() {
+    // Maybe this should only happen if a certain checkbox is checked
+    $('.method_selection:checked').each(function(i) {
+        var sur_value = $(this).val();
+        console.log(sur_value)
+        if (sur_value == "Surface") {
+            sur_myFile = $('#btn1').prop('files');
+            sur_arr.push(sur_myFile)
+
+            $( "#btn2" ).click(function() {
+                sur_Picked_color = $(".col_sur");
+
+                for(var j = 0; j < sur_Picked_color.length; j++){
+                    sur_arr2.push($(sur_Picked_color[j]).val());
+                }
+
+                if (sur_arr.length==sur_arr2.length){
+                    sur_processFile(sur_arr, sur_arr2)
+                } else {
+                    alert("Please check the number of input vs the number of channels ")
+                }
+
+            })
+        }
+    });
+});
+
+/**
+ * TRI-Planar rendering
+*/
+tri_arr = []
+$("#btn1").change(function() {
+    // Maybe this should only happen if a certain checkbox is checked
+    $('.desire_viewer:checked').each(function(i) {
+        var tri_value = $(this).val();
+        if (tri_value == "TRI-Planar") {
+            tri_myFile = $('#btn1').prop('files');
+            tri_arr.push(tri_myFile)
+
+            $( "#btn2" ).click(function() {
+                tri_processFile(tri_arr)
+            })
+        }
+    });
+});
+
+/**
+ * MPR rendering
+*/
+mpr_arr = []
+$("#btn1").change(function() {
+    // Maybe this should only happen if a certain checkbox is checked
+    $('.desire_viewer:checked').each(function(i) {
+        var mpr_value = $(this).val();
+        if (mpr_value == "MPR") {
+            mpr_myFile = $('#btn1').prop('files');
+            mpr_arr.push(mpr_myFile)
+
+            $( "#btn2" ).click(function() {
+                mpr_processFile(mpr_arr)
+            })
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>
