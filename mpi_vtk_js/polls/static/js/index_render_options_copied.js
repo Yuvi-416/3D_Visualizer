@@ -757,7 +757,6 @@ console.log(surface_iso_dataRange)
 
       for (a = 0; a < surface_imageData.length; a++){
 
-<<<<<<< HEAD
         // color_name = color_maps[i]
         // console.log(color_name)
         HEX_color_VALUES = HEX_Values[a]
@@ -895,91 +894,6 @@ console.log(surface_iso_dataRange)
         faceColor: createRGBStringFromRGBValues(viewColors[2]),
         // faceRotation: 45,
         });
-=======
-          // color_name = color_maps[i]
-          // console.log(color_name)
-          HEX_color_VALUES = HEX_Values[a]
-          console.log(HEX_color_VALUES)
-         /////////////////////////////////////////////////////////////////////////////////////////////////////
-          RGB_value = hexToRgb(HEX_color_VALUES)
-          console.log(RGB_value)
-         ////////////////////////////////////////////////////////////////////////////////////////////////////
-          console.log("###########################")
-          // console.log(i)
-
-          marchingC = vtk.Filters.General.vtkImageMarchingCubes.newInstance({contourValue: 0.0, computeNormals: true, mergePoints: true });
-          actor = vtk.Rendering.Core.vtkActor.newInstance();
-          mapper = vtk.Rendering.Core.vtkMapper.newInstance();
-          ctfun = vtk.Rendering.Core.vtkColorTransferFunction.newInstance();
-
-          dataRange = surface_imageData[a].getPointData().getScalars().getRange();
-          console.log(dataRange);
-
-          firstIsoValue = (dataRange[0] + dataRange[1]) / 3;
-          console.log(firstIsoValue)
-
-          // marchingCube = vtk.Filters.General.vtkImageMarchingCubes.newInstance();
-          marchingC.setInputData(surface_imageData[a]);
-          marchingC.setContourValue((dataRange[0] + dataRange[1]) / 3);
-
-          // mapper = vtk.Rendering.OpenGL.vtkOpenGLPolyDataMapper.newInstance();
-          mapper.setInputConnection(marchingC.getOutputPort());
-
-          mapper.setScalarVisibility(false);
-          mapper.setScalarRange(0, 10);
-          actor.setMapper(mapper);
-          // actor.getProperty().setDiffuseColor(diffuse_color) //////////////// (222/256., 184/256., 135/256.)
-          actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.) // Color Transfer Function
-          // actor.getProperty().setDiffuseColor(preset);
-          // actor.getProperty().setDiffuseColor(ctfun);
-          actor.getProperty().setEdgeVisibility(0.0, 0.0, 0.0);
-          actor.getProperty().setLighting(false);
-          actor.getProperty().setSpecular(0.3)
-          actor.getProperty().setSpecularPower(20)
-          // actor.getProperty().setOpacity(0.9)
-          // 6-1. Add actor on renderer
-          renderer.addActor(actor);
-
-          const axes = vtkAnnotatedCubeActor.newInstance();
-          axes.setDefaultStyle({
-            text: '+X',
-            fontStyle: 'bold',
-            fontFamily: 'Arial',
-            fontColor: 'white',
-            // fontSizeScale: (res) => res / 2,
-            faceColor: createRGBStringFromRGBValues(viewColors[0]),
-            // faceRotation: 0, //
-            edgeThickness: 0.1,
-            edgeColor: 'white',
-            resolution: 400,
-          });
-          // axes.setXPlusFaceProperty({ text: '+X' });
-          axes.setXMinusFaceProperty({
-            text: '-X',
-            faceColor: createRGBStringFromRGBValues(viewColors[0]),
-            // faceRotation: 90,
-            //fontStyle: 'italic',
-          });
-          axes.setYPlusFaceProperty({
-            text: '+Y',
-            faceColor: createRGBStringFromRGBValues(viewColors[1]),
-            // fontSizeScale: (res) => res / 4,
-          });
-          axes.setYMinusFaceProperty({
-            text: '-Y',
-            faceColor: createRGBStringFromRGBValues(viewColors[1]),
-            // fontColor: 'white',
-          });
-          axes.setZPlusFaceProperty({
-            text: '+Z',
-            faceColor: createRGBStringFromRGBValues(viewColors[2]),
-          });
-          axes.setZMinusFaceProperty({
-            text: '-Z',
-            faceColor: createRGBStringFromRGBValues(viewColors[2]),
-            // faceRotation: 45,
-          });
->>>>>>> master
 
         // create orientation widget
         orientationWidget = vtkOrientationMarkerWidget.newInstance({actor: axes, interactor: interactor});
