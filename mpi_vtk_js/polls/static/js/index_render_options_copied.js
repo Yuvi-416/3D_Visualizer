@@ -756,11 +756,6 @@ surface_iso_dataRange = []
 console.log(surface_iso_dataRange)
 
       for (a = 0; a < surface_imageData.length; a++){
-
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> c01cbcb13ebb88b9d87d99466043ec48129e78c0
         // color_name = color_maps[i]
         // console.log(color_name)
         HEX_color_VALUES = HEX_Values[a]
@@ -898,9 +893,6 @@ console.log(surface_iso_dataRange)
         faceColor: createRGBStringFromRGBValues(viewColors[2]),
         // faceRotation: 45,
         });
-<<<<<<< HEAD
-=======
-=======
           // color_name = color_maps[i]
           // console.log(color_name)
           HEX_color_VALUES = HEX_Values[a]
@@ -984,8 +976,6 @@ console.log(surface_iso_dataRange)
             faceColor: createRGBStringFromRGBValues(viewColors[2]),
             // faceRotation: 45,
           });
->>>>>>> master
->>>>>>> c01cbcb13ebb88b9d87d99466043ec48129e78c0
 
         // create orientation widget
         orientationWidget = vtkOrientationMarkerWidget.newInstance({actor: axes, interactor: interactor});
