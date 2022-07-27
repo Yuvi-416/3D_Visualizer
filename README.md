@@ -1,4 +1,4 @@
-[<p align="center"> <img src="~/mpi_vtk_js/polls/static/images/Image-In (1).png"/></p>](http://image-in-itn.eu/)
+[<p align="center"> <img src="mpi_vtk_js/polls/static/images/Image-In (1).png"/></p>](http://image-in-itn.eu/)
 
 A web-browser-based multidimensional 3D visualizer for confocal and focused-ion beam scanning electron microscopy modalities.
 Four viewers have been created: Volume, Surface, Tri-Planar, and Multi-planar reconstruction.
