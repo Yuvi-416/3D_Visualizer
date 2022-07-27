@@ -233,47 +233,26 @@
             </div>
         </div>
         <!--////////////// XY Rendering features//////////////-->
-
         <!-- 3D rendered SLICER viewer-->
-        <div id="rendered_SLICER" class="rendered_SLICER_viewer_9" style="height:106px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+        <div id="rendered_SLICER" class="rendered_SLICER_viewer_9" style="height:60px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
             <div class="section_rendered_SLICER_viewer_card_middle_body_9" >
                 <div class="section_rendered_SLICER_viewer_card_middle_body_wrapper_9" >
                     <div class="section_rendered_SLICER_viewer_card_middle_body_title_9" >
-                        <label>Image Clip Plane</label>
-                            <table style="margin-left: 71px; background-color: #6f585a;">
-                                <tbody>
-                                <tr>
-                                    <td>XY</td>
-                                    <td>
-                                        <input class="Imin" type="range" min="0" max="63" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input class="Imax" type="range" min="0" max="63" step="1" value="63">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>XZ</td>
-                                    <td>
-                                        <input class="Jmin" type="range" min="0" max="63" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input class="Jmax" type="range" min="0" max="63" step="1" value="63">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>YZ</td>
-                                    <td>
-                                        <input class="Kmin" type="range" min="0" max="92" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input class="Kmax" type="range" min="0" max="92" step="1" value="92">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <label>Region clipping</label>
+                        <table style="margin-left: 45px; background-color: #6f585a;">
+                            <tbody>
+                            <tr>
+                                <td> Slice crop
+                                    <input class="plane1Position" type="range" min="0" max="10" step="1" value="0">
+                                </td>
+                                <td> XY
+                                    <input class="plane2Position" type="range" min="0" max="10" step="1" value="0">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </nav>
