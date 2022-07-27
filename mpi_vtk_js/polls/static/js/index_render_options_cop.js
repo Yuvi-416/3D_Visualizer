@@ -441,6 +441,11 @@ console.log(volume_visibility_control)
             const sizeX = extent[1] * spacing[0];
             const sizeY = extent[3] * spacing[1];
 
+            // console.log(extent, "extent");
+            // console.log(spacing, "spacing");
+            // console.log(sizeX, "sizeX");
+            // console.log(sizeY, "sizeY");
+
             const clipPlane1 = vtkPlane.newInstance();
             const clipPlane2 = vtkPlane.newInstance();
             let clipPlane1Position = 0;
@@ -451,8 +456,10 @@ console.log(volume_visibility_control)
             const clipPlane2Normal = [0, 0, 1];
             // const rotationNormal = [0, 1, 0];
 
-            clipPlane1Position = sizeX / 4;
-            clipPlane2Position = sizeY / 2;
+            clipPlane1Position = -(sizeX / 1.5);
+            clipPlane2Position = ((sizeY / 2) * 0);
+            // console.log(clipPlane1Position, "clipPlane1Position");
+            // console.log(clipPlane2Position, "clipPlane2Position");
 
             const clipPlane1Origin = [clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
             const clipPlane2Origin = [clipPlane2Position * clipPlane2Normal[0],clipPlane2Position * clipPlane2Normal[1],clipPlane2Position * clipPlane2Normal[2], ];
@@ -476,17 +483,18 @@ console.log(volume_visibility_control)
             renderer.addActor(volume_vtk);
 
             let el = document.querySelector('.plane1Position');
-            el.setAttribute('min', -sizeX);
-            el.setAttribute('max', sizeX);
+            el.setAttribute('min', -(sizeX / 1.5));
+            el.setAttribute('max', (sizeX/ 1.5));
             el.setAttribute('value', clipPlane1Position);
 
             el = document.querySelector('.plane2Position');
-            el.setAttribute('min', -sizeY);
-            el.setAttribute('max', sizeY);
+            el.setAttribute('min', (-sizeY * 0));
+            el.setAttribute('max', ((sizeY * 0) + extent[5]));
             el.setAttribute('value', clipPlane2Position);
 
             document.querySelector('.plane1Position').addEventListener('input', (e) => {
               clipPlane1Position = Number(e.target.value);
+              // console.log(clipPlane1Position)
               const clipPlane1Origin = [ clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
               clipPlane1.setOrigin(clipPlane1Origin);
               renderWindow.render();
@@ -494,6 +502,7 @@ console.log(volume_visibility_control)
 
             document.querySelector('.plane2Position').addEventListener('input', (e) => {
               clipPlane2Position = Number(e.target.value);
+              // console.log(clipPlane2Position)
               const clipPlane2Origin = [ clipPlane2Position * clipPlane2Normal[0], clipPlane2Position * clipPlane2Normal[1], clipPlane2Position * clipPlane2Normal[2], ];
               clipPlane2.setOrigin(clipPlane2Origin);
               renderWindow.render();
@@ -814,8 +823,8 @@ console.log(surface_iso_dataRange)
         const sur_clipPlane2Normal = [0, 0, 1];
         // const rotationNormal = [0, 1, 0];
 
-        sur_clipPlane1Position = sur_sizeX / 4;
-        sur_clipPlane2Position = sur_sizeY / 2;
+        sur_clipPlane1Position = -(sur_sizeX / 1.5);
+        sur_clipPlane2Position = ((sur_sizeY / 2) * 0);
 
         const sur_clipPlane1Origin = [sur_clipPlane1Position * sur_clipPlane1Normal[0], sur_clipPlane1Position * sur_clipPlane1Normal[1], sur_clipPlane1Position * sur_clipPlane1Normal[2], ];
         const sur_clipPlane2Origin = [sur_clipPlane2Position * sur_clipPlane2Normal[0],sur_clipPlane2Position * sur_clipPlane2Normal[1],sur_clipPlane2Position * sur_clipPlane2Normal[2], ];
@@ -829,13 +838,13 @@ console.log(surface_iso_dataRange)
         mapper.addClippingPlane(sur_clipPlane2);
 
         let el = document.querySelector('.plane1Position');
-        el.setAttribute('min', -sur_sizeX);
-        el.setAttribute('max', sur_sizeX);
+        el.setAttribute('min', -(sur_sizeX / 1.5));
+        el.setAttribute('max', (sur_sizeX/ 1.5));
         el.setAttribute('value', sur_clipPlane1Position);
 
         el = document.querySelector('.plane2Position');
-        el.setAttribute('min', -sur_sizeY);
-        el.setAttribute('max', sur_sizeY);
+        el.setAttribute('min', (-sur_sizeY * 0));
+        el.setAttribute('max', ((sur_sizeY * 0) + sur_extent[5]));
         el.setAttribute('value', sur_clipPlane2Position);
 
         document.querySelector('.plane1Position').addEventListener('input', (e) => {
