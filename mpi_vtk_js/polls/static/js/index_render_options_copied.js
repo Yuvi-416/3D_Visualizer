@@ -215,7 +215,7 @@ function convertVtkToItkImage(vtkImage, copyData = false) {
 ////////////////////////////////////////////////////////////////////////////////////////
 function volume_rendering(volume_imageData, volume_color_val){
 
-// 2. Get the data scalar range to set the first ISO value
+// Call the Functions
 var container = document.getElementById('viewContainer');
 const genericRenderWindow = vtk.Rendering.Misc.vtkGenericRenderWindow.newInstance();
 const openglRenderWindow = vtk.Rendering.OpenGL.vtkRenderWindow.newInstance();
