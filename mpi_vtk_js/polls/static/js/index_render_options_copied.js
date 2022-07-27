@@ -315,6 +315,30 @@ function getCenterOfScene (renderer) {
   return center;
 }
 
+function image_crop_slider_vol(data, cropFilter) {
+  const axes = ['I', 'J', 'K'];
+  const minmax = ['min', 'max'];
+  const extent = data;
+
+  axes.forEach((ax, axi) => {
+    minmax.forEach((m, mi) => {
+      const el = document.querySelector(`.${ax}${m}`);
+      el.setAttribute('min', extent[axi * 2]);
+      el.setAttribute('max', extent[axi * 2 + 1]);
+      el.setAttribute('value', extent[axi * 2 + mi]);
+
+      el.addEventListener('input', () => {
+      console.log('%%%%%%')
+        const planes = cropFilter.getCroppingPlanes().slice();
+        planes[axi * 2 + mi] = Number(el.value);
+        cropFilter.setCroppingPlanes(planes);
+        console.log(planes);
+        renderWindow.render();
+      });
+    });
+  });
+}
+
 const color_maps = volume_color_val;
 console.log(color_maps)
 
@@ -334,6 +358,9 @@ console.log(volume_visibility_control)
             volumeProperty = vtk.Rendering.Core.vtkVolumeProperty.newInstance();
             ofun = vtk.Common.DataModel.vtkPiecewiseFunction.newInstance();
             ctfun = vtk.Rendering.Core.vtkColorTransferFunction.newInstance();
+            ImagecropFilter = vtk.Filters.General.vtkImageCropFilter.newInstance();
+            vtkPlane = vtk.Common.DataModel.vtkPlane;
+            vtkMatrixBuilder = vtk.Common.Core.vtkMatrixBuilder;
 
             // Load the Input
             const dataArray = volume_imageData[i].getPointData().getScalars() || volume_imageData[i].getPointData().getArrays()[0];
@@ -400,7 +427,44 @@ console.log(volume_visibility_control)
             volumeProperty.setGradientOpacityMaximumValue(0, (dataRange[1] - dataRange[0]) * 0.1);
             volumeProperty.setGradientOpacityMaximumOpacity(0, 1.0);
 
+//            console.log('##################################')
+//            ImagecropFilter.setInputData(volume_imageData[i]);
+//            ImagecropFilter.setCroppingPlanes(volume_imageData[i].getExtent());
+//            // cropFilter.setInputConnection(reader.getOutputPort());
+//            console.log(ImagecropFilter)
+//            console.log('##################################')
+//            volumeMapper.setInputConnection(ImagecropFilter.getOutputPort());
+//            console.log(volumeMapper)
+
+            const extent = volume_imageData[i].getExtent();
+            const spacing = volume_imageData[i].getSpacing();
+            const sizeX = extent[1] * spacing[0];
+            const sizeY = extent[3] * spacing[1];
+
+            const clipPlane1 = vtkPlane.newInstance();
+            const clipPlane2 = vtkPlane.newInstance();
+            let clipPlane1Position = 0;
+            let clipPlane2Position = 0;
+            // let clipPlane1RotationAngle = 0;
+            // let clipPlane2RotationAngle = 0;
+            const clipPlane1Normal = [-1, 1, 0];
+            const clipPlane2Normal = [0, 0, 1];
+            // const rotationNormal = [0, 1, 0];
+
+            clipPlane1Position = sizeX / 4;
+            clipPlane2Position = sizeY / 2;
+
+            const clipPlane1Origin = [clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
+            const clipPlane2Origin = [clipPlane2Position * clipPlane2Normal[0],clipPlane2Position * clipPlane2Normal[1],clipPlane2Position * clipPlane2Normal[2], ];
+
+            clipPlane1.setNormal(clipPlane1Normal);
+            clipPlane1.setOrigin(clipPlane1Origin);
+            clipPlane2.setNormal(clipPlane2Normal);
+            clipPlane2.setOrigin(clipPlane2Origin);
+
             volumeMapper.setInputData(volume_imageData[i]);
+            volumeMapper.addClippingPlane(clipPlane1);
+            volumeMapper.addClippingPlane(clipPlane2);
             // volumeMapper.setSampleDistance(0.4);
             volumeMapper.setMaximumSamplesPerRay(true);
             volumeMapper.setAutoAdjustSampleDistances(true);
@@ -410,6 +474,46 @@ console.log(volume_visibility_control)
             volume_vtk.setProperty(volumeProperty);
 
             renderer.addActor(volume_vtk);
+
+            let el = document.querySelector('.plane1Position');
+            el.setAttribute('min', -sizeX);
+            el.setAttribute('max', sizeX);
+            el.setAttribute('value', clipPlane1Position);
+
+            el = document.querySelector('.plane2Position');
+            el.setAttribute('min', -sizeY);
+            el.setAttribute('max', sizeY);
+            el.setAttribute('value', clipPlane2Position);
+
+            document.querySelector('.plane1Position').addEventListener('input', (e) => {
+              clipPlane1Position = Number(e.target.value);
+              const clipPlane1Origin = [ clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
+              clipPlane1.setOrigin(clipPlane1Origin);
+              renderWindow.render();
+            });
+
+            document.querySelector('.plane2Position').addEventListener('input', (e) => {
+              clipPlane2Position = Number(e.target.value);
+              const clipPlane2Origin = [ clipPlane2Position * clipPlane2Normal[0], clipPlane2Position * clipPlane2Normal[1], clipPlane2Position * clipPlane2Normal[2], ];
+              clipPlane2.setOrigin(clipPlane2Origin);
+              renderWindow.render();
+            });
+
+//            document.querySelector('.plane1Rotation').addEventListener('input', (e) => {
+//              const changedDegree = Number(e.target.value) - clipPlane1RotationAngle;
+//              clipPlane1RotationAngle = Number(e.target.value);
+//              vtkMatrixBuilder.buildFromDegree().rotate(changedDegree, rotationNormal).apply(clipPlane1Normal);
+//              clipPlane1.setNormal(clipPlane1Normal);
+//              renderWindow.render();
+//            });
+
+//            document.querySelector('.plane2Rotation').addEventListener('input', (e) => {
+//              const changedDegree = Number(e.target.value) - clipPlane2RotationAngle;
+//              clipPlane2RotationAngle = Number(e.target.value);
+//              vtkMatrixBuilder.buildFromDegree().rotate(changedDegree, rotationNormal).apply(clipPlane2Normal);
+//              clipPlane2.setNormal(clipPlane2Normal);
+//              renderWindow.render();
+//            });
 
 //            // ----------------------------------------------------------------------------
 //            // Light
@@ -487,6 +591,8 @@ console.log(volume_visibility_control)
             volume_sample_Distance[i] = volumeMapper
             volume_visibility_control[i] = volume_vtk
             console.log(volume_visibility_control[i])
+//            image_crop_slider_vol((volume_imageData[i].getExtent()), ImagecropFilter)
+
       }
 
     for(e=0; e<volume_imageData.length; e++){
@@ -651,6 +757,145 @@ console.log(surface_iso_dataRange)
 
       for (a = 0; a < surface_imageData.length; a++){
 
+<<<<<<< HEAD
+        // color_name = color_maps[i]
+        // console.log(color_name)
+        HEX_color_VALUES = HEX_Values[a]
+        console.log(HEX_color_VALUES)
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        RGB_value = hexToRgb(HEX_color_VALUES)
+        console.log(RGB_value)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        console.log("###########################")
+        // console.log(i)
+
+        marchingC = vtk.Filters.General.vtkImageMarchingCubes.newInstance({contourValue: 0.0, computeNormals: true, mergePoints: true });
+        actor = vtk.Rendering.Core.vtkActor.newInstance();
+        mapper = vtk.Rendering.Core.vtkMapper.newInstance();
+        ctfun = vtk.Rendering.Core.vtkColorTransferFunction.newInstance();
+        vtkPlane = vtk.Common.DataModel.vtkPlane;
+
+        dataRange = surface_imageData[a].getPointData().getScalars().getRange();
+        console.log(dataRange);
+
+        firstIsoValue = (dataRange[0] + dataRange[1]) / 3;
+        console.log(firstIsoValue)
+
+        // marchingCube = vtk.Filters.General.vtkImageMarchingCubes.newInstance();
+        marchingC.setInputData(surface_imageData[a]);
+        marchingC.setContourValue((dataRange[0] + dataRange[1]) / 3);
+
+        // mapper = vtk.Rendering.OpenGL.vtkOpenGLPolyDataMapper.newInstance();
+        mapper.setInputConnection(marchingC.getOutputPort());
+
+        mapper.setScalarVisibility(false);
+        mapper.setScalarRange(0, 10);
+        actor.setMapper(mapper);
+        // actor.getProperty().setDiffuseColor(diffuse_color) //////////////// (222/256., 184/256., 135/256.)
+        actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.) // Color Transfer Function
+        // actor.getProperty().setDiffuseColor(preset);
+        // actor.getProperty().setDiffuseColor(ctfun);
+        actor.getProperty().setEdgeVisibility(0.0, 0.0, 0.0);
+        actor.getProperty().setLighting(false);
+        actor.getProperty().setSpecular(0.3)
+        actor.getProperty().setSpecularPower(20)
+        // actor.getProperty().setOpacity(0.9)
+        // 6-1. Add actor on renderer
+        renderer.addActor(actor);
+
+        const sur_extent = surface_imageData[a].getExtent();
+        const sur_spacing = surface_imageData[a].getSpacing();
+        const sur_sizeX = sur_extent[1] * sur_spacing[0];
+        const sur_sizeY = sur_extent[3] * sur_spacing[1];
+
+        const sur_clipPlane1 = vtkPlane.newInstance();
+        const sur_clipPlane2 = vtkPlane.newInstance();
+        let sur_clipPlane1Position = 0;
+        let sur_clipPlane2Position = 0;
+        // let clipPlane1RotationAngle = 0;
+        // let clipPlane2RotationAngle = 0;
+        const sur_clipPlane1Normal = [-1, 1, 0];
+        const sur_clipPlane2Normal = [0, 0, 1];
+        // const rotationNormal = [0, 1, 0];
+
+        sur_clipPlane1Position = sur_sizeX / 4;
+        sur_clipPlane2Position = sur_sizeY / 2;
+
+        const sur_clipPlane1Origin = [sur_clipPlane1Position * sur_clipPlane1Normal[0], sur_clipPlane1Position * sur_clipPlane1Normal[1], sur_clipPlane1Position * sur_clipPlane1Normal[2], ];
+        const sur_clipPlane2Origin = [sur_clipPlane2Position * sur_clipPlane2Normal[0],sur_clipPlane2Position * sur_clipPlane2Normal[1],sur_clipPlane2Position * sur_clipPlane2Normal[2], ];
+
+        sur_clipPlane1.setNormal(sur_clipPlane1Normal);
+        sur_clipPlane1.setOrigin(sur_clipPlane1Origin);
+        sur_clipPlane2.setNormal(sur_clipPlane2Normal);
+        sur_clipPlane2.setOrigin(sur_clipPlane2Origin);
+
+        mapper.addClippingPlane(sur_clipPlane1);
+        mapper.addClippingPlane(sur_clipPlane2);
+
+        let el = document.querySelector('.plane1Position');
+        el.setAttribute('min', -sur_sizeX);
+        el.setAttribute('max', sur_sizeX);
+        el.setAttribute('value', sur_clipPlane1Position);
+
+        el = document.querySelector('.plane2Position');
+        el.setAttribute('min', -sur_sizeY);
+        el.setAttribute('max', sur_sizeY);
+        el.setAttribute('value', sur_clipPlane2Position);
+
+        document.querySelector('.plane1Position').addEventListener('input', (e) => {
+        sur_clipPlane1Position = Number(e.target.value);
+        const sur_clipPlane1Origin = [ sur_clipPlane1Position * sur_clipPlane1Normal[0], sur_clipPlane1Position * sur_clipPlane1Normal[1], sur_clipPlane1Position * sur_clipPlane1Normal[2], ];
+        sur_clipPlane1.setOrigin(sur_clipPlane1Origin);
+        renderWindow.render();
+        });
+
+        document.querySelector('.plane2Position').addEventListener('input', (e) => {
+        sur_clipPlane2Position = Number(e.target.value);
+        const sur_clipPlane2Origin = [ sur_clipPlane2Position * sur_clipPlane2Normal[0], sur_clipPlane2Position * sur_clipPlane2Normal[1], sur_clipPlane2Position * sur_clipPlane2Normal[2], ];
+        sur_clipPlane2.setOrigin(sur_clipPlane2Origin);
+        renderWindow.render();
+        });
+
+        const axes = vtkAnnotatedCubeActor.newInstance();
+        axes.setDefaultStyle({
+        text: '+X',
+        fontStyle: 'bold',
+        fontFamily: 'Arial',
+        fontColor: 'white',
+        // fontSizeScale: (res) => res / 2,
+        faceColor: createRGBStringFromRGBValues(viewColors[0]),
+        // faceRotation: 0, //
+        edgeThickness: 0.1,
+        edgeColor: 'white',
+        resolution: 400,
+        });
+        // axes.setXPlusFaceProperty({ text: '+X' });
+        axes.setXMinusFaceProperty({
+        text: '-X',
+        faceColor: createRGBStringFromRGBValues(viewColors[0]),
+        // faceRotation: 90,
+        //fontStyle: 'italic',
+        });
+        axes.setYPlusFaceProperty({
+        text: '+Y',
+        faceColor: createRGBStringFromRGBValues(viewColors[1]),
+        // fontSizeScale: (res) => res / 4,
+        });
+        axes.setYMinusFaceProperty({
+        text: '-Y',
+        faceColor: createRGBStringFromRGBValues(viewColors[1]),
+        // fontColor: 'white',
+        });
+        axes.setZPlusFaceProperty({
+        text: '+Z',
+        faceColor: createRGBStringFromRGBValues(viewColors[2]),
+        });
+        axes.setZMinusFaceProperty({
+        text: '-Z',
+        faceColor: createRGBStringFromRGBValues(viewColors[2]),
+        // faceRotation: 45,
+        });
+=======
           // color_name = color_maps[i]
           // console.log(color_name)
           HEX_color_VALUES = HEX_Values[a]
@@ -734,6 +979,7 @@ console.log(surface_iso_dataRange)
             faceColor: createRGBStringFromRGBValues(viewColors[2]),
             // faceRotation: 45,
           });
+>>>>>>> master
 
         // create orientation widget
         orientationWidget = vtkOrientationMarkerWidget.newInstance({actor: axes, interactor: interactor});
