@@ -1451,7 +1451,7 @@ for (let i = 0; i < 4; i++) {
   const element = document.createElement('div');
   element.setAttribute('class', 'view');
   element.style.width = '50%';
-  element.style.height = '350px';
+  element.style.height = '380px';
   element.style.display = 'inline-block';
   container.appendChild(element);
 
