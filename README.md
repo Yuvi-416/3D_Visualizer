@@ -10,6 +10,9 @@ Our visualizer takes a sequence of DICOM standard files as input and renders the
 - Tri-Planar Rendering ((XY, YZ, XZ) slider, Color window and level manipulator, Mouse selector (rotate, pan, zoom options))
 - Multi-Planar Reconstruction (Orthoviewer, Separate window for each plane with 3D Image Slice mapper)
 
+## Documentation
+Will be posted soon.
+
 ## To host locally:
 - Clone this repository and install the packages listed in requirement.txt.
 - Open the terminal, CD the folder where manage.py exists, and launch the server locally by passing the following command over there: python manage.py runserver
@@ -25,6 +28,9 @@ https://yuvi.pythonanywhere.com/
 - jQuery
 - Bootstrap
 - Django web framework
+
+## Bug and contribution
+- Found bug? please open an issue or want to contribute please fork it and start to contribute.
 
 ## Funded:
 This work was supported by the Marie Sklodowska Curie ITN-EID, Horizon 2020 project [IMAGE-IN](http://image-in-itn.eu/) (grant agreement No 861122).
