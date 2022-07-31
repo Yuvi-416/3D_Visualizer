@@ -11,7 +11,8 @@ Our visualizer takes a sequence of DICOM standard files as input and renders the
 - Multi-Planar Reconstruction (Orthoviewer, Separate window for each plane with 3D Image Slice mapper)
 
 ## How to use it?
-See here: https://yuvi-416.github.io/3D_Visualizer/
+Demo: https://figshare.com/articles/media/3D-Visualizer_Demo/20408103
+More can be found here: https://yuvi-416.github.io/3D_Visualizer/
 
 ## To host locally:
 - Clone this repository and install the packages listed in requirement.txt.
