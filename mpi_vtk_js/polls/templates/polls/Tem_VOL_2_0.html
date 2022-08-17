@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     {% load static %}
     <title>CLSM & FIB-SEM Imaging Modalities 3D Visualizer</title>
@@ -10,6 +10,7 @@
     <!-- Links -->
     <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static '/css/stylesheet-1_0.css' %}">
+<!--    <link rel="stylesheet" href="{% static '/css/nouislider.min.css' %}">-->
 
     <!-- Scripts  .css -->
     <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
@@ -17,14 +18,19 @@
     <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
     <script type="text/javascript" src="{% static '/js/Color_map_vol.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/vtk.js' %}"></script>
+<!--    <script type="text/javascript" src="{% static '/js/nouislider.min.js' %}"></script>-->
 <!--    <script type="text/javascript" src="{% static '/js/itk.js' %}"></script>-->
+<!--  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">-->
+<!--  <link rel="stylesheet" href="/resources/demos/style.css">-->
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
+<!--  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>-->
 
 </head>
 <body>
 <!-- HEADER -->
 <div class="light col-md-auto">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #c6ebdcad;">
-        <a style="margin-left:4px;" href="http://image-in-itn.eu/" title="Image-In Pathogen Niche Cell Viewer">
+        <a style="margin-left:4px;" href="http://image-in-itn.eu/" target="_blank" rel="noopener noreferrer"  title="Image-In Pathogen Niche Cell Viewer">
             <img src="{% static '/images/Image-In (1).png' %}" style="width: 80px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +39,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" style="color:#141314c7" href="#">Cell Explorer</a>
+                    <a class="nav-link" style="color:#141314c7" href="https://yuvi.pythonanywhere.com/" target="_blank" rel="noopener noreferrer" >Cell Explorer</a>
                 </li>
                 <!--          <li class="hide_mobile"><span>|</span></li>-->
                 <span class="style__vertical-bar--gcXcn">|</span>
@@ -43,10 +49,17 @@
                 <!--          <li class="hide_mobile"><span>|</span></li>-->
                 <span class="style__vertical-bar--gcXcn">|</span>
                 <li class="nav-item">
-                    <a class="nav-link" style="color:#141314c7" href="#">About</a>
+                    <a class="nav-link" style="color:#141314c7" href="https://github.com/Yuvi-416/3D_Visualizer/tree/master/sample/" target="_blank" rel="noopener noreferrer" >Sample</a>
+                </li>
+                <span class="style__vertical-bar--gcXcn">|</span>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:#141314c7" href="https://figshare.com/articles/media/3D-Visualizer_Demo/20408103" target="_blank" rel="noopener noreferrer" >Demo</a>
+                </li>
+                <span class="style__vertical-bar--gcXcn">|</span>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:#141314c7" href="https://yuvi-416.github.io/3D_Visualizer/" target="_blank" rel="noopener noreferrer" >About</a>
                 </li>
             </ul>
-
         </div>
     </nav>
     <div>
@@ -119,7 +132,7 @@
                             <input name="inputFile" type="file" multiple id="btn1" style="margin-left: 1px; margin-top: 30px; padding: 0px; border: none; z-index: 1;">
                         </div>
                         <div>
-                            <button name="render" id="btn2" style="margin-top: -4px; margin-left:374px; width: 80px; font-size: 14pt; border: none; z-index: 1; margin-bottom: 7px;"> Render </button>
+                        <button name="render" id="btn2" style="margin-top: -4px; margin-left:374px; width: 80px; font-size: 14pt; border: none; z-index: 1; margin-bottom: 7px;"> Render </button>
                         </div>
                     </div>
                 </div>
@@ -132,7 +145,7 @@
             <div class="section_internal_layout_card_middle_body_5" >
                 <div class="section_internal_layout_card_middle_body_wrapper_5" >
                     <div id="set_opacity_distance_bm_Color" class="section_internal_layout_card_middle_body_title_5">
-                        <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                        <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;&ensp;&ensp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
                     </div>
                 </div>
             </div>
@@ -154,19 +167,19 @@
                     <table style="margin-left: 11px;">
                         <tbody>
                         <tr>
-                            <td> <input id="XY_button" type="checkbox"> XY </td>
+                            <td> <input id="XY_button" type="checkbox" checked> XY </td>
                             <td>
-                                <input class="XY" type="range" min="0" max="119" step="1" value="0"> <!-- sliceI -->
+                                <input class="XY" type="range" min="0" max="119" step="1" value="0" > <!-- sliceI -->
                             </td>
                         </tr>
                         <tr>
-                            <td> <input id="XZ_button" type="checkbox"> XZ </td>
+                            <td> <input id="XZ_button" type="checkbox" checked> XZ </td>
                             <td>
                                 <input class="XZ" type="range" min="0" max="119" step="1" value="0"> <!-- sliceJ -->
                             </td>
                         </tr>
                         <tr>
-                            <td> <input id="YZ_button" type="checkbox"> YZ </td>
+                            <td> <input id="YZ_button" type="checkbox" checked> YZ </td>
                             <td>
                                 <input  class="YZ" type="range" min="0" max="119" step="1" value="0"> <!-- sliceK -->
                             </td>
@@ -187,9 +200,8 @@
                             <td>Mouse Selector</td>
                             <td>
                                 <select class="leftButton" style="width:100%">
-                                    <option value="None">None</option>
+                                    <option value="None" >None</option>
                                     <option value="Rotate" selected="selected">Rotate</option>
-
                                 </select>
                             </td>
                             <td>
@@ -234,19 +246,54 @@
         </div>
         <!--////////////// XY Rendering features//////////////-->
         <!-- 3D rendered SLICER viewer-->
-        <div id="rendered_SLICER" class="rendered_SLICER_viewer_9" style="height:60px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+        <div id="rendered_SLICER" class="rendered_SLICER_viewer_9" style="height:108px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
             <div class="section_rendered_SLICER_viewer_card_middle_body_9" >
                 <div class="section_rendered_SLICER_viewer_card_middle_body_wrapper_9" >
                     <div class="section_rendered_SLICER_viewer_card_middle_body_title_9" >
-                        <label>Region clipping</label>
-                        <table style="margin-left: 45px; background-color: #6f585a;">
+                        <label>Region of interest clipping</label>
+                        <table style="margin-left: 87px; background-color: #6f585a;">
                             <tbody>
                             <tr>
-                                <td> Slice crop
-                                    <input class="plane1Position" type="range" min="0" max="10" step="1" value="0">
+                                <td> X
+                                    <input class="planePositionX" type="range" min="0" max="100" step="1" value="">
                                 </td>
-                                <td> XY
-                                    <input class="plane2Position" type="range" min="0" max="10" step="1" value="0">
+                                <td>
+                                    <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Y
+                                    <input class="planePositionY" type="range" min="0" max="100" step="1" value="">
+                                </td>
+                                <td>
+                                    <input class="planePositionY_inv" type="range" min="0" max="100" step="1" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Z
+                                    <input class="planePositionZ" type="range" min="0" max="100" step="1" value="">
+                                </td>
+                                <td>
+                                    <input class="planePositionZ_inv" type="range" min="0" max="100" step="1" value="">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Scaling Slider-->
+        <div id="Scaling_slider" class="Scaling_slider_viewer_10" style="height:56px; margin-top: 3px; background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div class="section_Scaling_slider_viewer_card_middle_body_10" >
+                <div class="section_Scaling_slider_viewer_card_middle_body_wrapper_10" >
+                    <div class="section_Scaling_slider_viewer_card_middle_body_title_10" >
+                        <label>Voxel Dimension Scaling Slider</label>
+                        <table style="margin-left: 129px; background-color: #6f585a;">
+                            <tbody>
+                            <tr>
+                                <td> Z scale voxel:
+                                    <input id="Slider_scale" type="range" min="0.1" max="50" step="0.1" value="1">
                                 </td>
                             </tr>
                             </tbody>
@@ -256,7 +303,6 @@
             </div>
         </div>
     </nav>
-
         <!-- CANVAS_IMPLEMENTATION -->
     <div id="content" style="background:black; padding:12px; width:100%;">
         <nav class="navbar navbar-expand-lg">
@@ -266,7 +312,7 @@
                 </button>
             </div>
         </nav>
-        <div id="viewContainer" style=" height:877px; cursor:pointer; padding: 1px 2px;"></div>
+        <div id="viewContainer" style=" height:82vh; padding: 1px 2px;"></div> <!-- Use vh metric to control the height/width of an canvas -->
     </div>
 <!--    </div>-->
 
@@ -321,16 +367,18 @@ $(document).ready(function() {
     $("#v2").change(function() {
         $('#TRI_PLANAR_OPTIONS').slideToggle("slow");
         $('#rendered_SLICER').slideToggle("hide");
+        $('#Scaling_slider').slideToggle("hide");
     });
 
     $("#v3").change(function() {
         $('#MPR_OPTIONS').slideToggle("slow");
         $('#rendered_SLICER').slideToggle("hide");
+        $('#Scaling_slider').slideToggle("hide");
     });
 
-    $("#v4").change(function() {
-        $('#XY_OPTIONS').slideToggle("slow");
-    });
+<!--    $("#v4").change(function() {-->
+<!--        $('#XY_OPTIONS').slideToggle("slow");-->
+<!--    });-->
 
     $('#r1').change(function() {
 
@@ -347,29 +395,31 @@ $(document).ready(function() {
      * Add some HTML when the vol checkbox is ticked
      */
     function addVolumeStuff() {
-        vol_edge_vis = $('<input class=vol_set_vis type="checkbox" id="visibility0" >').appendTo('#set_opacity_distance_bm_Color');
-        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0" max="100" step="0.5" value="3">').appendTo('#set_opacity_distance_bm_Color');
-        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.1" max="10" step="0.1" value="0.4">').appendTo('#set_opacity_distance_bm_Color');
+        vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility0">').appendTo('#set_opacity_distance_bm_Color');
+        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0.0" max="10" step="0.1" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
+        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.0" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
 
-        vol_blending = $('<select class=vol_blending_mode id=blendMode0 >').appendTo('#set_opacity_distance_bm_Color');
+        vol_blending = $('<select class=vol_blending_mode id=blendMode0 style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
         vol_blending.append($("<option>").attr('value',"0").text("Composite"));
-        vol_blending.append($("<option>").attr('value',"1").text("MaxIn"));
-        vol_blending.append($("<option>").attr('value',"2").text("MinIn"));
+        vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
+        vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
 
-        sel = $('<select class=colors_channels >').appendTo('#set_opacity_distance_bm_Color');
-            sel.append($("<option>").attr('value',"Reds").text("Reds"));
-            sel.append($("<option>").attr('value',"Blues").text("Blues"));
-            sel.append($("<option>").attr('value',"Greens").text("Greens"));
-            sel.append($("<option>").attr('value',"magma").text("magma"));
-            sel.append($("<option>").attr('value',"Oranges").text("Oranges"));
-            sel.append($("<option>").attr('value',"Purples").text("Purples"));
-            sel.append($("<option>").attr('value',"gray").text("gray"));
-            sel.append($("<option>").attr('value',"pink").text("pink"));
-            sel.append($("<option>").attr('value',"cool").text("cool"));
-            sel.append($("<option>").attr('value',"hot").text("hot"));
-            sel.append($("<option>").attr('value',"jet").text("jet"));
-            sel.append($("<option>").attr('value',"hsv").text("hsv"));
-            sel.append($("<option>").attr('value',"Wistia").text("Wistia"));
+        sel = $('<input class=colors_channels id="vol_color0" type="color" value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial" >').appendTo('#set_opacity_distance_bm_Color');
+
+<!--        sel = $('<select class=colors_channels id=vol_color0 >').appendTo('#set_opacity_distance_bm_Color');-->
+<!--            sel.append($("<option>").attr('value',"Reds").text("Reds"));-->
+<!--            sel.append($("<option>").attr('value',"Blues").text("Blues"));-->
+<!--            sel.append($("<option>").attr('value',"Greens").text("Greens"));-->
+<!--            sel.append($("<option>").attr('value',"magma").text("magma"));-->
+<!--            sel.append($("<option>").attr('value',"Oranges").text("Oranges"));-->
+<!--            sel.append($("<option>").attr('value',"Purples").text("Purples"));-->
+<!--            sel.append($("<option>").attr('value',"gray").text("gray"));-->
+<!--            sel.append($("<option>").attr('value',"pink").text("pink"));-->
+<!--            sel.append($("<option>").attr('value',"cool").text("cool"));-->
+<!--            sel.append($("<option>").attr('value',"hot").text("hot"));-->
+<!--            sel.append($("<option>").attr('value',"jet").text("jet"));-->
+<!--            sel.append($("<option>").attr('value',"hsv").text("hsv"));-->
+<!--            sel.append($("<option>").attr('value',"Wistia").text("Wistia"));-->
 
         $( "#f" ).change(function() {
             $('.vol_set_opacity').remove();
@@ -379,29 +429,31 @@ $(document).ready(function() {
             $('.vol_set_vis').remove();
 
                 for(i=0; i<$('#f').val(); i++){
-                    vol_edge_vis = $('<input class=vol_set_vis type="checkbox" id="visibility'+ i +'"'+ ' >').appendTo('#set_opacity_distance_bm_Color');
-                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0" max="100" step="0.5" value="3">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.1" max="10" step="0.1" value="0.4">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility'+ i +'"'+ '">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0.0" max="10" step="0.01" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.0" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
 
-                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' >').appendTo('#set_opacity_distance_bm_Color');
+                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
                     vol_blending.append($("<option>").attr('value',"0").text("Composite"));
-                    vol_blending.append($("<option>").attr('value',"1").text("MaxIn"));
-                    vol_blending.append($("<option>").attr('value',"2").text("MinIn"));
+                    vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
+                    vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
 
-                    sel = $('<select class=colors_channels >').appendTo('#set_opacity_distance_bm_Color');
-                        sel.append($("<option>").attr('value',"Reds").text("Reds"));
-                        sel.append($("<option>").attr('value',"Blues").text("Blues"));
-                        sel.append($("<option>").attr('value',"Greens").text("Greens"));
-                        sel.append($("<option>").attr('value',"magma").text("magma"));
-                        sel.append($("<option>").attr('value',"Oranges").text("Oranges"));
-                        sel.append($("<option>").attr('value',"Purples").text("Purples"));
-                        sel.append($("<option>").attr('value',"gray").text("gray"));
-                        sel.append($("<option>").attr('value',"pink").text("pink"));
-                        sel.append($("<option>").attr('value',"cool").text("cool"));
-                        sel.append($("<option>").attr('value',"hot").text("hot"));
-                        sel.append($("<option>").attr('value',"jet").text("jet"));
-                        sel.append($("<option>").attr('value',"hsv").text("hsv"));
-                        sel.append($("<option>").attr('value',"Wistia").text("Wistia"));
+                    sel = $('<input class=colors_channels type="color" id="vol_color'+ i +'"'+ ' value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial">').appendTo('#set_opacity_distance_bm_Color');
+
+<!--                    sel = $('<select class=colors_channels id= "vol_color'+ i +'"'+ ' >').appendTo('#set_opacity_distance_bm_Color');-->
+<!--                        sel.append($("<option>").attr('value',"Reds").text("Reds"));-->
+<!--                        sel.append($("<option>").attr('value',"Blues").text("Blues"));-->
+<!--                        sel.append($("<option>").attr('value',"Greens").text("Greens"));-->
+<!--                        sel.append($("<option>").attr('value',"magma").text("magma"));-->
+<!--                        sel.append($("<option>").attr('value',"Oranges").text("Oranges"));-->
+<!--                        sel.append($("<option>").attr('value',"Purples").text("Purples"));-->
+<!--                        sel.append($("<option>").attr('value',"gray").text("gray"));-->
+<!--                        sel.append($("<option>").attr('value',"pink").text("pink"));-->
+<!--                        sel.append($("<option>").attr('value',"cool").text("cool"));-->
+<!--                        sel.append($("<option>").attr('value',"hot").text("hot"));-->
+<!--                        sel.append($("<option>").attr('value',"jet").text("jet"));-->
+<!--                        sel.append($("<option>").attr('value',"hsv").text("hsv"));-->
+<!--                        sel.append($("<option>").attr('value',"Wistia").text("Wistia"));-->
 
                 }
         })
@@ -434,8 +486,8 @@ $(document).ready(function() {
      * Add some HTML when the sur checkbox is ticked
      */
     function addSurfaceStuff() {
-        sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" id="sur_edge_visibility0" >').appendTo('#set_iso_Color');
-        sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.2">').appendTo('#set_iso_Color');
+        sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility0" style="margin-right:2px;">').appendTo('#set_iso_Color');
+        sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.6">').appendTo('#set_iso_Color');
         sur_isovalue = $('<input class=sur_iso_Value id="isoValue0" type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
         sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7">').appendTo('#set_iso_Color');
 
@@ -446,8 +498,8 @@ $(document).ready(function() {
             $('.sur_edge_vis').remove();
 
                 for(j=0; j<$('#f').val(); j++){
-                    sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" id="sur_edge_visibility'+ j +'"'+ ' >').appendTo('#set_iso_Color');
-                    sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.00" max="1.0" step="0.01" value="0.2">').appendTo('#set_iso_Color');
+                    sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility'+ j +'"'+ ' style="margin-right:2px;">').appendTo('#set_iso_Color');
+                    sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.6">').appendTo('#set_iso_Color');
                     sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
                     sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7">').appendTo('#set_iso_Color');
                 }
@@ -482,8 +534,39 @@ $("#btn1").change(function() {
             vol_myFile = $('#btn1').prop('files');
             vol_arr.push(vol_myFile)
 
-            $( "#btn2" ).click(function() {
-                vol_Picked_color = $(".colors_channels");
+            /////////////////////////////////////////////////////////////////////////////////
+            // $( "#btn2" ).click(function() {
+            //    vol_Picked_color = $(".colors_channels");
+
+            //     for(var i = 0; i < vol_Picked_color.length; i++){
+            //         vol_arr2.push($(vol_Picked_color[i]).val());
+            //     }
+
+            //     if (vol_arr.length==vol_arr2.length) {
+            //         vol_processFile(vol_arr, vol_arr2)
+            //     } else {
+            //         alert("Please check the number of input vs the number of channels ")
+            //     }
+           //  })
+           /////////////////////////////////////////////////////////////////////////////////
+
+            $('#btn2').click(function() {
+               $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
+
+               var $this = $(this);
+               if ($this.data('clicked', true)) {
+                     vol_loading_message();
+
+               } else {
+                      vol_check_console_log();
+               }
+               $("#loading").show();// LOADING TEXT MESSAGE
+            });
+
+
+            vol_Picked_color = $(".colors_channels");
+
+            function vol_loading_message() {
 
                 for(var i = 0; i < vol_Picked_color.length; i++){
                     vol_arr2.push($(vol_Picked_color[i]).val());
@@ -491,11 +574,15 @@ $("#btn1").change(function() {
 
                 if (vol_arr.length==vol_arr2.length) {
                     vol_processFile(vol_arr, vol_arr2)
-                } else {
+               } else {
                     alert("Please check the number of input vs the number of channels ")
-                }
+               }
+            }
 
-            })
+            function vol_check_console_log() {
+                 vol_check_console_log(console.log())
+            }
+         ////////////////////////////////////////////////////////////////////////////////////
         }
     });
 });
@@ -515,20 +602,56 @@ $("#btn1").change(function() {
             sur_myFile = $('#btn1').prop('files');
             sur_arr.push(sur_myFile)
 
-            $( "#btn2" ).click(function() {
-                sur_Picked_color = $(".col_sur");
+            ////////////////////////////////////////////////////////////////////////////////
+            // $( "#btn2" ).click(function() {
+            //     sur_Picked_color = $(".col_sur");
+
+            //    for(var j = 0; j < sur_Picked_color.length; j++){
+            //         sur_arr2.push($(sur_Picked_color[j]).val());
+            //    }
+
+            //    if (sur_arr.length==sur_arr2.length){
+            //        sur_processFile(sur_arr, sur_arr2)
+            //    } else {
+            //        alert("Please check the number of input vs the number of channels ")
+            //    }
+
+            // })
+            /////////////////////////////////////////////////////////////////////////////////
+
+            $('#btn2').click(function() {
+               $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
+
+               var $this = $(this);
+               if ($this.data('clicked', true)) {
+                     sur_loading_message();
+
+               } else {
+                      sur_check_console_log();
+               }
+               $("#loading").show();// LOADING TEXT MESSAGE
+            });
+
+
+            sur_Picked_color = $(".col_sur");
+
+            function sur_loading_message() {
 
                 for(var j = 0; j < sur_Picked_color.length; j++){
-                    sur_arr2.push($(sur_Picked_color[j]).val());
+                     sur_arr2.push($(sur_Picked_color[j]).val());
                 }
 
                 if (sur_arr.length==sur_arr2.length){
                     sur_processFile(sur_arr, sur_arr2)
                 } else {
-                    alert("Please check the number of input vs the number of channels ")
+                   alert("Please check the number of input vs the number of channels ")
                 }
+            }
 
-            })
+            function sur_check_console_log() {
+                 sur_check_console_log(console.log())
+            }
+         ////////////////////////////////////////////////////////////////////////////////////
         }
     });
 });
@@ -545,12 +668,32 @@ $("#btn1").change(function() {
             tri_myFile = $('#btn1').prop('files');
             tri_arr.push(tri_myFile)
 
-            $( "#btn2" ).click(function() {
-                tri_processFile(tri_arr)
-            })
+            $('#btn2').click(function() {
+                var $this = $(this);
+                if ($this.data('clicked', true)) {
+                    loading_message();
+                } else {
+                    check_console_log();
+                }
+            });
+
+            function loading_message() {
+                tri_loading_gif = $('<div id="loading"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
+
+                      tri_processFile(tri_arr)
+            }
+
+            function check_console_log() {
+              console.log("ERROR")
+            }
+
         }
     });
 });
+
+<!--$( "#btn2" ).click(function() {-->
+<!--     tri_processFile(tri_arr)-->
+<!--});-->
 
 /**
  * MPR rendering
@@ -564,9 +707,25 @@ $("#btn1").change(function() {
             mpr_myFile = $('#btn1').prop('files');
             mpr_arr.push(mpr_myFile)
 
-            $( "#btn2" ).click(function() {
-                mpr_processFile(mpr_arr)
-            })
+
+            $('#btn2').click(function() {
+               var $this = $(this);
+               if ($this.data('clicked', true)) {
+                     loading_message();
+               } else {
+                      check_console_log();
+               }
+            });
+
+            function loading_message() {
+                tri_loading_gif = $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
+
+                   mpr_processFile(mpr_arr)
+            }
+            function check_console_log() {
+              console.log("ERROR")
+            }
+
         }
     });
 });

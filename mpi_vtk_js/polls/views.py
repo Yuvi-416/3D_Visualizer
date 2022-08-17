@@ -23,7 +23,7 @@ def IndexView(request):
     # print(type(reader))
 
     # context = {"r": reader, "text": "hola", "array": [4, 5]}
-    return render(request, 'polls/Tem_VOL_2_0.html')
+    return render(request, 'polls/Final_3D_viewer_html_file.html')
 
 
 class DetailView(generic.DetailView):

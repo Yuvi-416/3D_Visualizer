@@ -238,10 +238,10 @@ const vtkInteractorStyleManipulator = vtk.Interaction.Style.vtkInteractorStyleMa
 const vtkMouseCameraTrackballRotateManipulator = vtk.Interaction.Manipulators.vtkMouseCameraTrackballRotateManipulator;
 
 container.style.display = 'flex';
+container.style.position = 'static';
 openglRenderWindow.setContainer(container);
 const { width, height } = container.getBoundingClientRect(); /////////////////////////
 openglRenderWindow.setSize(width, height);
-openglRenderWindow.setV
 renderWindow.addView(openglRenderWindow);
 
 console.log(volume_imageData)
@@ -337,10 +337,30 @@ function image_crop_slider_vol(data, cropFilter) {
       });
     });
   });
+
 }
 
-const color_maps = volume_color_val;
-console.log(color_maps)
+// function to convert HEX to RGB Array
+//function hexToRgb(hex) {
+//    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+//    return result ? {
+//        r: parseInt(result[1], 16),
+//        g: parseInt(result[2], 16),
+//        b: parseInt(result[3], 16)
+//    } : null;
+//}
+
+// function to convert HEX to RGBA string
+const hex2rgba = (hex, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+
+
+const HEX_Values = volume_color_val;
+console.log(HEX_Values)
+//const color_maps = volume_color_val;
+//console.log(color_maps)
 
 volume_opacity_val = []
 console.log(volume_opacity_val)
@@ -348,11 +368,28 @@ volume_sample_Distance = []
 console.log(volume_sample_Distance)
 volume_visibility_control = []
 console.log(volume_visibility_control)
+volume_imageData_obj = volume_imageData
+console.log(volume_imageData_obj)
 
-      for (i = 0; i < volume_imageData.length; i++){
-            mycolor = eval(color_maps[i])
-            console.log(i)
+   for (i = 0; i < volume_imageData.length; i++){
 
+            // MathPlot Color intensity points
+//          mycolor = eval(color_maps[i])
+//          console.log(i)
+
+            // Call the Picked Color
+            HEX_color_VALUES = HEX_Values[i]
+            console.log(HEX_color_VALUES)
+
+            // Convert Picked Hex color into RGBA string format
+            RGB_value = hex2rgba(HEX_color_VALUES)
+            console.log(RGB_value)
+
+            // Convert string RBGA to array RGBA
+            rgbInt = Array.from(RGB_value.matchAll(/\d+\.?\d*/g), c=> +c[0])
+            console.log(rgbInt)
+
+            // Define the Volume rendering Functions
             volume_vtk = vtk.Rendering.Core.vtkVolume.newInstance();
             volumeMapper = vtk.Rendering.Core.vtkVolumeMapper.newInstance();
             volumeProperty = vtk.Rendering.Core.vtkVolumeProperty.newInstance();
@@ -361,6 +398,7 @@ console.log(volume_visibility_control)
             ImagecropFilter = vtk.Filters.General.vtkImageCropFilter.newInstance();
             vtkPlane = vtk.Common.DataModel.vtkPlane;
             vtkMatrixBuilder = vtk.Common.Core.vtkMatrixBuilder;
+            coordinate = vtk.Rendering.Core.vtkCoordinate.newInstance();
 
             // Load the Input
             const dataArray = volume_imageData[i].getPointData().getScalars() || volume_imageData[i].getPointData().getArrays()[0];
@@ -373,8 +411,6 @@ console.log(volume_visibility_control)
             //dataRange = volume_imageData[i].getPointData().getScalars().getRange();
             dimensions = volume_imageData[i].getDimensions()
             console.log('volume dimensions', dimensions)
-            image_origin = volume_imageData[i].getOrigin();
-            console.log('image_origin', image_origin)
 
             // Calculating Pixel range
             ii_0 = parseInt(dataRange[0])
@@ -388,29 +424,43 @@ console.log(volume_visibility_control)
             console.log(ofun);
             ofun.addPoint(ii_1, 1.0);
 
-            // #####################################################################
-            min = ii_0;
+            min = ii_0; // minimum image intensity
             console.log(min);
-            max = ii_1;
+            max = ii_1; // Maximum image intensity
             console.log(max);
             temp = 0
 
-            for (t = min; t <= max; t++){
-                    newVal = parseInt(((t-min)/(max-min)) * 255);
-                    if (newVal != temp) {
-                        // console.log(t);
-                        rgb = searchvalue(newVal, mycolor);
-                         //print(i, r, g, b)
-                        // console.log(rgb[0]);
-                        ctfun.addRGBPoint(t, rgb[0], rgb[1], rgb[2])
-                        // console.log(temp);
-                        temp = temp + 1
-                    }
-            }
+            // Define Color Transfer Function
+            // ColorTransferFunction code to find addRGBPoints based on image DataRange (Method:1)
+//            for (t = min; t <= max; t++){
+//                    newVal = parseInt(((t-min)/(max-min)) * 255);
+//                    if (newVal != temp) {
+//                        // console.log(t);
+//                        rgb = searchvalue(newVal, mycolor);
+//                         //print(i, r, g, b)
+//                        // console.log(rgb[0]);
+//                        ctfun.addRGBPoint(t, rgb[0], rgb[1], rgb[2])
+//                        // console.log(temp);
+//                        temp = temp + 1
+//                    }
+//            }
+
+            // ColorTransferFunction code to find addRGBPoints based on image DataRange (Method:2)
+//            for (let t = min; t <= max; t++) {
+//                newVal = parseInt(((t-min)/(max-min)) * 255);
+//                    if (newVal != temp) {
+//                        ctfun.addRGBPoint(t * rgbInt[3] * 1, (rgbInt[0]/256.), (rgbInt[1]/256.), (rgbInt[2]/256.))
+//                        //console.log(ctfun)
+//                        temp = temp + 1
+//                    }
+//            }
+
+            // ColorTransferFunction code to find addRGBPoints without utilizing image DataRange (Method:3)
+            ctfun.addRGBPoint(rgbInt[3] * 1, (rgbInt[0]/256.), (rgbInt[1]/256.), (rgbInt[2]/256.))
 
             // Define Volume Property
-            volumeProperty.setRGBTransferFunction(0, ctfun);
-            volumeProperty.setScalarOpacity(0, ofun);
+            volumeProperty.setRGBTransferFunction(0, ctfun); // Color TransferFUnction
+            volumeProperty.setScalarOpacity(0, ofun); //PieceWise TransferFunction
             volumeProperty.setShade(true); // Increase the lights
             // volumeProperty.setInterpolationTypeToLinear();
             volumeProperty.setInterpolationTypeToFastLinear();
@@ -427,6 +477,9 @@ console.log(volume_visibility_control)
             volumeProperty.setGradientOpacityMaximumValue(0, (dataRange[1] - dataRange[0]) * 0.1);
             volumeProperty.setGradientOpacityMaximumOpacity(0, 1.0);
 
+            // coordinate.getCoordinateSystem();
+
+
 //            console.log('##################################')
 //            ImagecropFilter.setInputData(volume_imageData[i]);
 //            ImagecropFilter.setCroppingPlanes(volume_imageData[i].getExtent());
@@ -436,42 +489,89 @@ console.log(volume_visibility_control)
 //            volumeMapper.setInputConnection(ImagecropFilter.getOutputPort());
 //            console.log(volumeMapper)
 
+            // set origin of a data to zero
+            // volume_imageData[i].setSpacing(1.0, 1.0, 1.0) // This function might help to maintain the distance between the each slice
+            volume_imageData[i].setOrigin(0.0, 0.0, 0.0) // Has to set this parameter bcoz if the image origin is not zero then it doesn't display correctly
+            image_origin = volume_imageData[i].getOrigin();
+            // image_center = volume_imageData[i].getCenter();
+//            console.log('image_origin', image_origin);
+//            console.log('image_center', image_center);
+
+            img_origin_X = image_origin[0];
+            img_origin_Y = image_origin[1];
+            img_origin_Z = image_origin[2];
+
             const extent = volume_imageData[i].getExtent();
             const spacing = volume_imageData[i].getSpacing();
+            console.log('spacing', spacing);
+
             const sizeX = extent[1] * spacing[0];
             const sizeY = extent[3] * spacing[1];
+            const sizeZ = extent[5] * spacing[2];
 
-            // console.log(extent, "extent");
-            // console.log(spacing, "spacing");
-            // console.log(sizeX, "sizeX");
-            // console.log(sizeY, "sizeY");
+            // Call the function of ClipPlane
+            const clipPlaneX = vtkPlane.newInstance();
+            const clipPlaneX_inv = vtkPlane.newInstance();
+            const clipPlaneZ = vtkPlane.newInstance();
+            const clipPlaneZ_inv = vtkPlane.newInstance();
+            const clipPlaneY = vtkPlane.newInstance();
+            const clipPlaneY_inv = vtkPlane.newInstance();
 
-            const clipPlane1 = vtkPlane.newInstance();
-            const clipPlane2 = vtkPlane.newInstance();
             let clipPlane1Position = 0;
             let clipPlane2Position = 0;
-            // let clipPlane1RotationAngle = 0;
-            // let clipPlane2RotationAngle = 0;
-            const clipPlane1Normal = [-1, 1, 0];
-            const clipPlane2Normal = [0, 0, 1];
-            // const rotationNormal = [0, 1, 0];
 
-            clipPlane1Position = -(sizeX / 1.5);
-            clipPlane2Position = ((sizeY / 2) * 0);
-            // console.log(clipPlane1Position, "clipPlane1Position");
-            // console.log(clipPlane2Position, "clipPlane2Position");
+            const clipPlaneNormalX = [-1, 0, 0];
+            const clipPlaneNormalX_inv = [1, 0, 0];
+            const clipPlaneNormalZ = [0, 0, -1];
+            const clipPlaneNormalZ_inv = [0, 0, 1];
+            const clipPlaneNormalY = [0, -1, 0];
+            const clipPlaneNormalY_inv = [0, 1, 0];
 
-            const clipPlane1Origin = [clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
-            const clipPlane2Origin = [clipPlane2Position * clipPlane2Normal[0],clipPlane2Position * clipPlane2Normal[1],clipPlane2Position * clipPlane2Normal[2], ];
+            clipPlane1PositionX = -((sizeX/ 1) ) ;
+            clipPlane2PositionX_inv =  ((sizeX/ 0) ) ;
+            clipPlane2PositionY =  -((sizeX/ 1) ) ;
+            clipPlane2PositionY_inv =  ((sizeX/ 0) ) ;
+            clipPlane2PositionZ =  -((sizeZ/ 1) ) ;
+            clipPlane2PositionZ_inv =  ((sizeZ/ 0) ) ;
 
-            clipPlane1.setNormal(clipPlane1Normal);
-            clipPlane1.setOrigin(clipPlane1Origin);
-            clipPlane2.setNormal(clipPlane2Normal);
-            clipPlane2.setOrigin(clipPlane2Origin);
+            const clipPlaneOriginX = [clipPlane1PositionX * clipPlaneNormalX[0], clipPlane1PositionX * clipPlaneNormalX[1], clipPlane1PositionX * clipPlaneNormalX[2], ];
+            const clipPlaneOriginX_inv = [clipPlane2PositionX_inv * clipPlaneNormalX_inv[0], clipPlane2PositionX_inv * clipPlaneNormalX_inv[1], clipPlane2PositionX_inv * clipPlaneNormalX_inv[2], ];
+            const clipPlaneOriginY = [clipPlane2PositionY * clipPlaneNormalY[0], clipPlane2PositionY * clipPlaneNormalY[1], clipPlane2PositionY * clipPlaneNormalY[2], ];
+            const clipPlaneOriginY_inv = [clipPlane2PositionY_inv * clipPlaneNormalY_inv[0], clipPlane2PositionY_inv * clipPlaneNormalY_inv[1],clipPlane2PositionY_inv * clipPlaneNormalY_inv[2], ];
+            const clipPlaneOriginZ = [clipPlane2PositionZ * clipPlaneNormalZ[0], clipPlane2PositionZ * clipPlaneNormalZ[1], clipPlane2PositionZ * clipPlaneNormalZ[2], ];
+            const clipPlaneOriginZ_inv = [clipPlane2PositionZ_inv * clipPlaneNormalZ_inv[0], clipPlane2PositionZ_inv * clipPlaneNormalZ_inv[1], clipPlane2PositionZ_inv * clipPlaneNormalZ_inv[2], ];
+
+//            console.log(clipPlaneOriginX, "clipPlaneOriginX");
+//            console.log(clipPlaneOriginX_inv, "clipPlaneOriginX_inv");
+//            console.log(clipPlaneOriginY, "clipPlaneOriginY");
+//            console.log(clipPlaneOriginY_inv, "clipPlaneOriginY_inv");
+//            console.log(clipPlaneOriginZ, "clipPlaneOriginZ");
+//            console.log(clipPlaneOriginZ_inv, "clipPlaneOriginZ_inv");
+
+            clipPlaneX.setNormal(clipPlaneNormalX);
+            clipPlaneX.setOrigin(clipPlaneOriginX);
+            clipPlaneX_inv.setNormal(clipPlaneNormalX_inv);
+            clipPlaneX_inv.setOrigin(clipPlaneOriginX_inv);
+
+            clipPlaneY.setNormal(clipPlaneNormalY);
+            clipPlaneY.setOrigin(clipPlaneOriginY);
+            clipPlaneY_inv.setNormal(clipPlaneNormalY_inv);
+            clipPlaneY_inv.setOrigin(clipPlaneOriginY_inv);
+
+            clipPlaneZ.setNormal(clipPlaneNormalZ);
+            clipPlaneZ.setOrigin(clipPlaneOriginZ);
+            clipPlaneZ_inv.setNormal(clipPlaneNormalZ_inv);
+            clipPlaneZ_inv.setOrigin(clipPlaneOriginZ_inv);
 
             volumeMapper.setInputData(volume_imageData[i]);
-            volumeMapper.addClippingPlane(clipPlane1);
-            volumeMapper.addClippingPlane(clipPlane2);
+
+            volumeMapper.addClippingPlane(clipPlaneX);
+            volumeMapper.addClippingPlane(clipPlaneX_inv);
+            volumeMapper.addClippingPlane(clipPlaneY);
+            volumeMapper.addClippingPlane(clipPlaneY_inv);
+            volumeMapper.addClippingPlane(clipPlaneZ);
+            volumeMapper.addClippingPlane(clipPlaneZ_inv);
+
             // volumeMapper.setSampleDistance(0.4);
             volumeMapper.setMaximumSamplesPerRay(true);
             volumeMapper.setAutoAdjustSampleDistances(true);
@@ -482,48 +582,116 @@ console.log(volume_visibility_control)
 
             renderer.addActor(volume_vtk);
 
-            let el = document.querySelector('.plane1Position');
-            el.setAttribute('min', -(sizeX / 1.5));
-            el.setAttribute('max', (sizeX/ 1.5));
-            el.setAttribute('value', clipPlane1Position);
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            let el = document.querySelector('.planePositionX');
+            el.setAttribute('min', ((-sizeX) + img_origin_X));
+            el.setAttribute('max', img_origin_X);
+            el.setAttribute('value', ((-sizeX) + img_origin_X));
 
-            el = document.querySelector('.plane2Position');
-            el.setAttribute('min', (-sizeY * 0));
-            el.setAttribute('max', ((sizeY * 0) + extent[5]));
-            el.setAttribute('value', clipPlane2Position);
+            el = document.querySelector('.planePositionX_inv');
+            el.setAttribute('min', img_origin_X);
+            el.setAttribute('max', (sizeX + img_origin_X));
+            el.setAttribute('value', img_origin_X);
 
-            document.querySelector('.plane1Position').addEventListener('input', (e) => {
-              clipPlane1Position = Number(e.target.value);
-              // console.log(clipPlane1Position)
-              const clipPlane1Origin = [ clipPlane1Position * clipPlane1Normal[0], clipPlane1Position * clipPlane1Normal[1], clipPlane1Position * clipPlane1Normal[2], ];
-              clipPlane1.setOrigin(clipPlane1Origin);
-              renderWindow.render();
+            el = document.querySelector('.planePositionY');
+            el.setAttribute('min', ((-sizeY) + img_origin_Y));
+            el.setAttribute('max', img_origin_Y);
+            el.setAttribute('value', ((-sizeY) + img_origin_Y));
+
+            el = document.querySelector('.planePositionY_inv');
+            el.setAttribute('min', img_origin_Y);
+            el.setAttribute('max', (sizeY + img_origin_Y));
+            el.setAttribute('value', img_origin_Y);
+
+            el = document.querySelector('.planePositionZ');
+            el.setAttribute('min', ((-sizeZ) + img_origin_Z));
+            el.setAttribute('max', img_origin_Z);
+            el.setAttribute('value', ((-sizeZ) + img_origin_Z));
+
+            el = document.querySelector('.planePositionZ_inv');
+            el.setAttribute('min', img_origin_Z);
+            el.setAttribute('max', (sizeZ + img_origin_Z));
+            el.setAttribute('value', img_origin_Z);
+
+            ///////////////// Old querySelector for clipping//////////////
+//            let sur_el = document.querySelector('.planePositionX');
+//            sur_el.setAttribute('min', -sizeX);
+//            sur_el.setAttribute('max', sizeX);
+//            sur_el.setAttribute('value', clipPlane1Position);
+//
+//            sur_el = document.querySelector('.planePositionX_inv');
+//            sur_el.setAttribute('min', -sizeX);
+//            sur_el.setAttribute('max', sizeX);
+//            sur_el.setAttribute('value', clipPlane1Position);
+//
+//            sur_el = document.querySelector('.planePositionY');
+//            sur_el.setAttribute('min', -sizeX);
+//            sur_el.setAttribute('max', sizeX);
+//            sur_el.setAttribute('value', clipPlane1Position);
+//
+//            sur_el = document.querySelector('.planePositionY_inv');
+//            sur_el.setAttribute('min', -sizeX);
+//            sur_el.setAttribute('max', sizeX);
+//            sur_el.setAttribute('value', clipPlane1Position);
+//
+//            sur_el = document.querySelector('.planePositionZ');
+//            sur_el.setAttribute('min', -sizeY);
+//            sur_el.setAttribute('max', sizeY);
+//            sur_el.setAttribute('value', clipPlane1Position);
+//
+//            sur_el = document.querySelector('.planePositionZ_inv');
+//            sur_el.setAttribute('min', -sizeY);
+//            sur_el.setAttribute('max', sizeY);
+//            sur_el.setAttribute('value', clipPlane1Position);
+            ////////////////////////////////////////////////////////////////////////////
+            document.querySelector('.planePositionX').addEventListener('input', (e) => {
+            clipPlane1PositionX = Number(e.target.value);
+            console.log(clipPlane1PositionX)
+            const clipPlaneOriginX = [clipPlane1PositionX * clipPlaneNormalX[0], clipPlane1PositionX * clipPlaneNormalX[1], clipPlane1PositionX * clipPlaneNormalX[2], ];
+            clipPlaneX.setOrigin(clipPlaneOriginX);
+            renderWindow.render();
             });
 
-            document.querySelector('.plane2Position').addEventListener('input', (e) => {
-              clipPlane2Position = Number(e.target.value);
-              // console.log(clipPlane2Position)
-              const clipPlane2Origin = [ clipPlane2Position * clipPlane2Normal[0], clipPlane2Position * clipPlane2Normal[1], clipPlane2Position * clipPlane2Normal[2], ];
-              clipPlane2.setOrigin(clipPlane2Origin);
-              renderWindow.render();
+            document.querySelector('.planePositionX_inv').addEventListener('input', (e) => {
+            clipPlane1PositionX_inv = Number(e.target.value);
+            console.log(clipPlane1PositionX_inv)
+            const clipPlaneOriginX_inv = [clipPlane1PositionX_inv * clipPlaneNormalX_inv[0], clipPlane1PositionX_inv * clipPlaneNormalX_inv[1], clipPlane1PositionX_inv * clipPlaneNormalX_inv[2], ];
+            clipPlaneX_inv.setOrigin(clipPlaneOriginX_inv);
+            renderWindow.render();
             });
 
-//            document.querySelector('.plane1Rotation').addEventListener('input', (e) => {
-//              const changedDegree = Number(e.target.value) - clipPlane1RotationAngle;
-//              clipPlane1RotationAngle = Number(e.target.value);
-//              vtkMatrixBuilder.buildFromDegree().rotate(changedDegree, rotationNormal).apply(clipPlane1Normal);
-//              clipPlane1.setNormal(clipPlane1Normal);
-//              renderWindow.render();
-//            });
+            document.querySelector('.planePositionY').addEventListener('input', (e) => {
+            clipPlane1PositionY = Number(e.target.value);
+            console.log(clipPlane1PositionY)
+            const clipPlaneOriginY = [clipPlane1PositionY * clipPlaneNormalY[0], clipPlane1PositionY * clipPlaneNormalY[1], clipPlane1PositionY * clipPlaneNormalY[2], ];
+            clipPlaneY.setOrigin(clipPlaneOriginY);
+            renderWindow.render();
+            });
 
-//            document.querySelector('.plane2Rotation').addEventListener('input', (e) => {
-//              const changedDegree = Number(e.target.value) - clipPlane2RotationAngle;
-//              clipPlane2RotationAngle = Number(e.target.value);
-//              vtkMatrixBuilder.buildFromDegree().rotate(changedDegree, rotationNormal).apply(clipPlane2Normal);
-//              clipPlane2.setNormal(clipPlane2Normal);
-//              renderWindow.render();
-//            });
+            document.querySelector('.planePositionY_inv').addEventListener('input', (e) => {
+            clipPlane1PositionY_inv = Number(e.target.value);
+            console.log(clipPlane1PositionY_inv)
+            const clipPlaneOriginY_inv = [clipPlane1PositionY_inv * clipPlaneNormalY_inv[0],clipPlane1PositionY_inv * clipPlaneNormalY_inv[1],clipPlane1PositionY_inv * clipPlaneNormalY_inv[2], ];
+            clipPlaneY_inv.setOrigin(clipPlaneOriginY_inv);
+            renderWindow.render();
+            });
 
+            document.querySelector('.planePositionZ').addEventListener('input', (e) => {
+            clipPlane1PositionZ = Number(e.target.value);
+            console.log(clipPlane1PositionZ)
+            const clipPlaneOriginZ = [clipPlane1PositionZ * clipPlaneNormalZ[0], clipPlane1PositionZ * clipPlaneNormalZ[1], clipPlane1PositionZ * clipPlaneNormalZ[2], ];
+            clipPlaneZ.setOrigin(clipPlaneOriginZ);
+            renderWindow.render();
+            });
+
+            document.querySelector('.planePositionZ_inv').addEventListener('input', (e) => {
+            clipPlane1PositionZ_inv = Number(e.target.value);
+            console.log(clipPlane1PositionZ_inv)
+            const clipPlaneOriginZ_inv = [clipPlane1PositionZ_inv * clipPlaneNormalZ_inv[0], clipPlane1PositionZ_inv * clipPlaneNormalZ_inv[1], clipPlane1PositionZ_inv * clipPlaneNormalZ_inv[2], ];
+            clipPlaneZ_inv.setOrigin(clipPlaneOriginZ_inv);
+            renderWindow.render();
+            });
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 //            // ----------------------------------------------------------------------------
 //            // Light
 //            // ----------------------------------------------------------------------------
@@ -540,6 +708,7 @@ console.log(volume_visibility_control)
 //            light.setConeAngle(60.0);
 //            renderer.addLight(light);
 
+            // Create a AXES
             const axes = vtkAnnotatedCubeActor.newInstance();
             axes.setDefaultStyle({
             text: '+X',
@@ -593,28 +762,41 @@ console.log(volume_visibility_control)
 
             window.onresize = () => {orientationWidget.updateViewport();}
 
-            // renderer.resetCamera();
+//            renderer.resetCamera();
             // renderWindow.render();
-
             volume_opacity_val[i] = volumeProperty
             volume_sample_Distance[i] = volumeMapper
             volume_visibility_control[i] = volume_vtk
             console.log(volume_visibility_control[i])
 //            image_crop_slider_vol((volume_imageData[i].getExtent()), ImagecropFilter)
-
       }
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////
+ // Image_spacing = volume_imageData_obj.getSpacing()
 
-    for(e=0; e<volume_imageData.length; e++){
+//$(Slider_scale).change(function() {
+//  newVal= this.value
+//  console.log(newVal)
+//  volume_imageData_obj[0].setIndexToWorld();
+//   volume_imageData_obj[0].setSpacing(1, 1, newVal);
+//   // volume_visibility_control[0].setScale(1, 1, newVal)
+//   renderWindow.render();
+//});
+/////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    volume_idOpacity= "#setScalarOpacityUnitDistance"+ e
-    volume_idDistance= "#setSampleDistance"+ e
-    volume_idblendMode= "#blendMode"+ e
-    volume_idVisibility= "#visibility"+ e
+for(e=0; e<volume_imageData.length; e++){
+
+    volume_idOpacity = "#setScalarOpacityUnitDistance" + e
+    volume_idDistance = "#setSampleDistance" + e
+    volume_idblendMode = "#blendMode" + e
+    volume_idVisibility = "#visibility" + e
+    volume_idColor = "#vol_color" + e
 
     console.log(volume_idOpacity)
     console.log(volume_idDistance)
     d = e
-    trigger_changes_volume(volume_idVisibility, volume_visibility_control[d], volume_idOpacity, volume_idDistance, volume_opacity_val[d], volume_sample_Distance[d], renderWindow, volume_idblendMode)
+    trigger_changes_volume(volume_idVisibility, volume_visibility_control[d], volume_idOpacity, volume_idDistance, volume_opacity_val[d], volume_sample_Distance[d], renderWindow, volume_idblendMode, volume_idColor)
     };
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -646,44 +828,64 @@ iStyle.addMouseManipulator(Rotate);
 iStyle.setCenterOfRotation(center);
 
 renderWindow.getInteractor().setInteractorStyle(iStyle);
-renderer.resetCamera();
-// interactor.setInteractorStyle(interactorStyle);
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-renderWindow.render()
 
+renderer.resetCamera();
+renderWindow.render()
+volume_vtk.setVisibility(true);
 }
 
-function trigger_changes_volume(volume_idVisibility, volume_visibility_control, volume_idOpacity, volume_idDistance, volume_opacity_val, volume_sample_Distance, renderWindow, volume_idblendMode) {
+// function to convert HEX to RGBA string
+const hex2rgba = (hex, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+function trigger_changes_volume(volume_idVisibility, volume_visibility_control, volume_idOpacity, volume_idDistance, volume_opacity_val, volume_sample_Distance, renderWindow, volume_idblendMode, volume_idColor) {
 
     // Control Sample Opacity
     $(volume_idOpacity).change(function() {
       newVal= this.value
-      // console.log(opacity_val)
+      // console.log(newVal)
        volume_opacity_val.setScalarOpacityUnitDistance(0, newVal); // Helps to adjust transparency of the rendered Image (differs within rendered image)
        renderWindow.render(); // We use it inside function to react instantly.
-
     });
+
       // Control Sample Distance
     $(volume_idDistance).change(function() {
       new_Val= this.value
       // console.log(sample_Distance)
        volume_sample_Distance.setSampleDistance(new_Val); // Helps to adjust transparency of the rendered Image (differs within rendered image)
        renderWindow.render(); // We use it inside function to react instantly.
-
     });
+
     // Control Blending Mode
     $( volume_idblendMode ).change(function() {
+        // new_Val= parseInt(this.value, 10);
         new_Val= parseInt(this.value, 10);
+        console.log(new_Val)
         volume_sample_Distance.setBlendMode(new_Val);
         // sample_Distance.setIpScalarRange(0.0, 1.0);
         renderWindow.render();
     });
 
-    var VIS = true;
+    // Control Image Visibility
+    var VIS = false;
     $(volume_idVisibility).on('click', function() {
-        volume_visibility_control.setVisibility(VIS);;
+        volume_visibility_control.setVisibility(VIS);
         renderWindow.render();
         VIS = !(VIS);
+    });
+
+    // Control the color of the image
+    const colorTFun = vtk.Rendering.Core.vtkColorTransferFunction.newInstance(); // ColorTransferFunction
+
+    const vol_colorChange = document.querySelector(volume_idColor);
+
+    vol_colorChange.addEventListener('input', (e) => {
+    volumeColor = hex2rgba(e.target.value);
+    rgba2Int = Array.from(volumeColor.matchAll(/\d+\.?\d*/g), c=> +c[0])
+    colorTFun.addRGBPoint(rgba2Int[3] * 1, (rgba2Int[0]/256.), (rgba2Int[1]/256.), (rgba2Int[2]/256.))
+    volume_opacity_val.setRGBTransferFunction(0, colorTFun); // Color TransferFUnction
+    renderWindow.render();
     });
 
 }
@@ -745,6 +947,7 @@ function createRGBStringFromRGBValues(rgb) {
   return `rgb(${(rgb[0] * 255).toString()}, ${(rgb[1] * 255).toString()}, ${(rgb[2] * 255).toString()})`;
 }
 
+//// Converts the HTML color picker value into usable RGB
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -754,8 +957,8 @@ function hexToRgb(hex) {
     } : null;
 }
 
-const HEX_Values = surface_color_val;
-console.log(HEX_Values)
+ const HEX_Values = surface_color_val;
+ console.log(HEX_Values)
 
 surface_opacity_val = []
 console.log(surface_opacity_val)
@@ -800,64 +1003,160 @@ console.log(surface_iso_dataRange)
         actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.) // Color Transfer Function
         // actor.getProperty().setDiffuseColor(preset);
         // actor.getProperty().setDiffuseColor(ctfun);
-        actor.getProperty().setEdgeVisibility(0.0, 0.0, 0.0);
+        // actor.getProperty().setEdgeVisibility(0.0, 0.0, 0.0);
         actor.getProperty().setLighting(false);
         actor.getProperty().setSpecular(0.3)
         actor.getProperty().setSpecularPower(20)
-        // actor.getProperty().setOpacity(0.9)
+        actor.getProperty().setOpacity(0.9)
         // 6-1. Add actor on renderer
         renderer.addActor(actor);
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        surface_imageData[a].setOrigin(0.0, 0.0, 0.0) // Has to set this parameter bcoz if the image origin is not zero then it doesn't display correctly
+
+        sur_image_origin = surface_imageData[a].getOrigin();
+
+        sur_img_origin_X = sur_image_origin[0];
+        sur_img_origin_Y = sur_image_origin[1];
+        sur_img_origin_Z = sur_image_origin[2];
 
         const sur_extent = surface_imageData[a].getExtent();
         const sur_spacing = surface_imageData[a].getSpacing();
+
         const sur_sizeX = sur_extent[1] * sur_spacing[0];
         const sur_sizeY = sur_extent[3] * sur_spacing[1];
+        const sur_sizeZ = sur_extent[5] * sur_spacing[2];
 
-        const sur_clipPlane1 = vtkPlane.newInstance();
-        const sur_clipPlane2 = vtkPlane.newInstance();
-        let sur_clipPlane1Position = 0;
-        let sur_clipPlane2Position = 0;
-        // let clipPlane1RotationAngle = 0;
-        // let clipPlane2RotationAngle = 0;
-        const sur_clipPlane1Normal = [-1, 1, 0];
-        const sur_clipPlane2Normal = [0, 0, 1];
-        // const rotationNormal = [0, 1, 0];
+        const sur_clipPlaneX = vtkPlane.newInstance();
+        const sur_clipPlaneX_inv = vtkPlane.newInstance();
+        const sur_clipPlaneY = vtkPlane.newInstance();
+        const sur_clipPlaneY_inv = vtkPlane.newInstance();
+        const sur_clipPlaneZ = vtkPlane.newInstance();
+        const sur_clipPlaneZ_inv = vtkPlane.newInstance();
 
-        sur_clipPlane1Position = -(sur_sizeX / 1.5);
-        sur_clipPlane2Position = ((sur_sizeY / 2) * 0);
+        // let sur_clipPlane1Position = 0;
+        // let sur_clipPlane2Position = 0;
 
-        const sur_clipPlane1Origin = [sur_clipPlane1Position * sur_clipPlane1Normal[0], sur_clipPlane1Position * sur_clipPlane1Normal[1], sur_clipPlane1Position * sur_clipPlane1Normal[2], ];
-        const sur_clipPlane2Origin = [sur_clipPlane2Position * sur_clipPlane2Normal[0],sur_clipPlane2Position * sur_clipPlane2Normal[1],sur_clipPlane2Position * sur_clipPlane2Normal[2], ];
+        const sur_clipPlaneNormalX = [-1, 0, 0];
+        const sur_clipPlaneNormalX_inv = [1, 0, 0];
+        const sur_clipPlaneNormalY = [0, -1, 0];
+        const sur_clipPlaneNormalY_inv = [0, 1, 0];
+        const sur_clipPlaneNormalZ = [0, 0, -1];
+        const sur_clipPlaneNormalZ_inv = [0, 0, 1];
 
-        sur_clipPlane1.setNormal(sur_clipPlane1Normal);
-        sur_clipPlane1.setOrigin(sur_clipPlane1Origin);
-        sur_clipPlane2.setNormal(sur_clipPlane2Normal);
-        sur_clipPlane2.setOrigin(sur_clipPlane2Origin);
+        // Need to be same for all clipPlane
+        sur_clipPlane1PositionX = -((sur_sizeX/ 1) ) ;
+        sur_clipPlane2PositionX_inv =  ((sur_sizeX/ 0) ) ;
+        sur_clipPlane2PositionY =  -((sur_sizeX/ 1) ) ;
+        sur_clipPlane2PositionY_inv =  ((sur_sizeX/ 0) ) ;
+        sur_clipPlane2PositionZ =  -((sur_sizeZ/ 1) ) ;
+        sur_clipPlane2PositionZ_inv =  ((sur_sizeZ/ 0) ) ;
 
-        mapper.addClippingPlane(sur_clipPlane1);
-        mapper.addClippingPlane(sur_clipPlane2);
+        const sur_clipPlaneOriginX = [sur_clipPlane1PositionX * sur_clipPlaneNormalX[0], sur_clipPlane1PositionX * sur_clipPlaneNormalX[1], sur_clipPlane1PositionX * sur_clipPlaneNormalX[2], ];
+        const sur_clipPlaneOriginX_inv = [sur_clipPlane2PositionX_inv * sur_clipPlaneNormalX_inv[0], sur_clipPlane2PositionX_inv * sur_clipPlaneNormalX_inv[1], sur_clipPlane2PositionX_inv * sur_clipPlaneNormalX_inv[2], ];
+        const sur_clipPlaneOriginY = [sur_clipPlane2PositionY * sur_clipPlaneNormalY[0], sur_clipPlane2PositionY * sur_clipPlaneNormalY[1], sur_clipPlane2PositionY * sur_clipPlaneNormalY[2], ];
+        const sur_clipPlaneOriginY_inv = [sur_clipPlane2PositionY_inv * sur_clipPlaneNormalY_inv[0], sur_clipPlane2PositionY_inv * sur_clipPlaneNormalY_inv[1], sur_clipPlane2PositionY_inv * sur_clipPlaneNormalY_inv[2], ];
+        const sur_clipPlaneOriginZ = [sur_clipPlane2PositionZ * sur_clipPlaneNormalZ[0], sur_clipPlane2PositionZ * sur_clipPlaneNormalZ[1], sur_clipPlane2PositionZ * sur_clipPlaneNormalZ[2], ];
+        const sur_clipPlaneOriginZ_inv = [sur_clipPlane2PositionZ_inv * sur_clipPlaneNormalZ_inv[0], sur_clipPlane2PositionZ_inv * sur_clipPlaneNormalZ_inv[1], sur_clipPlane2PositionZ_inv * sur_clipPlaneNormalZ_inv[2], ];
 
-        let el = document.querySelector('.plane1Position');
-        el.setAttribute('min', -(sur_sizeX / 1.5));
-        el.setAttribute('max', (sur_sizeX/ 1.5));
-        el.setAttribute('value', sur_clipPlane1Position);
+        sur_clipPlaneX.setNormal(sur_clipPlaneNormalX);
+        sur_clipPlaneX.setOrigin(sur_clipPlaneOriginX);
+        sur_clipPlaneX_inv.setNormal(sur_clipPlaneNormalX_inv);
+        sur_clipPlaneX_inv.setOrigin(sur_clipPlaneOriginX_inv);
 
-        el = document.querySelector('.plane2Position');
-        el.setAttribute('min', (-sur_sizeY * 0));
-        el.setAttribute('max', ((sur_sizeY * 0) + sur_extent[5]));
-        el.setAttribute('value', sur_clipPlane2Position);
+        sur_clipPlaneY.setNormal(sur_clipPlaneNormalY);
+        sur_clipPlaneY.setOrigin(sur_clipPlaneOriginY);
+        sur_clipPlaneY_inv.setNormal(sur_clipPlaneNormalY_inv);
+        sur_clipPlaneY_inv.setOrigin(sur_clipPlaneOriginY_inv);
 
-        document.querySelector('.plane1Position').addEventListener('input', (e) => {
-        sur_clipPlane1Position = Number(e.target.value);
-        const sur_clipPlane1Origin = [ sur_clipPlane1Position * sur_clipPlane1Normal[0], sur_clipPlane1Position * sur_clipPlane1Normal[1], sur_clipPlane1Position * sur_clipPlane1Normal[2], ];
-        sur_clipPlane1.setOrigin(sur_clipPlane1Origin);
+        sur_clipPlaneZ.setNormal(sur_clipPlaneNormalZ);
+        sur_clipPlaneZ.setOrigin(sur_clipPlaneOriginZ);
+        sur_clipPlaneZ_inv.setNormal(sur_clipPlaneNormalZ_inv);
+        sur_clipPlaneZ_inv.setOrigin(sur_clipPlaneOriginZ_inv);
+
+        mapper.addClippingPlane(sur_clipPlaneX);
+        mapper.addClippingPlane(sur_clipPlaneX_inv);
+
+        mapper.addClippingPlane(sur_clipPlaneY);
+        mapper.addClippingPlane(sur_clipPlaneY_inv);
+
+        mapper.addClippingPlane(sur_clipPlaneZ);
+        mapper.addClippingPlane(sur_clipPlaneZ_inv);
+
+        let el = document.querySelector('.planePositionX');
+        el.setAttribute('min', ((-sur_sizeX) + sur_img_origin_X));
+        el.setAttribute('max', sur_img_origin_X);
+        el.setAttribute('value', ((-sur_sizeX) + sur_img_origin_X));
+
+        el = document.querySelector('.planePositionX_inv');
+        el.setAttribute('min', sur_img_origin_X);
+        el.setAttribute('max', (sur_sizeX + sur_img_origin_X));
+        el.setAttribute('value', sur_img_origin_X);
+
+        el = document.querySelector('.planePositionY');
+        el.setAttribute('min', ((-sur_sizeY) + sur_img_origin_Y));
+        el.setAttribute('max', sur_img_origin_Y);
+        el.setAttribute('value', ((-sur_sizeY) + sur_img_origin_Y));
+
+        el = document.querySelector('.planePositionY_inv');
+        el.setAttribute('min', sur_img_origin_Y);
+        el.setAttribute('max', (sur_sizeY + sur_img_origin_Y));
+        el.setAttribute('value', sur_img_origin_Y);
+
+        el = document.querySelector('.planePositionZ');
+        el.setAttribute('min', ((-sur_sizeZ) + sur_img_origin_Z));
+        el.setAttribute('max', sur_img_origin_Z);
+        el.setAttribute('value', ((-sur_sizeZ) + sur_img_origin_Z));
+
+        el = document.querySelector('.planePositionZ_inv');
+        el.setAttribute('min', sur_img_origin_Z);
+        el.setAttribute('max', (sur_sizeZ + sur_img_origin_Z));
+        el.setAttribute('value', sur_img_origin_Z);
+
+        document.querySelector('.planePositionX').addEventListener('input', (e) => {
+        sur_clipPlane1PositionX = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionX)
+        const sur_clipPlaneOriginX = [sur_clipPlane1PositionX * sur_clipPlaneNormalX[0], sur_clipPlane1PositionX * sur_clipPlaneNormalX[1], sur_clipPlane1PositionX * sur_clipPlaneNormalX[2], ];
+        sur_clipPlaneX.setOrigin(sur_clipPlaneOriginX);
         renderWindow.render();
         });
 
-        document.querySelector('.plane2Position').addEventListener('input', (e) => {
-        sur_clipPlane2Position = Number(e.target.value);
-        const sur_clipPlane2Origin = [ sur_clipPlane2Position * sur_clipPlane2Normal[0], sur_clipPlane2Position * sur_clipPlane2Normal[1], sur_clipPlane2Position * sur_clipPlane2Normal[2], ];
-        sur_clipPlane2.setOrigin(sur_clipPlane2Origin);
+        document.querySelector('.planePositionX_inv').addEventListener('input', (e) => {
+        sur_clipPlane1PositionX_inv = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionX_inv)
+        const sur_clipPlaneOriginX_inv = [sur_clipPlane1PositionX_inv * sur_clipPlaneNormalX_inv[0], sur_clipPlane1PositionX_inv * sur_clipPlaneNormalX_inv[1], sur_clipPlane1PositionX_inv * sur_clipPlaneNormalX_inv[2], ];
+        sur_clipPlaneX_inv.setOrigin(sur_clipPlaneOriginX_inv);
+        renderWindow.render();
+        });
+
+        document.querySelector('.planePositionY').addEventListener('input', (e) => {
+        sur_clipPlane1PositionY = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionY)
+        const sur_clipPlaneOriginY = [sur_clipPlane1PositionY * sur_clipPlaneNormalY[0], sur_clipPlane1PositionY * sur_clipPlaneNormalY[1], sur_clipPlane1PositionY * sur_clipPlaneNormalY[2], ];
+        sur_clipPlaneY.setOrigin(sur_clipPlaneOriginY);
+        renderWindow.render();
+        });
+
+        document.querySelector('.planePositionY_inv').addEventListener('input', (e) => {
+        sur_clipPlane1PositionY_inv = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionY_inv)
+        const sur_clipPlaneOriginY_inv = [sur_clipPlane1PositionY_inv * sur_clipPlaneNormalY_inv[0], sur_clipPlane1PositionY_inv * sur_clipPlaneNormalY_inv[1], sur_clipPlane1PositionY_inv * sur_clipPlaneNormalY_inv[2], ];
+        sur_clipPlaneY_inv.setOrigin(sur_clipPlaneOriginY_inv);
+        renderWindow.render();
+        });
+
+        document.querySelector('.planePositionZ').addEventListener('input', (e) => {
+        sur_clipPlane1PositionZ = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionZ)
+        const sur_clipPlaneOriginZ = [sur_clipPlane1PositionZ * sur_clipPlaneNormalZ[0], sur_clipPlane1PositionZ * sur_clipPlaneNormalZ[1], sur_clipPlane1PositionZ * sur_clipPlaneNormalZ[2], ];
+        sur_clipPlaneZ.setOrigin(sur_clipPlaneOriginZ);
+        renderWindow.render();
+        });
+
+        document.querySelector('.planePositionZ_inv').addEventListener('input', (e) => {
+        sur_clipPlane1PositionZ_inv = Number(e.target.value);
+        // console.log(sur_clipPlane1PositionZ_inv)
+        const sur_clipPlaneOriginZ_inv = [sur_clipPlane1PositionZ_inv * sur_clipPlaneNormalZ_inv[0], sur_clipPlane1PositionZ_inv * sur_clipPlaneNormalZ_inv[1], sur_clipPlane1PositionZ_inv * sur_clipPlaneNormalZ_inv[2], ];
+        sur_clipPlaneZ_inv.setOrigin(sur_clipPlaneOriginZ_inv);
         renderWindow.render();
         });
 
@@ -925,22 +1224,35 @@ console.log(surface_iso_dataRange)
         console.log(surface_iso_dataRange[a])
     }
 
+///////////////////////////////////////////////////////////
+//$(Slider_scale).change(function() {
+//  newVal= this.value
+//  console.log(newVal)
+//  volume_imageData_obj[0].setIndexToWorld();
+//   volume_imageData_obj[0].setSpacing(1, 1, newVal);
+//   // volume_visibility_control[0].setScale(1, 1, newVal)
+//   renderWindow.render();
+//});
+///////////////////////////////////////////////////////////
+
 // slider for a opacity and Iso values
 for(b=0; b<surface_imageData.length; b++){
     surface_idOpacity = "#setOpacity"+ b
     surface_idISO = "#isoValue"+ b
     surface_idEDVSI = "#sur_edge_visibility"+ b
+    surface_idColor = "#favcolor"+ b
     //idColor = "#favcolor"+ t
     // idISO_att = "#isoValue"+ t
 
     console.log(surface_idOpacity)
     console.log(surface_idISO)
+    console.log(surface_idColor)
     // console.log(idColor)
     // console.log(iso_dataRange)
 
     z = b
     // console.log(v)
-    trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_opacity_val[z], surface_idISO, surface_iso[z], surface_iso_dataRange[z], renderWindow)
+    trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_idColor, surface_opacity_val[z], surface_idISO, surface_iso[z], surface_iso_dataRange[z], renderWindow)
 };
 ////////////////////////////////////////////////////////
 const center = getCenterOfScene(renderer);
@@ -976,10 +1288,11 @@ renderWindow.getInteractor().setInteractorStyle(iStyle);
 ///////////////////////////////////////////////////////////////////////////////////////////////
 renderer.resetCamera();
 renderWindow.render();
-
+// EdgeVisibility has to be turned off to load the image at beginning
+actor.getProperty().setEdgeVisibility(false);
 }
 
-function trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_opacity_val, surface_idISO, surface_iso, surface_iso_dataRange, renderWindow){
+function trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_idColor, surface_opacity_val, surface_idISO, surface_iso, surface_iso_dataRange, renderWindow){
 
     // Control Sample Opacity
     $(surface_idOpacity).change(function() {
@@ -1005,12 +1318,34 @@ function trigger_changes_iso(surface_idOpacity, surface_idEDVSI, surface_opacity
     el.setAttribute('value', ((surface_iso_dataRange[0] + surface_iso_dataRange[1]) / 3));
     el.addEventListener('input', updateIsoValue);
 
-    var edge = false;
+    var edge = true;
     $(surface_idEDVSI).on('click', function() {
         surface_opacity_val.getProperty().setEdgeVisibility(edge);
         renderWindow.render();
         edge = !(edge);
     });
+
+    // Converts the HTML color picker value into usable RGB
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    // Control the color of the image
+    const colorChange = document.querySelector(surface_idColor);
+    colorChange.addEventListener('input', (e) => {
+    const color = hexToRgb(e.target.value);
+    surface_opacity_val.getProperty().setColor(color.r/256., color.g/256., color.b/256.)
+     // actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.) // Color Transfer Function
+    surface_opacity_val.getProperty().setDiffuseColor(color.r / 255.0, color.g / 255.0, color.b / 255.0);
+    surface_opacity_val.getProperty().setAmbientColor(color.r / 255.0, color.g / 255.0, color.b / 255.0);
+    renderWindow.render();
+    });
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 // Tri-planar Rendering by Yubraj Gupta/////////////////////////////////////////////////////
@@ -1181,13 +1516,6 @@ document.querySelector('.XY').addEventListener('input', (e) => {
 document.querySelector('.colorLevel').addEventListener('input', updateColorLevel);
 document.querySelector('.colorWindow').addEventListener('input', updateColorWindow);
 
-
-// slider for a opacity and Iso values
-//for(n=0; n<tri_imageData.length; n++){
-//    tri_planar_xy = "#XY_button"
-//    tri_planar_xz = "#XZ_button"
-//    tri_planar_yz = "#YZ_button"
-
 var edge_K = edge_J = edge_I = true;
 
 $("#XY_button").on('click', function() {
@@ -1227,14 +1555,13 @@ const iStyle = vtkInteractorStyleManipulator.newInstance();
 //iStyle.addMouseManipulator(Rotate);
 iStyle.setCenterOfRotation(center);
 
-
 //"#Rotate_button"
 
 const uiComponents = {};
 const selectMap = {
   leftButton: { button: 1 },
   rightButton: { button: 3 },
-  scrollMiddleButton: { scrollEnabled: true, dragEnabled: false },
+  scrollMiddleButton: { scrollEnabled: true, dragEnabled: true },
 };
 
 const manipulatorFactory = {
@@ -1273,10 +1600,7 @@ Object.keys(selectMap).forEach((name) => {
     uiComponents[name].manipName = e.target.value;
     reassignManipulators();
   });
-  uiComponents[name] = {
-    elt,
-    manipName: elt.value,
-  };
+  uiComponents[name] = { elt, manipName: elt.value, };
 });
 
 
@@ -1339,6 +1663,13 @@ window.onresize = () => {orientationWidget.updateViewport();}
 renderer.resetCamera();
 renderWindow.render()
 
+reassignManipulators();
+imageK.setVisibility(edge_K);
+edge_K = !(edge_K);
+imageJ.setVisibility(edge_J);
+edge_J = !(edge_J);
+imageI.setVisibility(edge_I);
+edge_I = !(edge_I);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 // Multi-Planar Reconstruction Rendering by Yubraj Gupta/////////////////////////////////////////////////////
@@ -1460,8 +1791,9 @@ for (let i = 0; i < 4; i++) {
   const element = document.createElement('div');
   element.setAttribute('class', 'view');
   element.style.width = '50%';
-  element.style.height = '380px';
-  element.style.display = 'inline-block';
+  element.style.height = '450px';
+  element.style.display = 'inline-flex'; // inline-flex is used to fixed the divided canvas block
+  element.style.position = 'none';
   container.appendChild(element);
 
   const grw = vtkGenericRenderWindow.newInstance();
@@ -1707,6 +2039,7 @@ buttonReset.addEventListener('click', () => {
 ////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// CALLS VOLUME RENDERING FUNCTION /////////////////////////////
 function vol_processFile(vol_arrFileList, vol_color_val) {
+
   var vol_img  = []
   console.log(vol_arrFileList)
   const vol_files = vol_arrFileList
@@ -1757,29 +2090,32 @@ for ( l = 0 ; l < vol_files.length; l++){
 Promise.all(vol_prom).then((values) => {
     console.log(vol_prom)
 
+    $( "#v1" ).prop( "disabled", true )
+    $( "#r1" ).prop( "disabled", true )
+    $( "#v2" ).prop( "disabled", true )
+    $( "#v3" ).prop( "disabled", true )
+    $( "#r2" ).prop( "disabled", true )
+    $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
-     $( "#f" ).prop( "disabled", true )
-     $( ".colors_channels" ).prop( "disabled", true )
-    //while(true){
+    $( "#f" ).prop( "disabled", true )
+    $( ".colors_channels" ).prop( "disabled", false )
+
     console.time('image_render_Time');
+
      volume_rendering(vol_img, vol_color_val) // Calls Volume rendering script
-     // surface_rendering(img, color_val) // Calls surface rendering script
-     // tri_planar_rendering(img) // Calls Tri-Planar rendering script
-     // mpr_rendering(img) // Calls Multi-Planar Reconstruction rendering script
+
+      $("#loading").hide();// LOADING TEXT MESSAGE
 
      console.log(vol_img.length +"  -  "+ vol_files.length)
-     //if(img.length == files.length){
-       // break;
-     //}
-    //}
-        setTimeout(function delay(){
+
+    setTimeout(function delay(){
       console.timeEnd('image_render_Time');
     }, 1500);
 }).catch(
 console.log("Please check the input files again"));
-//console.log(img)
 
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// CALLS SURFACE RENDERING FUNCTION /////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -1834,13 +2170,22 @@ for ( w = 0 ; w < sur_files.length; w++){
 Promise.all(sur_prom).then((values) => {
     console.log(sur_prom)
 
+    $( "#v1" ).prop( "disabled", true )
+    $( "#r2" ).prop( "disabled", true )
+    $( "#v2" ).prop( "disabled", true )
+    $( "#v3" ).prop( "disabled", true )
+    $( "#r1" ).prop( "disabled", true )
+    $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
      $( "#f" ).prop( "disabled", true )
-     $( ".col_sur" ).prop( "disabled", true )
+     $( ".col_sur" ).prop( "disabled", false )
     //while(true){
      console.time('image_render_Time');
      // volume_rendering(img, color_val) // Calls Volume rendering script
      surface_rendering(sur_img, sur_color_val) // Calls surface rendering script
+
+     $("#loading").hide();// LOADING TEXT MESSAGE
+
      // tri_planar_rendering(img) // Calls Tri-Planar rendering script
      // mpr_rendering(img) // Calls Multi-Planar Reconstruction rendering script
 
@@ -1911,18 +2256,23 @@ for ( v = 0 ; v < tri_files.length; v++){
 Promise.all(tri_prom).then((values) => {
     console.log(tri_prom)
 
+    $( "#v1" ).prop( "disabled", true )
+    $( "#v3" ).prop( "disabled", true )
+    $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
      $( "#f" ).prop( "disabled", true )
-
+     $( "#v2" ).prop( "disabled", true )
      // $( ".colors_channels" ).prop( "disabled", true )
     //while(true){
     console.time('image_render_Time');
      // volume_rendering(img, color_val) // Calls Volume rendering script
      // surface_rendering(img, color_val) // Calls surface rendering script
+     $("#loading").show(); // LOADING TEXT MESSAGE
      tri_planar_rendering(tri_img) // Calls Tri-Planar rendering script
      // mpr_rendering(img) // Calls Multi-Planar Reconstruction rendering script
-
+     $("#loading").hide(); // LOADING TEXT MESSAGE
      console.log(tri_img.length +"  -  "+ tri_files.length)
+
      //if(img.length == files.length){
        // break;
      //}
@@ -1988,17 +2338,23 @@ for ( u = 0 ; u < mpr_files.length; u++){
 Promise.all(mpr_prom).then((values) => {
     console.log(mpr_prom)
 
+    $( "#v1" ).prop( "disabled", true )
+    $( "#v2" ).prop( "disabled", true )
+    $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
-     // $( "#f" ).prop( "disabled", true )
+     $( "#f" ).prop( "disabled", true )
      //$( ".colors_channels" ).prop( "disabled", true )
     //while(true){
         console.time('image_render_Time');
      // volume_rendering(img, color_val) // Calls Volume rendering script
      // surface_rendering(img, color_val) // Calls surface rendering script
      // tri_planar_rendering(img) // Calls Tri-Planar rendering script
+     $("#loading").show(); // LOADING TEXT MESSAGE
      mpr_rendering(mpr_img) // Calls Multi-Planar Reconstruction rendering script
+     $("#loading").hide(); // LOADING TEXT MESSAGE
 
      console.log(mpr_img.length +"  -  "+ mpr_files.length)
+     $( "#v3" ).prop( "disabled", true )
      //if(img.length == files.length){
        // break;
      //}
