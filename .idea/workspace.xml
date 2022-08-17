@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="873ceb1f-f408-45cd-9b85-d235ce0824c8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.github/FUNDING.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.npmignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/.prettierrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/CHANGELOG.MD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/CONTRIBUTING.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.min.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/dist/nouislider.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/_run/404.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/_run/helpers.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/_run/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/_run/menu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/_run/router.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/assets/base.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/assets/browserstack-logo-380x90.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/assets/prism.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/assets/prism.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/assets/wNumb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/behaviour-option.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/combined.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/drag-all.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/drag-fixed.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/drag.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/hover.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/smooth-steps.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/snap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/tap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/behaviour-option/unconstrained.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/configurations.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/configurations/horizontal-ltr.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/configurations/horizontal-rtl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/configurations/vertical-ltr.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/configurations/vertical-rtl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/contact.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/download.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks/binding-events.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks/binding.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks/buttoninput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks/class.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/events-callbacks/demo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/click-pips.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/colored-connect.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/colorpicker.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/dates.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/from-center.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/hiding-tooltips.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/html5.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/huge-numbers.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/lock.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/merging-tooltips.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/non-linear.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/skipping.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/soft-limits.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/steps-api.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/styling.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples-content/toggle.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/click-pips-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/click-pips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/colored-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/colored.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/colored.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/colorpicker-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/colorpicker.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/date-event.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/date-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/hiding-tooltips.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/hiding-tooltips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/html5-append.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/html5-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/html5-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/html5.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/huge-numbers-direct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/huge-numbers-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/huge-numbers.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/locked-crossupdate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/locked-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/locked-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/locked-sliders.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/merging-tooltips-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/merging-tooltips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/nonlinear-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/nonlinear-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/skipstep-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/skipstep-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/slider-soft-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/slider-soft.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/steps-event.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/steps-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling-fit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling-round.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling-square.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling-touch-area.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/styling.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/toggle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/examples/toggle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/index/install.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/index/minimal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/index/showcase-connect.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/index/showcase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more/classes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more/disable-all.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more/disable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more/update-setup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/more/update.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/aria.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/format-events.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/format.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/pips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/tooltips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/number-formatting/wnumb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/a-slider-range-used.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/count-stepped.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/count.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/pips-usage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/positions-stepped.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/positions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/range.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/steps.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/values-stepped.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/pips/values.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/reference.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/animate-duration.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/animate-duration.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/animate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/connect-more.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/connect.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/direction-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/direction.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/document-element.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/handle-attributes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/keyboard-support-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/keyboard-support.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/limit-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/limit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/margin-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/margin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/orientation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/padding-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/padding.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/start.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/step.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-options/tooltips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write/buttons.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write/positions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write/read.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write/set.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-read-write/write.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/handles-multiple.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/handles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/non-linear-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/non-linear-step-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/non-linear-step.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/non-linear.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/range-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/range.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/snap-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/snap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/step-link.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/step.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/documentation/slider-values/steps.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/generate-site.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/rollup.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.base.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.core.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.pips.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.tooltips.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/src/nouislider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/addon_pips.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/iframe/slider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/iframe/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/module.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/origin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/range.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/requirejs/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/requirejs/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_aria.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_binding.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_classes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_contained_handles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_drag_all.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_errors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_get-step.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_init_max.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_keyboard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_limit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_lookaround.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_no_size.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_non-linear-rtl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_padding.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_rtl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_rtl2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_rtl_update_options.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_set-exactInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_setting-getting.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_step.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_step_margin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_three_or_more_handles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_unordered.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_update-numbers.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_update.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_update_options.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tests/slider_values.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/noUiSlider-15.6.0/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2ClHyxEFumOoMBeGtGVojM6jQKu" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/mpi_vtk_js/polls/static/images" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="temp-1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MPI_VTK_JS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/temp-1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.temp-1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="873ceb1f-f408-45cd-9b85-d235ce0824c8" name="Changes" comment="" />
+      <created>1659370509959</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659370509959</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
