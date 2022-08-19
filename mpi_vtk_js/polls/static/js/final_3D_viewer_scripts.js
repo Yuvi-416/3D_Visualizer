@@ -1552,7 +1552,7 @@ for (let i = 0; i < 4; i++) {
   const element = document.createElement('div');
   element.setAttribute('class', 'view');
   element.style.width = '50%';
-  element.style.height = '450px';
+  element.style.height = '400px';
   element.style.display = 'inline-flex'; // inline-flex is used to fixed the divided canvas block
   element.style.position = 'none';
   container.appendChild(element);

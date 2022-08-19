@@ -20,6 +20,7 @@
 
 </head>
 <body>
+
 <div class="wrapper">
     <!-- First HEADER -->
     <div id="light row1">
@@ -69,9 +70,9 @@
         <nav id="sidebar">
             <!-- Selection of desire viewer -->
             <div title="Before uploading files, user must first choose any one desired viewer"
-                 style="height:105px; background: #6f585a; margin-top: 3px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
-                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 14px 27px;">
-                <p>Select your desire viewer:</p>
+                 style="height:75px; background: #6f585a; margin-top: 3px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
+                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 44px;">
+                <p style="margin-bottom: 6px;">Select your desire viewer:</p>
                 <input title="3D viewer options" class="desire_viewer" type="Checkbox" name="Viewers" id="v1" value="3D">
                 <label title="Contain two 3D rendering techniques: volume and surface" for="v1">3D</label>
                 <input title="Drop-down box contain features for TRI-Planar" class="desire_viewer" type="Checkbox" name="Viewers" id="v2" value="TRI-Planar">
@@ -80,10 +81,10 @@
                 <label title="Orthogonal viewer" for="v3">MPR</label>
             </div>
             <!-- Implement render method -->
-            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:102px; background-color: #6f585a;
+            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:75px; background-color: #6f585a;
                 background: #6f585a; margin-top: 3px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
-                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 14px 27px;">
-                <p>3D Rendering techniques:</p>
+                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 27px;">
+                <p style="margin-bottom: 6px;">3D Rendering techniques:</p>
                 <input title="Drop-down box contain features for Volume" class="method_selection" type="Checkbox" name="Render" id="r1" value="Volume" >
                 <label title="Volume rendering" for="r1">Volume</label>
                 <input title="Drop-down box contain features for Surface" class="method_selection" type="Checkbox" name="Render" id="r2" value="Surface" >
@@ -96,7 +97,7 @@
                 <label>DICOM Files Loader</label>
             </div>
             <!-- Select the number of inputs-->
-            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:126px; background-color: #6f585a; margin-top:3px;
+            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:116px; background-color: #6f585a; margin-top:3px;
                 border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger;">
                 <div id="divInput">
                     <table style="height:31px; margin-left: 6px;">
@@ -108,7 +109,7 @@
                         </tbody>
                     </table>
                     <div>
-                        <input title="Before choosing files, users must first select any one desired viewer from the first section" name="inputFile" type="file" multiple id="btn1" style="margin-left: 6px; margin-top: 20px; padding: 0px; border: none; z-index: 1;">
+                        <input title="Before choosing files, users must first select any one desired viewer from the first section" name="inputFile" type="file" multiple id="btn1" style="margin-left: 6px; margin-top: 10px; padding: 0px; border: none; z-index: 1;" webkitdirectory = "true" directory/>
                     </div>
                     <div>
                         <button title="User must complete the following steps before hitting the render button: selection of any one desire viewer  > number of inputs (depends upon the selected viewer) > upload dicom files > press render" name="render" id="btn2" style="margin-top: -17px; margin-left:374px; width: 80px; border: none; z-index: 1; margin-bottom: -8px;"> Render </button>
@@ -118,7 +119,7 @@
 
             <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
             <!-- //////////////Volume Rendering features//////////////-->
-            <div id="VOL_OPTIONS" style="height:412px; background-color:#6f585a;
+            <div id="VOL_OPTIONS" style="height:363px; background-color:#6f585a;
                 display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
                 border-radius: 2px 2px 0 0;">
                 <div id="set_opacity_distance_bm_Color">
@@ -126,7 +127,7 @@
                 </div>
             </div>
             <!--////////////// Surface Rendering features//////////////-->
-            <div id="SUR_OPTIONS" style="height:412px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <div id="set_iso_Color">
                     <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
                 </div>
@@ -261,13 +262,14 @@
         <div id="col2" style="background:black; width: 100%; ">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-dark">
+                    <button type="button" id="sidebarCollapse" class="btn btn-dark" style="font-size: xx-small; font-weight: bolder; margin-left:-8px;margin-top: 2px;">
                         <i class="fas fa-bars"></i><span><></span>
                     </button>
                 </div>
             </nav>
-            <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of an canvas -->
+            <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of a canvas -->
         </div>
+
     </div>
 
 </div>
@@ -276,11 +278,24 @@
 
 <!-- Script for a side_bar_Collapse-->
 <script>
-    $(document).ready(function() {
-      $("#sidebarCollapse").on('click',function() {
-        $("#sidebar").toggleClass('active');
-      });
-    });
+<!--    $(document).ready(function() {-->
+<!--      $("#sidebarCollapse").on('click',function() {-->
+<!--        $("#sidebar").toggleClass('active');-->
+<!--      });-->
+<!--    });-->
+
+$(document).ready(function() {
+  $('#sidebarCollapse').on('click', function() {
+    $('#sidebar').toggleClass('active');
+    $('.overlay').toggle();
+  });
+
+  $('.overlay').click(function() {
+    $('#sidebar').toggleClass('active');
+    $('.overlay').toggle();
+  });
+});
+
 </script>
 
 <!-- Scripts for calling render functions and rendering it into CANVAS-->
@@ -520,7 +535,7 @@ $("#btn1").change(function() {
                 if (vol_arr.length==vol_arr2.length) {
                     vol_processFile(vol_arr, vol_arr2)
                } else {
-                    alert("Please check the number of input vs the number of channels ")
+                    // alert("Please check the number of input vs the number of channels ")
                }
             }
 
@@ -572,7 +587,7 @@ $("#btn1").change(function() {
                 if (sur_arr.length==sur_arr2.length){
                     sur_processFile(sur_arr, sur_arr2)
                 } else {
-                   alert("Please check the number of input vs the number of channels ")
+                   // alert("Please check the number of input vs the number of channels")
                 }
             }
 
@@ -655,6 +670,35 @@ $("#btn1").change(function() {
     });
 });
 
+</script>
+
+<!-- ERROR POP-UP -->
+<script>
+window.addEventListener('error', (e) => {
+    alert(e.message);
+    // alert("Please check the number of input vs the number of channels")
+    $("#loading").hide();
+    // console.log(e)
+    location.reload()
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  alert(event.promise); // [object Promise] - the promise that generated the error
+  alert("(1). Please check whether uploaded files are DICOM or not, (2). Check how many files did you upload before and does number of files matches with below options, (3). To know more about the error press: CTRL + SHIFT + J ") ; // Error: Whoops! - the unhandled error object
+  $("#loading").hide();
+  location.reload()
+});
+</script>
+
+<!-- STILL NOT SURE WHETHER THIS LINE HAS ANY IMPACT OR NOT -->
+<script>
+let unpkg_script_itk = document.createElement('unpkg_script_itk');
+unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";
+document.head.append(unpkg_script_itk);
+
+unpkg_script_itk.onerror = function() {
+    alert("Error loading " + this.src);
+};
 </script>
 
 </body>
