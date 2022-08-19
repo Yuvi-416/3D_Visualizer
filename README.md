@@ -5,8 +5,8 @@ Four viewers have been created: Volume, Surface, Tri-Planar, and Multi-planar re
 Our visualizer takes a sequence of DICOM standard files as input and renders them based on the user viewer's choice.
 
 ## Features:
-- Volume Rendering (Opacity value slider, Sample distance slider, Blending mode choice, Color choice, Region clipping slider)
-- Surface Rendering (Opacity value slider, Iso value slider, Color choice, Region clipping slider)
+- Volume Rendering (Opacity value slider, Sample distance slider, Blending mode choice, Color choice, Region of intrest clipping slider)
+- Surface Rendering (Opacity value slider, Iso value slider, Color choice, Region of interest clipping slider)
 - Tri-Planar Rendering ((XY, YZ, XZ) slider, Color window and level manipulator, Mouse selector (rotate, pan, zoom options))
 - Multi-Planar Reconstruction (Orthoviewer, Separate window for each plane with 3D Image Slice mapper)
 
@@ -17,9 +17,8 @@ Will be posted soon.
 Demo: https://figshare.com/articles/media/3D-Visualizer_Demo/20408103
 More can be found here: https://yuvi-416.github.io/3D_Visualizer/
 
-
 ## To host locally:
-- Clone this repository, install latest version of python, and install the packages listed in requirement.txt.
+- Clone this repository, install latest version of python, and install the packages listed in requirement.txt (by pip install -r requirement.txt).
 - Open the terminal, CD the folder where manage.py exists, and launch the server locally by passing the following command over there: python manage.py runserver
 - And click the localhost link: http://127.0.0.1:8000/
 
