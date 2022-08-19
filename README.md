@@ -19,7 +19,7 @@ More can be found here: https://yuvi-416.github.io/3D_Visualizer/
 
 
 ## To host locally:
-- Clone this repository and install the packages listed in requirement.txt.
+- Clone this repository, install latest version of python, and install the packages listed in requirement.txt.
 - Open the terminal, CD the folder where manage.py exists, and launch the server locally by passing the following command over there: python manage.py runserver
 - And click the localhost link: http://127.0.0.1:8000/
 
