@@ -62,7 +62,7 @@
 }
 
 #sidebar {
-    position: fixed;
+   position: fixed;
   min-width: 460px;
   max-width: 460px;
   background: #482424;
@@ -136,6 +136,7 @@ ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
   background: #1b1d24;
+}
 
 /* CANVAS-BAR-BODY-Section */
 #col2 {
@@ -143,5 +144,6 @@ ul ul a {
     flex: 1 1;
     min-height: 100%;/* chrome needed it a question time , not anymore */
 }
+
 
 

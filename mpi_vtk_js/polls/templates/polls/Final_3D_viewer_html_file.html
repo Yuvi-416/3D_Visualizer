@@ -70,8 +70,8 @@
         <nav id="sidebar">
             <!-- Selection of desire viewer -->
             <div title="Before uploading files, user must first choose any one desired viewer"
-                 style="height:75px; background: #6f585a; margin-top: 3px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
-                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 44px;">
+                 style="height:75px; background: #6f585a; margin-top: 1px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
+                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 46px;">
                 <p style="margin-bottom: 6px;">Select your desire viewer:</p>
                 <input title="3D viewer options" class="desire_viewer" type="Checkbox" name="Viewers" id="v1" value="3D">
                 <label title="Contain two 3D rendering techniques: volume and surface" for="v1">3D</label>
@@ -82,7 +82,7 @@
             </div>
             <!-- Implement render method -->
             <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:75px; background-color: #6f585a;
-                background: #6f585a; margin-top: 3px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
+                background: #6f585a; margin-top: -1px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
                 border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 27px;">
                 <p style="margin-bottom: 6px;">3D Rendering techniques:</p>
                 <input title="Drop-down box contain features for Volume" class="method_selection" type="Checkbox" name="Render" id="r1" value="Volume" >
@@ -97,7 +97,7 @@
                 <label>DICOM Files Loader</label>
             </div>
             <!-- Select the number of inputs-->
-            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:116px; background-color: #6f585a; margin-top:3px;
+            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:116px; background-color: #6f585a; margin-top:2px;
                 border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger;">
                 <div id="divInput">
                     <table style="height:31px; margin-left: 6px;">
@@ -120,20 +120,20 @@
             <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
             <!-- //////////////Volume Rendering features//////////////-->
             <div id="VOL_OPTIONS" style="height:363px; background-color:#6f585a;
-                display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
+                display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
                 border-radius: 2px 2px 0 0;">
                 <div id="set_opacity_distance_bm_Color">
                     <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;&ensp;&ensp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
                 </div>
             </div>
             <!--////////////// Surface Rendering features//////////////-->
-            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <div id="set_iso_Color">
                     <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
                 </div>
             </div>
             <!--////////////// TRI-Planar features//////////////-->
-            <div id="TRI_PLANAR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="TRI_PLANAR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <table style="margin-left: 11px;">
                     <tbody>
                     <tr>
@@ -191,7 +191,7 @@
                 </table>
             </div>
             <!--////////////// MPR Rendering features//////////////-->
-            <div id="MPR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="MPR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <table style="margin-left: 11px;">
                     <tbody>
                     <tr>
@@ -210,17 +210,17 @@
             </div>
             <!--////////////// XY Rendering features//////////////-->
             <!-- 3D rendered SLICER viewer-->
-            <div id="rendered_SLICER" style="height:116px; margin-top: 3px;
-                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0;">
-                <label style="font-size:large; padding: 1px 118px;">Region of interest clipping</label>
-                <table style="margin-left: 87px; background-color: #6f585a;">
+            <div id="rendered_SLICER" style="height:118px; margin-top: 2px;
+                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0; font-size:large; padding: 0px 91px 0px;">
+                <label>&ensp;&ensp;&ensp;&ensp;Region of interest clipping</label>
+                <table>
                     <tbody>
                     <tr>
                         <td> X
                             <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="">
                         </td>
                         <td>
-                            <input class="planePositionX" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionX" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     <tr>
@@ -228,7 +228,7 @@
                             <input class="planePositionY_inv" type="range" min="0" max="100" step="1" value="">
                         </td>
                         <td>
-                            <input class="planePositionY" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionY" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     <tr>
@@ -236,22 +236,21 @@
                             <input class="planePositionZ_inv" type="range" min="0" max="100" step="1" value="">
                         </td>
                         <td>
-                            <input class="planePositionZ" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionZ" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <!-- Scaling Slider-->
-            <div id="Scaling_slider" title="It is in the experimental stage, the output may not be satisfactory" style="height:66px; margin-top: 3px;
+            <div id="Scaling_slider" title="It is in the experimental stage, the output may not be satisfactory" style="height:38px; margin-top: 2px;
                 background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;
-                border-bottom: 4px solid #c3a0a0;">
-                <label style="font-size:large; padding: 1px 155px;">Z-voxel scaling </label>
-                <table style="margin-left: 113px; background-color: #6f585a;">
+                border-bottom: 4px solid #c3a0a0; font-size: large;font-weight: bolder;">
+                <table style="margin-left:58px; margin-top:1px; background-color: #6f585a;">
                     <tbody>
                     <tr>
-                        <td>Scaling:
-                            <input id="Slider_scale" type="range" min="0.1" max="50" step="0.1" value="1">
+                        <td>Z-voxel dimension scaling factor:
+                            <input id="Slider_scale" name="zNumberInput" type="number" min="0.1" max="50" step="0.1" value="1" style="width: 61px; height: 23px;">
                         </td>
                     </tr>
                     </tbody>
@@ -263,6 +262,7 @@
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <button type="button" id="sidebarCollapse" class="btn btn-dark" style="font-size: xx-small; font-weight: bolder; margin-left:-8px;margin-top: 2px;">
+<!--                    <button type="button" id="sidebarCollapse" class="btn btn-dark">-->
                         <i class="fas fa-bars"></i><span><></span>
                     </button>
                 </div>
@@ -353,11 +353,13 @@ $(document).ready(function() {
         $('#Scaling_slider').slideToggle("hide");
 
         if ($(this).is(':checked')) {
+            document.getElementById("sidebarCollapse").disabled = true;
             document.getElementById("btn1").disabled = false;
             document.getElementById("btn2").disabled = false;
             document.getElementById("v1").disabled = true;
             document.getElementById("v2").disabled = true;
         } else {
+            document.getElementById("sidebarCollapse").disabled = false;
             document.getElementById("v1").disabled = false;
             document.getElementById("v2").disabled = false;
             document.getElementById("btn1").disabled = true;

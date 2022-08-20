@@ -1535,6 +1535,7 @@ const showDebugActors = true;
 
 const container = document.getElementById('viewContainer');
 container.style.display = 'wrap';
+container.style = 'margin-left : 460px';
 
 function createRGBStringFromRGBValues(rgb) {
   if (rgb.length !== 3) {
