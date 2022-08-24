@@ -4,6 +4,7 @@
     <list default="true" id="c199ec9a-ee3b-4a01-adeb-eb3f63ca6c90" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/static/css/final_3D_viewer_CSS_file.css" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/static/css/final_3D_viewer_CSS_file.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/static/js/final_3D_viewer_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/static/js/final_3D_viewer_scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/templates/polls/Final_3D_viewer_html_file.html" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/templates/polls/Final_3D_viewer_html_file.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -1,3 +1,10 @@
+<!--------------------------------------------------->
+<!--------------------------------------------------->
+<!----- IMAGE-IN VISUALIZER HTML PAGE --------------->
+<!------Author: Yubraj gupta, email: ygupta@ua.pt---->
+<!--------------------------------------------------->
+<!--------------------------------------------------->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,20 +43,22 @@
                     <li class="nav-item active">
                         <a class="nav-link" style="color:#141314c7" href="https://yuvi.pythonanywhere.com/" target="_blank" rel="noopener noreferrer">Cell Explorer</a>
                     </li>
-                    <!--          <li class="hide_mobile"><span>|</span></li>-->
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="#">Image Analysis</a>
                     </li>
-                    <!--          <li class="hide_mobile"><span>|</span></li>-->
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="https://github.com/Yuvi-416/3D_Visualizer/tree/master/sample/" target="_blank" rel="noopener noreferrer">Sample</a>
                     </li>
                     <span class="style__vertical-bar--gcXcn">|</span>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color:#141314c7" href="https://figshare.com/articles/media/3D-Visualizer_Demo/20408103" target="_blank" rel="noopener noreferrer">Demo</a>
-                    </li>
+                    <div class="dropdown">
+                        <button onclick="myFunction()" class="dropbtn">Help</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a class="nav-link"  style="color:#141314c7; background-color: #8ebfadf7;" href="https://figshare.com/articles/media/3D-Visualizer_Demo/20408103" target="_blank" rel="noopener noreferrer">Demo Videos</a>
+                            <a class="nav-link"  style="color:#141314c7; background-color: #8ebfadf7;" href="https://github.com/Yuvi-416/3D_Visualizer/wiki/3D-Visualizer-Workflow" target="_blank" rel="noopener noreferrer">Documentation</a>
+                        </div>
+                    </div>
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="https://yuvi-416.github.io/3D_Visualizer/" target="_blank" rel="noopener noreferrer">About</a>
@@ -83,7 +92,7 @@
             <!-- Implement render method -->
             <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:75px; background-color: #6f585a;
                 background: #6f585a; margin-top: -1px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
-                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 27px;">
+                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 42px;">
                 <p style="margin-bottom: 6px;">3D Rendering techniques:</p>
                 <input title="Drop-down box contain features for Volume" class="method_selection" type="Checkbox" name="Render" id="r1" value="Volume" >
                 <label title="Volume rendering" for="r1">Volume</label>
@@ -93,12 +102,12 @@
             <!-- DICOM TITLE -->
             <div style="height:30px; margin-bottom: -1px; margin-top: -2px;
                 background-color: #6f585a; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
-                border-radius: 2px 2px 0 0; padding: 0px 132px 26px; font-weight: 500; font-size: 18px; color: lightpink;">
+                border-radius: 2px 2px 0 0; padding: 0px 178px 26px; font-weight: 500; font-size: 18px; color: lightpink;">
                 <label>DICOM Files Loader</label>
             </div>
             <!-- Select the number of inputs-->
             <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:116px; background-color: #6f585a; margin-top:2px;
-                border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger;">
+                border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger; padding: 0px 32px;">
                 <div id="divInput">
                     <table style="height:31px; margin-left: 6px;">
                         <tbody>
@@ -119,22 +128,22 @@
 
             <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
             <!-- //////////////Volume Rendering features//////////////-->
-            <div id="VOL_OPTIONS" style="height:363px; background-color:#6f585a;
+            <div id="VOL_OPTIONS" style="height:367px; background-color:#6f585a;
                 display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
                 border-radius: 2px 2px 0 0;">
                 <div id="set_opacity_distance_bm_Color">
-                    <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;&ensp;&ensp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                    <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;&ensp;&ensp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b>&ensp;&ensp;<b>Z-Scale</b> </p>
                 </div>
             </div>
             <!--////////////// Surface Rendering features//////////////-->
-            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; padding: 0px 13px;">
                 <div id="set_iso_Color">
-                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b>&ensp;&ensp;&ensp;&ensp;<b>Z-Scale</b> </p>
                 </div>
             </div>
             <!--////////////// TRI-Planar features//////////////-->
             <div id="TRI_PLANAR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
-                <table style="margin-left: 11px;">
+                <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
                         <td> <input id="XY_button" type="checkbox" checked> XY </td>
@@ -192,7 +201,7 @@
             </div>
             <!--////////////// MPR Rendering features//////////////-->
             <div id="MPR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
-                <table style="margin-left: 11px;">
+                <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
                         <td>Scale in pixels:</td>
@@ -211,13 +220,13 @@
             <!--////////////// XY Rendering features//////////////-->
             <!-- 3D rendered SLICER viewer-->
             <div id="rendered_SLICER" style="height:118px; margin-top: 2px;
-                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0; font-size:large; padding: 0px 91px 0px;">
+                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0; font-size:large; padding: 0px 110px 0px;">
                 <label>&ensp;&ensp;&ensp;&ensp;Region of interest clipping</label>
                 <table>
                     <tbody>
                     <tr>
                         <td> X
-                            <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="" >
                         </td>
                         <td>
                             <input class="planePositionX" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
@@ -242,20 +251,6 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Scaling Slider-->
-            <div id="Scaling_slider" title="It is in the experimental stage, the output may not be satisfactory" style="height:38px; margin-top: 2px;
-                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;
-                border-bottom: 4px solid #c3a0a0; font-size: large;font-weight: bolder;">
-                <table style="margin-left:58px; margin-top:1px; background-color: #6f585a;">
-                    <tbody>
-                    <tr>
-                        <td>Z-voxel dimension scaling factor:
-                            <input id="Slider_scale" name="zNumberInput" type="number" min="0.1" max="50" step="0.1" value="1" style="width: 61px; height: 23px;">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
         </nav>
         <!-- CANVAS -->
         <div id="col2" style="background:black; width: 100%; ">
@@ -269,21 +264,35 @@
             </nav>
             <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of a canvas -->
         </div>
-
     </div>
-
 </div>
 
+<!-- integrating JS file -->
 <script type="text/javascript" src="{% static '/js/final_3D_viewer_scripts.js' %}"></script>
+
+<!-- When the user clicks on the button, toggle between hiding and showing the dropdown content -->
+<script>
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 
 <!-- Script for a side_bar_Collapse-->
 <script>
-<!--    $(document).ready(function() {-->
-<!--      $("#sidebarCollapse").on('click',function() {-->
-<!--        $("#sidebar").toggleClass('active');-->
-<!--      });-->
-<!--    });-->
-
 $(document).ready(function() {
   $('#sidebarCollapse').on('click', function() {
     $('#sidebar').toggleClass('active');
@@ -295,7 +304,6 @@ $(document).ready(function() {
     $('.overlay').toggle();
   });
 });
-
 </script>
 
 <!-- Scripts for calling render functions and rendering it into CANVAS-->
@@ -402,12 +410,15 @@ $(document).ready(function() {
 
         sel = $('<input class=colors_channels id="vol_color0" type="color" value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial" >').appendTo('#set_opacity_distance_bm_Color');
 
+        vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale0" type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
+
         $( "#f" ).change(function() {
             $('.vol_set_opacity').remove();
             $('.vol_set_distance').remove();
             $('.vol_blending_mode').remove();
             $('.colors_channels').remove();
             $('.vol_set_vis').remove();
+            $('.vol_set_z_voxel_scale').remove();
 
                 for(i=0; i<$('#f').val(); i++){
                     vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility'+ i +'"'+ '" style="margin-left: 1px;">').appendTo('#set_opacity_distance_bm_Color');
@@ -420,6 +431,8 @@ $(document).ready(function() {
                     vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
 
                     sel = $('<input class=colors_channels type="color" id="vol_color'+ i +'"'+ ' value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial">').appendTo('#set_opacity_distance_bm_Color');
+
+                    vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale'+ i +'"'+ ' type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
 
                 }
         })
@@ -436,6 +449,7 @@ $(document).ready(function() {
         vol_distance.remove();
         vol_blending.remove();
         sel.remove();
+        vol_Z_Voxel_scale.remove();
     }
 
     $('#r2').change(function() {
@@ -465,19 +479,22 @@ $(document).ready(function() {
         sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility0" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
         sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
         sur_isovalue = $('<input class=sur_iso_Value id="isoValue0" type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-        sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7" style="margin-left: 9px; margin-right: 38px;">').appendTo('#set_iso_Color');
+        sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7" style="margin-left: 9px; margin-right: 20px;">').appendTo('#set_iso_Color');
+        sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale0" type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
 
         $( "#f" ).change(function() {
             $('.sur_set_opacity').remove();
             $('.sur_iso_Value').remove();
             $('.col_sur').remove();
             $('.sur_edge_vis').remove();
+            $('.sur_set_z_voxel_scale').remove();
 
                 for(j=0; j<$('#f').val(); j++){
                     sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility'+ j +'"'+ ' style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
                     sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
                     sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-                    sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7" style="margin-left: 9px; margin-right: 38px;">').appendTo('#set_iso_Color');
+                    sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7" style="margin-left: 9px; margin-right: 20px;">').appendTo('#set_iso_Color');
+                    sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale'+ j +'"'+ ' type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
                 }
         })
 
@@ -492,6 +509,7 @@ $(document).ready(function() {
         sur_isovalue.remove();
         sur_col.remove();
         sur_edge_vis.remove();
+        sur_Z_Voxel_scale.remove();
     }
 
 });
@@ -669,9 +687,9 @@ $("#btn1").change(function() {
             }
 
         }
+
     });
 });
-
 </script>
 
 <!-- ERROR POP-UP -->
@@ -680,15 +698,14 @@ window.addEventListener('error', (e) => {
     alert(e.message);
     // alert("Please check the number of input vs the number of channels")
     $("#loading").hide();
-    // console.log(e)
-    location.reload()
+    // location.reload()
 });
 
 window.addEventListener('unhandledrejection', function(event) {
   alert(event.promise); // [object Promise] - the promise that generated the error
-  alert("(1). Please check whether uploaded files are DICOM or not, (2). Check how many files did you upload before and does number of files matches with below options, (3). To know more about the error press: CTRL + SHIFT + J ") ; // Error: Whoops! - the unhandled error object
+  alert("(1). Please check whether uploaded files are DICOM or not, (2). Check how many files did you upload before and if the number of uploaded files matches with select the number of inputs option or not, (3). To know more about the error press: CTRL + SHIFT + J ") ; // Error: Whoops! - the unhandled error object
   $("#loading").hide();
-  location.reload()
+  // location.reload()
 });
 </script>
 
