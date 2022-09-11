@@ -21,7 +21,11 @@
     <!-- Scripts  .css -->
     <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
+
     <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script type="text/javascript" src="{% static '/js/detect.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/vtk.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/gl_matrix.js' %}"></script>
 
@@ -79,8 +83,8 @@
         <nav id="sidebar">
             <!-- Selection of desire viewer -->
             <div title="Before uploading files, user must first choose any one desired viewer"
-                 style="height:75px; background: #6f585a; margin-top: 1px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
-                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 46px;">
+                 style="height:auto; background: #6f585a; margin-top: 1px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
+                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 42px;">
                 <p style="margin-bottom: 6px;">Select your desire viewer:</p>
                 <input title="3D viewer options" class="desire_viewer" type="Checkbox" name="Viewers" id="v1" value="3D">
                 <label title="Contain two 3D rendering techniques: volume and surface" for="v1">3D</label>
@@ -90,7 +94,7 @@
                 <label title="Orthogonal viewer" for="v3">MPR</label>
             </div>
             <!-- Implement render method -->
-            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:75px; background-color: #6f585a;
+            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:auto; background-color: #6f585a;
                 background: #6f585a; margin-top: -1px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
                 border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 42px;">
                 <p style="margin-bottom: 6px;">3D Rendering techniques:</p>
@@ -106,7 +110,7 @@
                 <label>DICOM Files Loader</label>
             </div>
             <!-- Select the number of inputs-->
-            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:116px; background-color: #6f585a; margin-top:2px;
+            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:auto; background-color: #6f585a; margin-top:2px;
                 border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger; padding: 0px 32px;">
                 <div id="divInput">
                     <table style="height:31px; margin-left: 6px;">
@@ -115,20 +119,27 @@
                         <td>
                             <input title="After inserting number press enter or roll the side wheel" min=1 max=10 type="number" id="f" value="1" style="width: 43px; height: 25px;">
                         </td>
+                        <td style="margin-left: 45px; border-left: 4px solid #c3a0a0; font-size: smaller;">
+
+                        <button title="Reset View" id="Reset_canvas">Reset canvas</button>
+<!--                    <button title="Cropping Reset View" id="CropReset">CropReset</button>&ndash;&gt;-->
+
+                        </td>
                         </tbody>
                     </table>
                     <div>
                         <input title="Before choosing files, users must first select any one desired viewer from the first section" name="inputFile" type="file" multiple id="btn1" style="margin-left: 6px; margin-top: 10px; padding: 0px; border: none; z-index: 1;" webkitdirectory = "true" directory/>
                     </div>
                     <div>
-                        <button title="User must complete the following steps before hitting the render button: selection of any one desire viewer  > number of inputs (depends upon the selected viewer) > upload dicom files > press render" name="render" id="btn2" style="margin-top: -17px; margin-left:374px; width: 80px; border: none; z-index: 1; margin-bottom: -8px;"> Render </button>
+                        <button title="User must complete the following steps before hitting the render button: selection of any one desire viewer  > number of inputs (depends upon the selected viewer) > upload dicom files > press render" name="render" id="btn2" style="margin-top: 0px; margin-left:374px; width: 80px; border: none; z-index: 1; margin-bottom: 1px;"> Render </button>
                     </div>
                 </div>
             </div>
 
             <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
             <!-- //////////////Volume Rendering features//////////////-->
-            <div id="VOL_OPTIONS" style="height:367px; background-color:#6f585a;
+            <!-- height:367px;-->
+            <div id="VOL_OPTIONS" style="height:auto; background-color:#6f585a;
                 display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
                 border-radius: 2px 2px 0 0;">
                 <div id="set_opacity_distance_bm_Color">
@@ -136,13 +147,15 @@
                 </div>
             </div>
             <!--////////////// Surface Rendering features//////////////-->
-            <div id="SUR_OPTIONS" style="height:363px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; padding: 0px 13px;">
+            <!-- height:363px;-->
+            <div id="SUR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; padding: 0px 13px;">
                 <div id="set_iso_Color">
                     <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b>&ensp;&ensp;&ensp;&ensp;<b>Z-Scale</b> </p>
                 </div>
             </div>
             <!--////////////// TRI-Planar features//////////////-->
-            <div id="TRI_PLANAR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <!-- height:527px;-->
+            <div id="TRI_PLANAR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
@@ -200,7 +213,8 @@
                 </table>
             </div>
             <!--////////////// MPR Rendering features//////////////-->
-            <div id="MPR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <!-- height:527px;-->
+            <div id="MPR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
                 <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
@@ -219,7 +233,8 @@
             </div>
             <!--////////////// XY Rendering features//////////////-->
             <!-- 3D rendered SLICER viewer-->
-            <div id="rendered_SLICER" style="height:118px; margin-top: 2px;
+            <!-- height:118px;-->
+            <div id="rendered_SLICER" style="height:auto; margin-top: 2px;
                 background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0; font-size:large; padding: 0px 110px 0px;">
                 <label>&ensp;&ensp;&ensp;&ensp;Region of interest clipping</label>
                 <table>
@@ -251,6 +266,7 @@
                     </tbody>
                 </table>
             </div>
+
         </nav>
         <!-- CANVAS -->
         <div id="col2" style="background:black; width: 100%; ">
@@ -260,6 +276,18 @@
 <!--                    <button type="button" id="sidebarCollapse" class="btn btn-dark">-->
                         <i class="fas fa-bars"></i><span><></span>
                     </button>
+
+                    <label style="margin-left:auto; color: forestgreen; font-weight: bold;" >REC:</label>
+                    <button title="Start REC" id ="start" style="font-size: x-small; background-color: transparent; border-color: transparent;">
+                        <span>&#9654;</span>
+                    </button>
+                    <button title="Stop REC" id ="stop" style="font-size: x-small;background-color: transparent; border-color: transparent;">
+                        <span>&#9209;</span>
+                    </button>
+                    <button title="ScreenShot" type="button" id ="shot" style="font-size: x-small; background-color: transparent; border-color: transparent;" onclick="screenShot()">
+                        <span>&#128247;</span>
+                    </button>
+
                 </div>
             </nav>
             <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of a canvas -->
@@ -267,8 +295,36 @@
     </div>
 </div>
 
+<!-- FOR TAKING SCREENSHOT -->
+<script>
+HTMLCanvasElement.prototype.getContext = function(origFn) {
+  return function(type, attribs) {
+    attribs = attribs || {};
+    attribs.preserveDrawingBuffer = true;
+    return origFn.call(this, type, attribs);
+  };
+}(HTMLCanvasElement.prototype.getContext);
+</script>
+
 <!-- integrating JS file -->
 <script type="text/javascript" src="{% static '/js/final_3D_viewer_scripts.js' %}"></script>
+
+<!-- Script to detect the browser window-->
+<script>
+var user = detect.parse(navigator.userAgent);
+
+browser_name = user.browser.family
+browser_version = user.browser.version
+
+if (browser_name== "Chrome"){
+
+}
+  else {
+
+  alert ("Please switch to Google Chrome for better performance and user interface (for other browser UI section is still in development phase");
+
+}
+</script>
 
 <!-- When the user clicks on the button, toggle between hiding and showing the dropdown content -->
 <script>
@@ -400,17 +456,17 @@ $(document).ready(function() {
 
     function addVolumeStuff() {
         vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility0" style="margin-left: 1px;">').appendTo('#set_opacity_distance_bm_Color');
-        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0.0" max="10" step="0.1" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.1" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
+        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0" max="1" step="0.01" value="1" style="margin-left:2px; ">').appendTo('#set_opacity_distance_bm_Color');
+        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.1" max="1" step="0.01" value="0.25" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
 
-        vol_blending = $('<select class=vol_blending_mode id=blendMode0 style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
+        vol_blending = $('<select class=vol_blending_mode id=blendMode0 style="margin-left:5px; vertical-align:super; width:100px;">').appendTo('#set_opacity_distance_bm_Color');
         vol_blending.append($("<option>").attr('value',"0").text("Composite"));
         vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
         vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
 
-        sel = $('<input class=colors_channels id="vol_color0" type="color" value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial" >').appendTo('#set_opacity_distance_bm_Color');
+        sel = $('<input class=colors_channels id="vol_color0" type="color" value="#f401c7" style="margin-left:6px; margin-right:20px; vertical-align:initial" >').appendTo('#set_opacity_distance_bm_Color');
 
-        vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale0" type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
+        vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale0" type="text" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
 
         $( "#f" ).change(function() {
             $('.vol_set_opacity').remove();
@@ -422,17 +478,17 @@ $(document).ready(function() {
 
                 for(i=0; i<$('#f').val(); i++){
                     vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility'+ i +'"'+ '" style="margin-left: 1px;">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0.0" max="10" step="0.01" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.1" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0" max="1" step="0.01" value="1" orient="vertical" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.1" max="1" step="0.01" value="0.25" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
 
-                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' style="margin-left:5px; vertical-align:super; width:100px;">').appendTo('#set_opacity_distance_bm_Color');
                     vol_blending.append($("<option>").attr('value',"0").text("Composite"));
                     vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
                     vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
 
-                    sel = $('<input class=colors_channels type="color" id="vol_color'+ i +'"'+ ' value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial">').appendTo('#set_opacity_distance_bm_Color');
+                    sel = $('<input class=colors_channels type="color" id="vol_color'+ i +'"'+ ' value="#f401c7" style="margin-left:6px; margin-right:20px; vertical-align:initial">').appendTo('#set_opacity_distance_bm_Color');
 
-                    vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale'+ i +'"'+ ' type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
+                    vol_Z_Voxel_scale = $('<input class=vol_set_z_voxel_scale id="Slider_scale'+ i +'"'+ ' type="text" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:1px; margin-right:6px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
 
                 }
         })
@@ -480,7 +536,7 @@ $(document).ready(function() {
         sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
         sur_isovalue = $('<input class=sur_iso_Value id="isoValue0" type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
         sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7" style="margin-left: 9px; margin-right: 20px;">').appendTo('#set_iso_Color');
-        sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale0" type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
+        sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale0" type="text" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
 
         $( "#f" ).change(function() {
             $('.sur_set_opacity').remove();
@@ -494,7 +550,7 @@ $(document).ready(function() {
                     sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
                     sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
                     sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7" style="margin-left: 9px; margin-right: 20px;">').appendTo('#set_iso_Color');
-                    sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale'+ j +'"'+ ' type="number" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
+                    sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale'+ j +'"'+ ' type="text" min="0.1" max="50" step="0.1" value="1" style="width:60px; height:27px; margin-left:6px; margin-right:25px; vertical-align:super;">').appendTo('#set_iso_Color');
                 }
         })
 
@@ -718,6 +774,103 @@ document.head.append(unpkg_script_itk);
 unpkg_script_itk.onerror = function() {
     alert("Error loading " + this.src);
 };
+</script>
+
+<!-- Screen Recorder -->
+<script>
+    let start = document.getElementById('start'),
+    stop  = document.getElementById('stop'),
+    shot = document.getElementById('shot'),
+    mediaRecorder;
+
+start.addEventListener('click', async function(){
+    let stream = await recordScreen();
+    let mimeType = 'video/webm';
+    mediaRecorder = createRecorder(stream, mimeType);
+  // let node = document.createElement("p");
+    // node.textContent = "Started recording";
+    // document.body.appendChild(node);
+})
+
+stop.addEventListener('click', function(){
+    mediaRecorder.stop();
+    // let node = document.createElement("p");
+    // node.textContent = "Stopped recording";
+    //document.body.appendChild(node);
+})
+
+async function recordScreen() {
+    return await navigator.mediaDevices.getDisplayMedia({
+        audio: false,
+        video: { mediaSource: "screen"}
+    });
+}
+
+function createRecorder (stream, mimeType) {
+  // the stream data is stored in this array
+  let recordedChunks = [];
+
+  const mediaRecorder = new MediaRecorder(stream);
+
+  mediaRecorder.ondataavailable = function (e) {
+    if (e.data.size > 0) {
+      recordedChunks.push(e.data);
+    }
+  };
+  mediaRecorder.onstop = function () {
+     saveFile(recordedChunks);
+     recordedChunks = [];
+  };
+  mediaRecorder.start(200); // For every 200ms the stream data will be stored in a separate chunk.
+  return mediaRecorder;
+}
+
+function saveFile(recordedChunks){
+
+   const blob = new Blob(recordedChunks, {
+      type: 'video/webm'
+    });
+    let filename = window.prompt('Enter file name'),
+        downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${filename}.webm`;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    URL.revokeObjectURL(blob); // clear from memory
+    document.body.removeChild(downloadLink);
+}
+
+
+</script>
+
+<!-- ScreenShot -->
+<script>
+function screenShot(){
+    html2canvas(document.querySelector("#viewContainer")).then(canvas => {
+        var dataURL = canvas.toDataURL( "image/png" );
+        var data = atob( dataURL.substring( "data:image/png;base64,".length ) ),
+            asArray = new Uint8Array(data.length);
+
+        for( var i = 0, len = data.length; i < len; ++i ) {
+            asArray[i] = data.charCodeAt(i);
+        }
+
+        var blob = new Blob( [ asArray.buffer ], {type: "image/png"} );
+        // saveAs(blob, "photo.png");
+
+    let filename = window.prompt('Enter file name'),
+    downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${filename}.png`;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    URL.revokeObjectURL(blob); // clear from memory
+    document.body.removeChild(downloadLink);
+    });
+}
+
 </script>
 
 </body>

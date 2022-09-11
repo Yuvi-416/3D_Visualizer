@@ -364,7 +364,7 @@ volume_imageData_obj = volume_imageData
             // Define Color Transfer Function
             ctfun.addRGBPoint(rgbInt[3] * 1, (rgbInt[0]/256.), (rgbInt[1]/256.), (rgbInt[2]/256.))
 
-            // Define Volume Property
+            // create color and opacity transfer functions
             volumeProperty.setRGBTransferFunction(0, ctfun); // Color TransferFUnction
             volumeProperty.setScalarOpacity(0, ofun); //PieceWise TransferFunction
             volumeProperty.setShade(true);
@@ -628,6 +628,16 @@ renderer.resetCameraClippingRange();
 renderWindow.render();
 volume_vtk.setVisibility(true);
 
+// DISPLAY RESET
+const Reset_canvas = document.getElementById('Reset_canvas');
+Reset_canvas.addEventListener('click', () => {
+  // widgetState.setPlanes({ ...initialPlanesState });
+  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
+  renderer.resetCamera();
+  renderWindow.render();
+});
+
+
 }
 
 // function to convert HEX to RGBA string
@@ -823,9 +833,10 @@ surface_imageData_obj = surface_imageData
         marchingC.setContourValue((dataRange[0] + dataRange[1]) / 3);
 
         mapper.setInputConnection(marchingC.getOutputPort());
-        mapper.setScalarVisibility(true);
+
+        mapper.setScalarVisibility(false);
         mapper.setScalarRange(0, 10);
-        // mapper.setResolveCoincidentTopology(true);
+        mapper.setResolveCoincidentTopology(true);
         actor.setMapper(mapper);
 
         actor.getProperty().setColor(RGB_value.r/256., RGB_value.g/256., RGB_value.b/256.)
@@ -833,7 +844,7 @@ surface_imageData_obj = surface_imageData
         actor.getProperty().setSpecular(0.3);
         actor.getProperty().setSpecularPower(20);
         actor.getProperty().setOpacity(0.9);
-        // actor.getProperty().setBackfaceCulling(true);
+        actor.getProperty().setBackfaceCulling(true);
         actor.getProperty().setRepresentationToSurface();
         // actor.getProperty().setRepresentation()
 
@@ -1060,6 +1071,16 @@ renderer.resetCamera();
 renderWindow.render();
 // EdgeVisibility has to be turned off to load the image at beginning
 actor.getProperty().setEdgeVisibility(false);
+
+// DISPLAY RESET
+const Reset_canvas = document.getElementById('Reset_canvas');
+Reset_canvas.addEventListener('click', () => {
+  // widgetState.setPlanes({ ...initialPlanesState });
+  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
+  renderer.resetCamera();
+  renderWindow.render();
+});
+
 
 }
 
@@ -1412,6 +1433,17 @@ imageJ.setVisibility(edge_J);
 edge_J = !(edge_J);
 imageI.setVisibility(edge_I);
 edge_I = !(edge_I);
+
+// DISPLAY RESET
+const Reset_canvas = document.getElementById('Reset_canvas');
+Reset_canvas.addEventListener('click', () => {
+  // widgetState.setPlanes({ ...initialPlanesState });
+  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
+  renderer.resetCamera();
+  renderWindow.render();
+});
+
+
 }
 
 /**********************************************************************/
@@ -1744,7 +1776,6 @@ function vol_processFile(vol_arrFileList, vol_color_val) {
 vol_prom = []
 
 for ( l = 0 ; l < vol_files.length; l++){
-    console.time('image_loading_Time');
     if (l  == 0){
         if (vol_files[l].length === 1) {
               vol_prom[l] = itk.readImageFile(null, vol_files[l][0])
@@ -1775,9 +1806,6 @@ for ( l = 0 ; l < vol_files.length; l++){
             })
       }
     }
-    setTimeout(function delay(){
-      console.timeEnd('image_loading_Time');
-    }, 1500);
 }
 
 Promise.all(vol_prom).then((values) => {
@@ -1792,17 +1820,12 @@ Promise.all(vol_prom).then((values) => {
     $( "#f" ).prop( "disabled", true )
     $( ".colors_channels" ).prop( "disabled", false )
 
-    console.time('image_render_Time');
-
      volume_rendering(vol_img, vol_color_val) // Calls Volume rendering script
 
       $("#loading").hide();
 
      console.log(vol_img.length +"  -  "+ vol_files.length)
 
-    setTimeout(function delay(){
-      console.timeEnd('image_render_Time');
-    }, 1500);
 }).catch(
 console.log("Please check the input files again"));
 
@@ -1819,7 +1842,6 @@ function sur_processFile(sur_arrFileList, sur_color_val) {
 sur_prom = []
 
 for ( w = 0 ; w < sur_files.length; w++){
-    console.time('image_loading_Time');
     if (w  == 0){
         if (sur_files[w].length === 1) {
               sur_prom[w] = itk.readImageFile(null, sur_files[w][0])
@@ -1850,9 +1872,6 @@ for ( w = 0 ; w < sur_files.length; w++){
             })
       }
     }
-    setTimeout(function delay(){
-      console.timeEnd('image_loading_Time');
-    }, 1500);
 }
 
 Promise.all(sur_prom).then((values) => {
@@ -1867,17 +1886,12 @@ Promise.all(sur_prom).then((values) => {
      $( "#f" ).prop( "disabled", true )
      $( ".col_sur" ).prop( "disabled", false )
 
-     console.time('image_render_Time');
-
      surface_rendering(sur_img, sur_color_val) // Calls surface rendering script
 
      $("#loading").hide();
 
      console.log(sur_img.length +"  -  "+ sur_files.length)
-
-    setTimeout(function delay(){
-    console.timeEnd('image_render_Time');
-    }, 1500);
+;
 }).catch(
 console.log("Please check the input files again"));
 
@@ -1894,7 +1908,6 @@ function tri_processFile(tri_arrFileList) {
 tri_prom = []
 
 for ( v = 0 ; v < tri_files.length; v++){
-    console.time('image_loading_Time');
     if (v  == 0){
         if (tri_files[v].length === 1) {
               tri_prom[v] = itk.readImageFile(null, tri_files[v][0])
@@ -1925,9 +1938,6 @@ for ( v = 0 ; v < tri_files.length; v++){
             })
       }
     }
-    setTimeout(function delay(){
-    console.timeEnd('image_loading_Time');
-    }, 1500);
 }
 
 Promise.all(tri_prom).then((values) => {
@@ -1939,17 +1949,12 @@ Promise.all(tri_prom).then((values) => {
      $( "#f" ).prop( "disabled", true )
      $( "#v2" ).prop( "disabled", true )
 
-    console.time('image_render_Time');
-
      $("#loading").show();
      tri_planar_rendering(tri_img) // Calls Tri-Planar rendering script
 
      $("#loading").hide();
      console.log(tri_img.length +"  -  "+ tri_files.length)
 
-    setTimeout(function delay(){
-    console.timeEnd('image_render_Time');
-    }, 1500);
 }).catch(
 console.log("Please check the input files again"));
 
@@ -1966,7 +1971,6 @@ function mpr_processFile(mpr_arrFileList) {
 mpr_prom = []
 
 for ( u = 0 ; u < mpr_files.length; u++){
-    console.time('image_loading_Time');
     if (u  == 0){
         if (mpr_files[u].length === 1) {
               mpr_prom[u] = itk.readImageFile(null, mpr_files[u][0])
@@ -1997,9 +2001,6 @@ for ( u = 0 ; u < mpr_files.length; u++){
             })
       }
     }
-    setTimeout(function delay(){
-    console.timeEnd('image_loading_Time');
-    }, 1500);
 }
 
 Promise.all(mpr_prom).then((values) => {
@@ -2009,8 +2010,7 @@ Promise.all(mpr_prom).then((values) => {
     $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
     $( "#f" ).prop( "disabled", true )
-
-    console.time('image_render_Time');
+    $( "#Reset_canvas" ).prop( "disabled", true )
 
     $("#loading").show();
     mpr_rendering(mpr_img) // Calls Multi-Planar Reconstruction rendering script
@@ -2019,9 +2019,6 @@ Promise.all(mpr_prom).then((values) => {
     console.log(mpr_img.length +"  -  "+ mpr_files.length)
     $( "#v3" ).prop( "disabled", true )
 
-    setTimeout(function delay(){
-    console.timeEnd('image_render_Time');
-    }, 1500);
 }).catch(
 console.log("Please check the input files again"));
 
