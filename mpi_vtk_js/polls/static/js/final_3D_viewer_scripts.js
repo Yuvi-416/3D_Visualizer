@@ -222,7 +222,7 @@ function convertVtkToItkImage(vtkImage, copyData = false) {
 }
 
 /**********************************************************************/
-/*************** Volume Rendering *********************/
+/*************** Volume Rendering by Yubraj Gupta ********************/
 /**********************************************************************/
 
 function volume_rendering(volume_imageData, volume_color_val){
@@ -247,7 +247,7 @@ const { vec3, vec2, quat, mat4} = glMatrix;
 container.style.display = 'flex';
 container.style.position = 'static';
 openglRenderWindow.setContainer(container);
-const { width, height } = container.getBoundingClientRect(); /////////////////////////
+const { width, height } = container.getBoundingClientRect();
 openglRenderWindow.setSize(width, height);
 renderWindow.addView(openglRenderWindow);
 
@@ -275,9 +275,10 @@ function getCenterOfScene (renderer) {
   return center;
 }
 
-function ijkPlanesToWorld(image, planes= [number, number], axis= 0 | 1 | 2 /* for x,y,z (really: i,j,k) */) {
+function ijkPlanesToWorld(image, planes= [number, number], axis= 0 | 1 | 2) {
 let normal = [0, 0, 0];
 let origin = [0, 0, 0];
+
 // for first plane
 normal[axis] = 1;
 origin[axis] = planes[0];
@@ -285,7 +286,6 @@ origin = image.indexToWorld(origin);
 rotateVe = (vec) => {
     out = [0, 0, 0];
     vec3.transformMat3(out, vec, image.getDirection());
-    // console.log(vec3.transformMat3(out, vec, image.getDirection()));
     return out;
 };
 
@@ -301,7 +301,6 @@ origin = image.indexToWorld(origin);
 rotateVe = (vec) => {
     out = [0, 0, 0];
     vec3.transformMat3(out, vec, image.getDirection());
-    // console.log(vec3.transformMat3(out, vec, image.getDirection()));
     return out;
 };
 
@@ -344,6 +343,7 @@ volume_imageData_obj = volume_imageData
             // Load the Input
             const dataArray = volume_imageData[i].getPointData().getScalars() || volume_imageData[i].getPointData().getArrays()[0];
             const dataRange = dataArray.getRange();
+            dataRange_1 = volume_imageData[i].getPointData().getScalars().getRange();
 
             dimensions = volume_imageData[i].getDimensions()
 
@@ -357,18 +357,17 @@ volume_imageData_obj = volume_imageData
             ofun.addPoint(ii_0, 0.0);
             ofun.addPoint(ii_1, 1.0);
 
-            min = ii_0; // minimum image intensity
-            max = ii_1; // Maximum image intensity
+            min = ii_0;
+            max = ii_1;
             temp = 0
 
             // Define Color Transfer Function
             ctfun.addRGBPoint(rgbInt[3] * 1, (rgbInt[0]/256.), (rgbInt[1]/256.), (rgbInt[2]/256.))
 
             // create color and opacity transfer functions
-            volumeProperty.setRGBTransferFunction(0, ctfun); // Color TransferFUnction
-            volumeProperty.setScalarOpacity(0, ofun); //PieceWise TransferFunction
+            volumeProperty.setRGBTransferFunction(0, ctfun);
+            volumeProperty.setScalarOpacity(0, ofun);
             volumeProperty.setShade(true);
-            // volumeProperty.setInterpolationTypeToLinear();
             volumeProperty.setInterpolationTypeToFastLinear();
             volumeProperty.setAmbient(0.2);
             volumeProperty.setDiffuse(0.7);
@@ -406,10 +405,6 @@ volume_imageData_obj = volume_imageData
             [firstPlane_x, secondPlane_x_inv] = ijkPlanesToWorld(volume_imageData[i], xPlanes, 0);
             [firstPlane_y, secondPlane_y_inv] = ijkPlanesToWorld(volume_imageData[i], yPlanes, 1);
             [firstPlane_z, secondPlane_z_inv] = ijkPlanesToWorld(volume_imageData[i], zPlanes, 2);
-
-            // console.log('firstPlane_x, secondPlane_x_inv', firstPlane_x, secondPlane_x_inv)
-            // console.log('firstPlane_y, secondPlane_y_inv', firstPlane_y, secondPlane_y_inv)
-            // console.log('firstPlane_z, secondPlane_z_inv', firstPlane_z, secondPlane_z_inv)
 
             // Call the function of ClipPlane
             const clipPlaneX = vtkPlane.newInstance();
@@ -461,6 +456,7 @@ volume_imageData_obj = volume_imageData
             volumeMapper.addClippingPlane(clipPlaneZ);
             volumeMapper.addClippingPlane(clipPlaneZ_inv);
 
+            volumeMapper.setSampleDistance(0.25);
             volumeMapper.setMaximumSamplesPerRay(true);
             volumeMapper.setAutoAdjustSampleDistances(true);
 
@@ -470,7 +466,6 @@ volume_imageData_obj = volume_imageData
 
             renderer.addActor(volume_vtk);
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////
             let el = document.querySelector('.planePositionX');
             el.setAttribute('min', ((-sizeX) + img_origin_X));
             el.setAttribute('max', img_origin_X);
@@ -586,17 +581,17 @@ volume_imageData_obj = volume_imageData
 
 for(e=0; e<volume_imageData.length; e++){
 
-    volume_idOpacity = "#setScalarOpacityUnitDistance" + e
+    volume_idOpacity = "#setGradientOpacity" + e
     volume_idDistance = "#setSampleDistance" + e
     volume_idblendMode = "#blendMode" + e
     volume_idVisibility = "#visibility" + e
     volume_idColor = "#vol_color" + e
     volume_id_Z_scale  = "#Slider_scale" + e
+    volume_id_shade = "#shade" + e
+    volume_id_scalar_opacity = "#setScalarOpacityUnitDistance" + e
 
-    // console.log(volume_id_Z_scale)
-    // console.log(volume_idDistance)
     d = e
-    trigger_changes_volume(volume_idVisibility, volume_id_Z_scale, volume_visibility_control[d], volume_imageData_obj[d], volume_idOpacity, volume_idDistance, volume_opacity_val[d], volume_sample_Distance[d], renderWindow, volume_idblendMode, volume_idColor)
+    trigger_changes_volume(volume_id_scalar_opacity, volume_id_shade, volume_idVisibility, volume_id_Z_scale, volume_visibility_control[d], volume_imageData_obj[d], volume_idOpacity, volume_idDistance, volume_opacity_val[d], volume_sample_Distance[d], renderWindow, volume_idblendMode, volume_idColor)
 };
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -623,20 +618,37 @@ iStyle.setCenterOfRotation(center);
 
 renderWindow.getInteractor().setInteractorStyle(iStyle);
 
+// Change canvas background color
+var Reset_Background = document.getElementById('Reset_Background');
+count = 0;
+Reset_Background.onclick = function() {
+    count +=1;
+    console.log(count)
+    if (count == 1) {
+        renderer.setBackground(0.5, 0.5, 0.5); // GRAY
+        renderWindow.render();
+    } else if (count == 2) {
+        renderer.setBackground(1, 1, 1); // WHITE
+        renderWindow.render();
+    } else if (count == 3){
+        renderer.setBackground(0, 0, 0);  // BLACK
+        renderWindow.render();
+        console.log(count)
+        count = 0;
+    }
+};
+
 renderer.resetCamera();
 renderer.resetCameraClippingRange();
 renderWindow.render();
 volume_vtk.setVisibility(true);
 
-// DISPLAY RESET
+// Canvas reset
 const Reset_canvas = document.getElementById('Reset_canvas');
 Reset_canvas.addEventListener('click', () => {
-  // widgetState.setPlanes({ ...initialPlanesState });
-  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
   renderer.resetCamera();
   renderWindow.render();
 });
-
 
 }
 
@@ -646,18 +658,29 @@ const hex2rgba = (hex, alpha = 1) => {
   return `rgba(${r},${g},${b},${alpha})`;
 };
 
-function trigger_changes_volume(volume_idVisibility, volume_id_Z_scale, volume_visibility_control, volume_imageData_obj, volume_idOpacity, volume_idDistance, volume_opacity_val, volume_sample_Distance, renderWindow, volume_idblendMode, volume_idColor) {
+// function to trigger switches
+function trigger_changes_volume(volume_id_scalar_opacity, volume_id_shade, volume_idVisibility, volume_id_Z_scale, volume_visibility_control, volume_imageData_obj, volume_idOpacity, volume_idDistance, volume_opacity_val, volume_sample_Distance, renderWindow, volume_idblendMode, volume_idColor) {
 
-    // Control Sample Opacity
+    // Control Gradient Opacity
     $(volume_idOpacity).change(function() {
       newVal_OPA = this.value
-       volume_opacity_val.setScalarOpacityUnitDistance(0, newVal_OPA);
+       volume_opacity_val.setGradientOpacityMaximumOpacity(0, newVal_OPA); // Gradient
+       renderWindow.render();
+       console.log(newVal_OPA);
+    });
+
+    // Control Scalar Opacity
+    $(volume_id_scalar_opacity).change(function() {
+      new_SD = this.value
+       //console.log(new_SD)
+       volume_opacity_val.setScalarOpacityUnitDistance(0, new_SD);
        renderWindow.render();
     });
 
       // Control Sample Distance
     $(volume_idDistance).change(function() {
       new_Val_SD = this.value
+       console.log(new_Val_SD)
        volume_sample_Distance.setSampleDistance(new_Val_SD);
        renderWindow.render();
     });
@@ -675,6 +698,14 @@ function trigger_changes_volume(volume_idVisibility, volume_id_Z_scale, volume_v
         volume_visibility_control.setVisibility(VIS);
         renderWindow.render();
         VIS = !(VIS);
+    });
+
+    // Control Image Shade
+    var SHADE = false;
+    $(volume_id_shade).on('click', function() {
+        volume_opacity_val.setShade(SHADE);
+        renderWindow.render();
+        SHADE = !(SHADE);
     });
 
     // Control the color of the image
@@ -716,7 +747,7 @@ function trigger_changes_volume(volume_idVisibility, volume_id_Z_scale, volume_v
 }
 
 /**********************************************************************/
-/*************** Surface Rendering ********************/
+/*************** Surface Rendering by Yubraj Gupta ********************/
 /**********************************************************************/
 
 function surface_rendering(surface_imageData, surface_color_val){
@@ -775,7 +806,6 @@ function getCroppingPlanes(imageData, ijkPlanes) {
   const rotateVec = (vec) => {
     const out = [0, 0, 0];
     vec3.transformMat3(out, vec, imageData.getDirection());
-    // vec3.transformQuat(out, vec, rotation);
     return out;
   };
 
@@ -834,7 +864,7 @@ surface_imageData_obj = surface_imageData
 
         mapper.setInputConnection(marchingC.getOutputPort());
 
-        mapper.setScalarVisibility(false);
+        mapper.setScalarVisibility(true);
         mapper.setScalarRange(0, 10);
         mapper.setResolveCoincidentTopology(true);
         actor.setMapper(mapper);
@@ -846,7 +876,6 @@ surface_imageData_obj = surface_imageData
         actor.getProperty().setOpacity(0.9);
         actor.getProperty().setBackfaceCulling(true);
         actor.getProperty().setRepresentationToSurface();
-        // actor.getProperty().setRepresentation()
 
         // Add actor on renderer
         renderer.addActor(actor);
@@ -1042,7 +1071,6 @@ for(b=0; b<surface_imageData.length; b++){
     trigger_changes_iso(surface_idOpacity, surface_id_Z_Scale, surface_imageData_obj[z], surface_idEDVSI, surface_idColor, surface_opacity_val[z], surface_idISO, surface_iso[z], surface_iso_dataRange[z], renderWindow)
 };
 
-////////////////////////////////////////////////////////
 const center = getCenterOfScene(renderer);
 const camera = vtkCamera.newInstance();
 
@@ -1069,14 +1097,33 @@ renderWindow.getInteractor().setInteractorStyle(iStyle);
 
 renderer.resetCamera();
 renderWindow.render();
+
 // EdgeVisibility has to be turned off to load the image at beginning
 actor.getProperty().setEdgeVisibility(false);
+
+// Change canvas background color
+var Reset_Background = document.getElementById('Reset_Background');
+count = 0;
+Reset_Background.onclick = function() {
+    count +=1;
+    console.log(count)
+    if (count == 1) {
+        renderer.setBackground(0.5, 0.5, 0.5); // GRAY
+        renderWindow.render();
+    } else if (count == 2) {
+        renderer.setBackground(1, 1, 1); // WHITE
+        renderWindow.render();
+    } else if (count == 3){
+        renderer.setBackground(0, 0, 0);  // BLACK
+        renderWindow.render();
+        console.log(count)
+        count = 0;
+    }
+};
 
 // DISPLAY RESET
 const Reset_canvas = document.getElementById('Reset_canvas');
 Reset_canvas.addEventListener('click', () => {
-  // widgetState.setPlanes({ ...initialPlanesState });
-  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
   renderer.resetCamera();
   renderWindow.render();
 });
@@ -1434,11 +1481,29 @@ edge_J = !(edge_J);
 imageI.setVisibility(edge_I);
 edge_I = !(edge_I);
 
+// Change canvas background color
+var Reset_Background = document.getElementById('Reset_Background');
+count = 0;
+Reset_Background.onclick = function() {
+    count +=1;
+    console.log(count)
+    if (count == 1) {
+        renderer.setBackground(0.5, 0.5, 0.5); // GRAY
+        renderWindow.render();
+    } else if (count == 2) {
+        renderer.setBackground(1, 1, 1); // WHITE
+        renderWindow.render();
+    } else if (count == 3){
+        renderer.setBackground(0, 0, 0);  // BLACK
+        renderWindow.render();
+        console.log(count)
+        count = 0;
+    }
+};
+
 // DISPLAY RESET
 const Reset_canvas = document.getElementById('Reset_canvas');
 Reset_canvas.addEventListener('click', () => {
-  // widgetState.setPlanes({ ...initialPlanesState });
-  // volume_imageData_obj.setCenter( volume_imageData_obj[0].getCenter());
   renderer.resetCamera();
   renderWindow.render();
 });
@@ -1549,7 +1614,7 @@ for (let i = 0; i < 4; i++) {
   element.setAttribute('class', 'view');
   element.style.width = '50%';
   element.style.height = '400px';
-  element.style.display = 'inline-flex'; // inline-flex is used to fixed the divided canvas block
+  element.style.display = 'inline-flex';
   element.style.position = 'none';
   container.appendChild(element);
 
@@ -1817,14 +1882,14 @@ Promise.all(vol_prom).then((values) => {
     $( "#r2" ).prop( "disabled", true )
     $( "#btn1" ).prop( "disabled", true )
     $( "#btn2" ).prop( "disabled", true )
-    $( "#f" ).prop( "disabled", true )
+    // $( "#f" ).prop( "disabled", true )
     $( ".colors_channels" ).prop( "disabled", false )
 
      volume_rendering(vol_img, vol_color_val) // Calls Volume rendering script
 
       $("#loading").hide();
 
-     console.log(vol_img.length +"  -  "+ vol_files.length)
+    console.log(vol_img.length +"  -  "+ vol_files.length)
 
 }).catch(
 console.log("Please check the input files again"));

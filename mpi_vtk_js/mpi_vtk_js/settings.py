@@ -84,8 +84,8 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'VTK_MPR',
-#         'USER': 'yuvi',
+#         'NAME': 'IMAGE-IN',
+#         'USER': 'UV',
 #         'PASSWORD': 'password',
 #         'HOST': '127.0.0.1',  # Or an IP Address that your DB is hosted on
 #         'PORT': '3306',
