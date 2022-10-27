@@ -6,23 +6,7 @@ from django.views import generic
 import json
 from .models import Choice, Question
 
-# Working Perfectly
-
 def IndexView(request):
-    # template_name = 'polls/index1.html'
-    # context_object_name = 'latest_question_list'
-    # def get_queryset(self):
-    # """Return the last five published questions."""
-    # return Question.objects.order_by('-pub_date')[:5]
-
-    # res = sum(3, 5)
-    # reader = array_ext(directory)
-    # reader = reader.tolist()
-    # reader = json.dumps(reader)
-    # print(reader)
-    # print(type(reader))
-
-    # context = {"r": reader, "text": "hola", "array": [4, 5]}
     return render(request, 'polls/Final_3D_viewer_html_file.html')
 
 
