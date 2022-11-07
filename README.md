@@ -2,7 +2,8 @@
 
 A web-browser-based multidimensional 3D visualizer for confocal and focused-ion beam scanning electron microscopy modalities.
 Four visualization modules are available: Volume, Surface, Tri-Planar, and Multi-planar reconstruction.
-Our visualizer takes a sequence of DICOM standard files as input and renders them based on the user viewer's choice.
+Our visualizer takes a sequence of images or stacked image files as input and displays them based on the preferences of the user viewer.
+For now our visualizer intakes: .dcm, .tif, .tiff, .bmp, .jpg, .mha, .mrc, .nii, .png, .nrrd, .mgh image files as an input.
 
 ## Features:
 - Volume Rendering (Opacity value slider, Sample distance slider, Blending mode choice, Color choice, Region of intrest clipping slider, Z-dimension scaling)
