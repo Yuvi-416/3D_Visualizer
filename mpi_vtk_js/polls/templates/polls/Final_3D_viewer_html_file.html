@@ -22,8 +22,8 @@
     <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
 
-    <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/itk-wasm@1.0.0-b.48/dist/umd/itk-wasm.min.js"></script>
 
     <script type="text/javascript" src="{% static '/js/detect.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/vtk.js' %}"></script>
@@ -710,15 +710,15 @@ window.addEventListener('unhandledrejection', function(event) {
 </script>
 
 <!-- STILL NOT SURE WHETHER THIS LINE HAS ANY IMPACT OR NOT -->
-<script>
-let unpkg_script_itk = document.createElement('unpkg_script_itk');
-unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";
-document.head.append(unpkg_script_itk);
+<!--<script>-->
+<!--let unpkg_script_itk = document.createElement('unpkg_script_itk');-->
+<!--unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";-->
+<!--document.head.append(unpkg_script_itk);-->
 
-unpkg_script_itk.onerror = function() {
-    alert("Error loading " + this.src);
-};
-</script>
+<!--unpkg_script_itk.onerror = function() {-->
+<!--    alert("Error loading " + this.src);-->
+<!--};-->
+<!--</script>-->
 
 <!-- Screen Recorder -->
 <script>

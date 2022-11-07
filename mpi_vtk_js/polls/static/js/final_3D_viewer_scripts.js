@@ -9,11 +9,10 @@
  * Contain two functions: (1). convertItkToVtkImage (helps to convert itk files into vtk objects)
  * and (2). convertVtkToItkImage (helps to convert vtk objects into itk files).
 */
-
 const { vtkErrorMacro } = vtk.macro;
 
-// see itk.js/PixelTypes.js
-const ITKPixelTypes = {
+// see itk.js PixelTypes.js
+const ITKJSPixelTypes = {
   Unknown: 0,
   Scalar: 1,
   RGB: 2,
@@ -32,12 +31,53 @@ const ITKPixelTypes = {
   VariableSizeMatrix: 15,
 };
 
-/**
- * Converts an itk.js image to a vtk.js image.
- *
- * Requires an itk.js image as input.
- */
+// itk-wasm pixel types from https://github.com/InsightSoftwareConsortium/itk-wasm/blob/master/src/core/PixelTypes.ts
+const ITKWASMPixelTypes = {
+  Unknown: 'Unknown',
+  Scalar: 'Scalar',
+  RGB: 'RGB',
+  RGBA: 'RGBA',
+  Offset: 'Offset',
+  Vector: 'Vector',
+  Point: 'Point',
+  CovariantVector: 'CovariantVector',
+  SymmetricSecondRankTensor: 'SymmetricSecondRankTensor',
+  DiffusionTensor3D: 'DiffusionTensor3D',
+  Complex: 'Complex',
+  FixedArray: 'FixedArray',
+  Array: 'Array',
+  Matrix: 'Matrix',
+  VariableLengthVector: 'VariableLengthVector',
+  VariableSizeMatrix: 'VariableSizeMatrix',
+};
 
+const vtkArrayTypeToItkComponentType = new Map([
+  ['Uint8Array', 'uint8'],
+  ['Int8Array', 'int8'],
+  ['Uint16Array', 'uint16'],
+  ['Int16Array', 'int16'],
+  ['Uint32Array', 'uint32'],
+  ['Int32Array', 'int32'],
+  ['Float32Array', 'float32'],
+  ['Float64Array', 'float64'],
+]);
+
+const itkComponentTypeToVtkArrayType = new Map([
+  ['uint8', 'Uint8Array'],
+  ['int8', 'Int8Array'],
+  ['uint16', 'Uint16Array'],
+  ['int16', 'Int16Array'],
+  ['uint32', 'Uint32Array'],
+  ['int32', 'Int32Array'],
+  ['float32', 'Float32Array'],
+  ['float64', 'Float64Array'],
+]);
+
+/**
+ * Converts an itk-wasm Image to a vtk.js vtkImageData.
+ *
+ * Requires an itk-wasm Image as input.
+ */
 function convertItkToVtkImage(itkImage, options = {}) {
   const vtkImage = {
     origin: [0, 0, 0],
@@ -46,6 +86,10 @@ function convertItkToVtkImage(itkImage, options = {}) {
 
   const dimensions = [1, 1, 1];
   const direction = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+
+  // Check whether itkImage is an itk.js Image or an itk-wasm Image?
+  const isITKWasm = itkImage.direction.data === undefined;
+  const ITKPixelTypes = isITKWasm ? ITKWASMPixelTypes : ITKJSPixelTypes;
 
   for (let idx = 0; idx < itkImage.imageType.dimension; ++idx) {
     vtkImage.origin[idx] = itkImage.origin[idx];
@@ -56,13 +100,17 @@ function convertItkToVtkImage(itkImage, options = {}) {
       // matrix on the vtkImageData is a webGL matrix, which uses a
       // column-major data layout. Transpose the direction matrix from
       // itkImage when instantiating that vtkImageData direction matrix.
-      direction[col + idx * 3] =
-        itkImage.direction.data[idx + col * itkImage.imageType.dimension];
+      if (isITKWasm) {
+        direction[col + idx * 3] =
+          itkImage.direction[idx + col * itkImage.imageType.dimension];
+      } else {
+        direction[col + idx * 3] =
+          itkImage.direction.data[idx + col * itkImage.imageType.dimension];
+      }
     }
   }
 
   // Create VTK Image Data
-//  const actor = vtk.Rendering.Core.vtkActor.newInstance();
   const imageData = vtk.Common.DataModel.vtkImageData.newInstance(vtkImage);
 
   // Create VTK point data -- the data associated with the pixels / voxels
@@ -80,7 +128,11 @@ function convertItkToVtkImage(itkImage, options = {}) {
 
   // Associate the point data that are 3D vectors / tensors
   // Refer to itk-js/src/PixelTypes.js for numerical values
-  switch (itkImage.imageType.pixelType) {
+  switch (
+    isITKWasm
+      ? ITKPixelTypes[itkImage.imageType.pixelType]
+      : itkImage.imageType.pixelType
+  ) {
     case ITKPixelTypes.Scalar:
       break;
     case ITKPixelTypes.RGB:
@@ -137,7 +189,7 @@ function convertItkToVtkImage(itkImage, options = {}) {
       break;
     default:
       vtkErrorMacro(
-        `Cannot handle unexpected ITK.js pixel type ${itkImage.imageType.pixelType}`
+        `Cannot handle unexpected itk-wasm pixel type ${itkImage.imageType.pixelType}`
       );
       return null;
   }
@@ -145,51 +197,34 @@ function convertItkToVtkImage(itkImage, options = {}) {
   return imageData;
 }
 
-const vtkArrayTypeToItkComponentType = new Map([
-  ['Uint8Array', 'uint8_t'],
-  ['Int8Array', 'int8_t'],
-  ['Uint16Array', 'uint16_t'],
-  ['Int16Array', 'int16_t'],
-  ['Uint32Array', 'uint32_t'],
-  ['Int32Array', 'int32_t'],
-  ['Float32Array', 'float'],
-  ['Float64Array', 'double'],
-]);
-
 /**
- * Converts a vtk.js image to an itk.js image.
+ * Converts a vtk.js vtkImageData to an itk-wasm Image.
  *
- * Requires a vtk.js image as input.
+ * Requires a vtk.js vtkImageData as input.
+ *
  */
-
 function convertVtkToItkImage(vtkImage, copyData = false) {
+  const dimension = 3;
   const itkImage = {
     imageType: {
-      dimension: 3,
-      pixelType: ITKPixelTypes.Scalar,
+      dimension,
+      pixelType: ITKWASMPixelTypes.Scalar,
       componentType: '',
       components: 1,
     },
-    name: 'name',
+    name: 'vtkImageData',
     origin: vtkImage.getOrigin(),
     spacing: vtkImage.getSpacing(),
-    direction: {
-      data: [1, 0, 0, 0, 1, 0, 0, 0, 1],
-    },
+    direction: new Float64Array(9),
     size: vtkImage.getDimensions(),
   };
 
   const direction = vtkImage.getDirection();
 
-  const dimension = itkImage.size.length;
-  itkImage.imageType.dimension = dimension;
-  itkImage.direction.rows = dimension;
-  itkImage.direction.columns = dimension;
-
   // Transpose the direction matrix from column-major to row-major
   for (let idx = 0; idx < dimension; ++idx) {
     for (let idy = 0; idy < dimension; ++idy) {
-      itkImage.direction.data[idx + idy * dimension] =
+      itkImage.direction[idx + idy * dimension] =
         direction[idy + idx * dimension];
     }
   }
@@ -198,10 +233,10 @@ function convertVtkToItkImage(vtkImage, copyData = false) {
 
   let vtkArray;
   if (pointData.getTensors() !== null) {
-    itkImage.imageType.pixelType = ITKPixelTypes.DiffusionTensor3D;
+    itkImage.imageType.pixelType = ITKWASMPixelTypes.DiffusionTensor3D;
     vtkArray = pointData.getTensors();
   } else if (pointData.getVectors() != null) {
-    itkImage.imageType.pixelType = ITKPixelTypes.Vector;
+    itkImage.imageType.pixelType = ITKWASMPixelTypes.Vector;
     vtkArray = pointData.getVectors();
   } else {
     vtkArray = pointData.getScalars();
@@ -219,6 +254,317 @@ function convertVtkToItkImage(vtkImage, copyData = false) {
   }
 
   return itkImage;
+}
+
+/**
+ * Converts an itk-wasm PolyData to a vtk.js vtkPolyData.
+ *
+ * Requires an itk-wasm PolyData as input.
+ */
+function convertItkToVtkPolyData(itkPolyData, options = {}) {
+  const pointDataArrays = [];
+  if (itkPolyData.pointData.length) {
+    pointDataArrays.push({
+      data: {
+        vtkClass: 'vtkDataArray',
+        name: options.pointDataName || 'PointData',
+        numberOfComponents: itkPolyData.polyDataType.pointPixelComponents,
+        size: itkPolyData.pointData.length,
+        dataType: itkComponentTypeToVtkArrayType.get(
+          itkPolyData.polyDataType.pointPixelComponentType
+        ),
+        buffer: itkPolyData.pointData.buffer,
+        values: itkPolyData.pointData,
+      },
+    });
+  }
+  const cellDataArrays = [];
+  if (itkPolyData.cellData.length) {
+    cellDataArrays.push({
+      data: {
+        vtkClass: 'vtkDataArray',
+        name: options.cellDataName || 'CellData',
+        numberOfComponents: itkPolyData.polyDataType.pointPixelComponents,
+        size: itkPolyData.cellData.length,
+        dataType: itkComponentTypeToVtkArrayType.get(
+          itkPolyData.polyDataType.pointPixelComponentType
+        ),
+        buffer: itkPolyData.cellData.buffer,
+        values: itkPolyData.cellData,
+      },
+    });
+  }
+  const vtkPolyDataModel = {
+    points: {
+      vtkClass: 'vtkPoints',
+      name: '_points',
+      numberOfComponents: 3,
+      size: itkPolyData.numberOfPoints,
+      dataType: 'Float32Array',
+      buffer: itkPolyData.points.buffer,
+      values: itkPolyData.points,
+    },
+    verts: {
+      vtkClass: 'vtkCellArray',
+      name: '_verts',
+      numberOfComponents: 1,
+      size: itkPolyData.verticesBufferSize,
+      dataType: 'Uint32Array',
+      buffer: itkPolyData.vertices.buffer,
+      values: itkPolyData.vertices,
+    },
+    lines: {
+      vtkClass: 'vtkCellArray',
+      name: '_lines',
+      numberOfComponents: 1,
+      size: itkPolyData.linesBufferSize,
+      dataType: 'Uint32Array',
+      buffer: itkPolyData.lines.buffer,
+      values: itkPolyData.lines,
+    },
+    polys: {
+      vtkClass: 'vtkCellArray',
+      name: '_polys',
+      numberOfComponents: 1,
+      size: itkPolyData.polygonsBufferSize,
+      dataType: 'Uint32Array',
+      buffer: itkPolyData.polygons.buffer,
+      values: itkPolyData.polygons,
+    },
+    strips: {
+      vtkClass: 'vtkCellArray',
+      name: '_strips',
+      numberOfComponents: 1,
+      size: itkPolyData.triangleStripsBufferSize,
+      dataType: 'Uint32Array',
+      buffer: itkPolyData.triangleStrips.buffer,
+      values: itkPolyData.triangleStrips,
+    },
+    pointData: {
+      vtkClass: 'vtkDataSetAttributes',
+      activeGlobalIds: -1,
+      activeNormals: -1,
+      activePedigreeIds: -1,
+      activeScalars: -1,
+      activeTCoords: -1,
+      activeTensors: -1,
+      activeVectors: -1,
+      copyFieldFlags: [],
+      doCopyAllOff: false,
+      doCopyAllOn: true,
+      arrays: pointDataArrays,
+    },
+    cellData: {
+      vtkClass: 'vtkDataSetAttributes',
+      activeGlobalIds: -1,
+      activeNormals: -1,
+      activePedigreeIds: -1,
+      activeScalars: -1,
+      activeTCoords: -1,
+      activeTensors: -1,
+      activeVectors: -1,
+      copyFieldFlags: [],
+      doCopyAllOff: false,
+      doCopyAllOn: true,
+      arrays: cellDataArrays,
+    },
+  };
+
+  // Create VTK PolyData
+  const polyData = vtk.Common.DataModel.vtkPolyData.newInstance(vtkPolyDataModel);
+  const pd = polyData.getPointData();
+  const cd = polyData.getCellData();
+
+  if (itkPolyData.pointData.length) {
+    // Associate the point data that are 3D vectors / tensors
+    switch (ITKWASMPixelTypes[itkPolyData.polyDataType.pointPixelType]) {
+      case ITKWASMPixelTypes.Scalar:
+        pd.setScalars(pd.getArrayByIndex(0));
+        break;
+      case ITKWASMPixelTypes.RGB:
+        break;
+      case ITKWASMPixelTypes.RGBA:
+        break;
+      case ITKWASMPixelTypes.Offset:
+        break;
+      case ITKWASMPixelTypes.Vector:
+        if (itkPolyData.polyDataType.pointPixelComponents === 3) {
+          pd.setVectors(pd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.Point:
+        break;
+      case ITKWASMPixelTypes.CovariantVector:
+        if (itkPolyData.polyDataType.pointPixelComponents === 3) {
+          pd.setVectors(pd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.SymmetricSecondRankTensor:
+        if (itkPolyData.polyDataType.pointPixelComponents === 6) {
+          pd.setTensors(pd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.DiffusionTensor3D:
+        if (itkPolyData.polyDataType.pointPixelComponents === 6) {
+          pd.setTensors(pd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.Complex:
+        break;
+      case ITKWASMPixelTypes.FixedArray:
+        break;
+      case ITKWASMPixelTypes.Array:
+        break;
+      case ITKWASMPixelTypes.Matrix:
+        break;
+      case ITKWASMPixelTypes.VariableLengthVector:
+        break;
+      case ITKWASMPixelTypes.VariableSizeMatrix:
+        break;
+      default:
+        vtkErrorMacro(
+          `Cannot handle unexpected itk-wasm pixel type ${itkPolyData.polyDataType.pointPixelType}`
+        );
+        return null;
+    }
+  }
+
+  if (itkPolyData.cellData.length) {
+    // Associate the cell data that are 3D vectors / tensors
+    switch (ITKWASMPixelTypes[itkPolyData.polyDataType.cellPixelType]) {
+      case ITKWASMPixelTypes.Scalar:
+        cd.setScalars(cd.getArrayByIndex(0));
+        break;
+      case ITKWASMPixelTypes.RGB:
+        break;
+      case ITKWASMPixelTypes.RGBA:
+        break;
+      case ITKWASMPixelTypes.Offset:
+        break;
+      case ITKWASMPixelTypes.Vector:
+        if (itkPolyData.polyDataType.pointPixelComponents === 3) {
+          cd.setVectors(cd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.Point:
+        break;
+      case ITKWASMPixelTypes.CovariantVector:
+        if (itkPolyData.polyDataType.pointPixelComponents === 3) {
+          cd.setVectors(cd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.SymmetricSecondRankTensor:
+        if (itkPolyData.polyDataType.pointPixelComponents === 6) {
+          cd.setTensors(cd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.DiffusionTensor3D:
+        if (itkPolyData.polyDataType.pointPixelComponents === 6) {
+          cd.setTensors(cd.getArrayByIndex(0));
+        }
+        break;
+      case ITKWASMPixelTypes.Complex:
+        break;
+      case ITKWASMPixelTypes.FixedArray:
+        break;
+      case ITKWASMPixelTypes.Array:
+        break;
+      case ITKWASMPixelTypes.Matrix:
+        break;
+      case ITKWASMPixelTypes.VariableLengthVector:
+        break;
+      case ITKWASMPixelTypes.VariableSizeMatrix:
+        break;
+      default:
+        vtkErrorMacro(
+          `Cannot handle unexpected itk-wasm pixel type ${itkPolyData.polyDataType.pointPixelType}`
+        );
+        return null;
+    }
+  }
+  return polyData;
+}
+
+/**
+ * Converts a vtk.js vtkPolyData to an itk-wasm PolyData.
+ *
+ * Requires a vtk.js vtkPolyData as input.
+ *
+ */
+function convertVtkToItkPolyData(polyData, options = {}) {
+  const itkPolyData = {
+    polyDataType: {
+      pointPixelComponentType: 'float32',
+      pointPixelComponents: 1,
+      pointPixelType: 'Scalar',
+      cellPixelComponentType: 'float32',
+      cellPixelComponents: 1,
+      cellPixelType: 'Scalar',
+    },
+    numberOfPoints: polyData.getNumberOfPoints(),
+    points: polyData.getPoints().getData(),
+    verticesBufferSize: polyData.getVerts().getNumberOfValues(),
+    vertices: polyData.getVerts().getData(),
+    linesBufferSize: polyData.getLines().getNumberOfValues(),
+    lines: polyData.getLines().getData(),
+    polygonsBufferSize: polyData.getPolys().getNumberOfValues(),
+    polygons: polyData.getPolys().getData(),
+    triangleStripsBufferSize: polyData.getStrips().getNumberOfValues(),
+    triangleStrips: polyData.getStrips().getData(),
+    numberOfPointPixels: 0,
+    pointData: new Float32Array(),
+    numberOfCellPixels: 0,
+    cellData: new Float32Array(),
+  };
+
+  const pd = polyData.getPointData();
+  if (pd.getNumberOfArrays()) {
+    const pdArray = options.pointDataName
+      ? pd.getArrayByName(options.pointDataName)
+      : pd.getArrayByIndex(0);
+    itkPolyData.numberOfPointPixels = pdArray.getNumberOfTuples();
+    itkPolyData.pointData = pdArray.getData();
+    itkPolyData.polyDataType.pointPixelComponentType =
+      vtkArrayTypeToItkComponentType.get(pdArray.getDataType());
+    // default to the same type
+    itkPolyData.polyDataType.cellPixelComponentType =
+      itkPolyData.polyDataType.pointPixelComponentType;
+    itkPolyData.polyDataType.pointPixelComponents =
+      pdArray.getNumberOfComponents();
+    itkPolyData.polyDataType.cellPixelComponents =
+      itkPolyData.polyDataType.pointPixelComponents;
+    if (pd.getTensors() === pdArray) {
+      itkPolyData.polyDataType.pointPixelType =
+        ITKWASMPixelTypes.SymmetricSecondRankTensor;
+    } else if (pd.getVectors() === pdArray) {
+      itkPolyData.polyDataType.pointPixelType = ITKWASMPixelTypes.Vector;
+    }
+    itkPolyData.polyDataType.cellPixelType =
+      itkPolyData.polyDataType.pointPixelType;
+  }
+
+  const cd = polyData.getCellData();
+  if (cd.getNumberOfArrays()) {
+    const cdArray = options.cellDataName
+      ? pd.getArrayByName(options.cellDataName)
+      : pd.getArrayByIndex(0);
+    itkPolyData.numberOfCellPixels = cdArray.getNumberOfTuples();
+    itkPolyData.cellData = cdArray.getData();
+    itkPolyData.polyDataType.cellPixelComponentType =
+      vtkArrayTypeToItkComponentType.get(cdArray.getDataType());
+    itkPolyData.polyDataType.cellPixelComponents =
+      cdArray.getNumberOfComponents();
+    if (cd.getTensors() === cdArray) {
+      itkPolyData.polyDataType.cellPixelType =
+        ITKWASMPixelTypes.SymmetricSecondRankTensor;
+    } else if (cd.getVectors() === cdArray) {
+      itkPolyData.polyDataType.cellPixelType = ITKWASMPixelTypes.Vector;
+    } else {
+      itkPolyData.polyDataType.cellPixelType = ITKWASMPixelTypes.Scalar;
+    }
+  }
+
+  return itkPolyData;
 }
 
 /**********************************************************************/
@@ -1840,36 +2186,49 @@ function vol_processFile(vol_arrFileList, vol_color_val) {
 
 vol_prom = []
 
-for ( l = 0 ; l < vol_files.length; l++){
-    if (l  == 0){
-        if (vol_files[l].length === 1) {
-              vol_prom[l] = itk.readImageFile(null, vol_files[l][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                vol_imageData = convertItkToVtkImage(itkImage)
-                vol_img.push(vol_imageData)
-              })
-          } else {
-           vol_prom[l] = itk.readImageDICOMFileSeries(vol_files[l]).then(function ({ image: itkImage }) {
-            vol_imageData = convertItkToVtkImage(itkImage)
+for ( l = 0 ; l < vol_files.length; l++) {
+
+    if (l  == 0) {
+        if (vol_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
+             vol_prom[l] = itk.readImageDICOMFileSeries(vol_files[l]).then(function ({ image: itkImage }) {
+             vol_imageData = convertItkToVtkImage(itkImage)
              vol_img.push(vol_imageData)
-              })
-          }
-        }
-    else {
-        if (vol_files[l].length === 1) {
-              vol_prom[l] = itk.readImageFile(null, vol_files[l][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                vol_imageData = convertItkToVtkImage(itkImage)
-                 vol_img.push(vol_imageData)
-              })
-          } else {
-            vol_prom[l] = itk.readImageDICOMFileSeries(vol_files[l]).then(function ({ image: itkImage }) {
-               vol_imageData = convertItkToVtkImage(itkImage)
-               vol_img.push(vol_imageData)
+             })
+
+        } else if (vol_files[l].length !== 1) {
+             vol_prom[l] = itk.readImageFileSeries(vol_files[l], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+             vol_imageData = convertItkToVtkImage(itkImage)
+             vol_img.push(vol_imageData)
+             })
+
+        } else if (vol_files[l].length === 1) {
+            vol_prom[l] = itk.readImageFile(null, vol_files[l][0]).then(function ({ image: itkImage, webWorker }) {
+            webWorker.terminate()
+            vol_imageData = convertItkToVtkImage(itkImage)
+            vol_img.push(vol_imageData)
             })
-      }
+        }
+    }
+    else {
+        if (vol_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
+            vol_prom[l] = itk.readImageDICOMFileSeries(vol_files[l]).then(function ({ image: itkImage }) {
+            vol_imageData = convertItkToVtkImage(itkImage)
+            vol_img.push(vol_imageData)
+            })
+
+        } else if (vol_files[l].length !== 1) {
+            vol_prom[l] = itk.readImageFileSeries(vol_files[l], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+            vol_imageData = convertItkToVtkImage(itkImage)
+            vol_img.push(vol_imageData)
+            })
+
+        } else if (vol_files[l].length === 1) {
+            vol_prom[l] = itk.readImageFile(null, vol_files[l][0]).then(function ({ image: itkImage, webWorker }) {
+            webWorker.terminate()
+            vol_imageData = convertItkToVtkImage(itkImage)
+            vol_img.push(vol_imageData)
+            })
+        }
     }
 }
 
@@ -1906,36 +2265,48 @@ function sur_processFile(sur_arrFileList, sur_color_val) {
 
 sur_prom = []
 
-for ( w = 0 ; w < sur_files.length; w++){
-    if (w  == 0){
-        if (sur_files[w].length === 1) {
-              sur_prom[w] = itk.readImageFile(null, sur_files[w][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                sur_imageData = convertItkToVtkImage(itkImage)
-                sur_img.push(sur_imageData)
-              })
-          } else {
-           sur_prom[w] = itk.readImageDICOMFileSeries(sur_files[w]).then(function ({ image: itkImage }) {
-            sur_imageData = convertItkToVtkImage(itkImage)
-             sur_img.push(sur_imageData)
-              })
-          }
-        }
-    else {
-        if (sur_files[w].length === 1) {
-              sur_prom[w] = itk.readImageFile(null, sur_files[w][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                sur_imageData = convertItkToVtkImage(itkImage)
-                 sur_img.push(sur_imageData)
-              })
-          } else {
+for ( w = 0 ; w < sur_files.length; w++) {
+    if (w  == 0) {
+        if (sur_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
             sur_prom[w] = itk.readImageDICOMFileSeries(sur_files[w]).then(function ({ image: itkImage }) {
-                sur_imageData = convertItkToVtkImage(itkImage)
-                sur_img.push(sur_imageData)
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
             })
-      }
+
+        } else if (sur_files[w].length !== 1) {
+            sur_prom[w] = itk.readImageFileSeries(sur_files[w], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
+            })
+
+        } else if (sur_files[w].length === 1) {
+            sur_prom[w] = itk.readImageFile(null, sur_files[w][0]).then(function ({ image: itkImage, webWorker }) {
+            webWorker.terminate()
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
+            })
+        }
+    }
+    else {
+        if (sur_arr[0][0].webkitRelativePath.slice(-4) == '.dcm')  {
+            sur_prom[w] = itk.readImageDICOMFileSeries(sur_files[w]).then(function ({ image: itkImage }) {
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
+            })
+
+        } else if (sur_files[w].length !== 1) {
+            sur_prom[w] = itk.readImageFileSeries(sur_files[w], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
+            })
+
+        } else if (sur_files[w].length === 1) {
+            sur_prom[w] = itk.readImageFile(null, sur_files[w][0]).then(function ({ image: itkImage, webWorker }) {
+            webWorker.terminate()
+            sur_imageData = convertItkToVtkImage(itkImage)
+            sur_img.push(sur_imageData)
+            })
+        }
     }
 }
 
@@ -1972,36 +2343,46 @@ function tri_processFile(tri_arrFileList) {
 
 tri_prom = []
 
-for ( v = 0 ; v < tri_files.length; v++){
-    if (v  == 0){
-        if (tri_files[v].length === 1) {
-              tri_prom[v] = itk.readImageFile(null, tri_files[v][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                tri_imageData = convertItkToVtkImage(itkImage)
-                tri_img.push(tri_imageData)
-              })
-          } else {
-           tri_prom[v] = itk.readImageDICOMFileSeries(tri_files[v]).then(function ({ image: itkImage }) {
-            tri_imageData = convertItkToVtkImage(itkImage)
+for ( v = 0 ; v < tri_files.length; v++) {
+    if (v  == 0) {
+        if (tri_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
+             tri_prom[v] = itk.readImageDICOMFileSeries(tri_files[v]).then(function ({ image: itkImage }) {
+             tri_imageData = convertItkToVtkImage(itkImage)
              tri_img.push(tri_imageData)
-              })
-          }
+             })
+
+        } else if (tri_files[v].length !== 1) {
+             tri_prom[v] = itk.readImageFileSeries(tri_files[v], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+             tri_imageData = convertItkToVtkImage(itkImage)
+             tri_img.push(tri_imageData)
+             })
+
+        } else if (tri_files[v].length === 1) {
+             tri_prom[v] = itk.readImageFile(null, tri_files[v][0]).then(function ({ image: itkImage, webWorker }) {
+             webWorker.terminate()
+             tri_imageData = convertItkToVtkImage(itkImage)
+             tri_img.push(tri_imageData)
+             })
         }
+    }
     else {
-        if (tri_files[v].length === 1) {
-              tri_prom[v] = itk.readImageFile(null, tri_files[v][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                tri_imageData = convertItkToVtkImage(itkImage)
-                 tri_img.push(tri_imageData)
-              })
-          } else {
+        if (tri_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
             tri_prom[v] = itk.readImageDICOMFileSeries(tri_files[v]).then(function ({ image: itkImage }) {
-                tri_imageData = convertItkToVtkImage(itkImage)
-                tri_img.push(tri_imageData)
+            tri_imageData = convertItkToVtkImage(itkImage)
+            tri_img.push(tri_imageData)
             })
-      }
+        } else if (tri_files[v].length !== 1) {
+            tri_prom[v] = itk.readImageFileSeries(tri_files[v], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+            tri_imageData = convertItkToVtkImage(itkImage)
+            tri_img.push(tri_imageData)
+            })
+        } else if (tri_files[v].length === 1) {
+             tri_prom[v] = itk.readImageFile(null, tri_files[v][0]).then(function ({ image: itkImage, webWorker }) {
+             webWorker.terminate()
+             tri_imageData = convertItkToVtkImage(itkImage)
+             tri_img.push(tri_imageData)
+             })
+        }
     }
 }
 
@@ -2035,37 +2416,49 @@ function mpr_processFile(mpr_arrFileList) {
 
 mpr_prom = []
 
-for ( u = 0 ; u < mpr_files.length; u++){
-    if (u  == 0){
-        if (mpr_files[u].length === 1) {
-              mpr_prom[u] = itk.readImageFile(null, mpr_files[u][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                mpr_imageData = convertItkToVtkImage(itkImage)
-                mpr_img.push(mpr_imageData)
-              })
-          } else {
+for ( u = 0 ; u < mpr_files.length; u++) {
+   if (u  == 0) {
+      if (mpr_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
            mpr_prom[u] = itk.readImageDICOMFileSeries(mpr_files[u]).then(function ({ image: itkImage }) {
-            mpr_imageData = convertItkToVtkImage(itkImage)
-             mpr_img.push(mpr_imageData)
-              })
-          }
-        }
-    else {
-        if (mpr_files[u].length === 1) {
-              mpr_prom[u] = itk.readImageFile(null, mpr_files[u][0])
-              .then(function ({ webWorker, image: itkImage }) {
-                webWorker.terminate()
-                mpr_imageData = convertItkToVtkImage(itkImage)
-                 mpr_img.push(mpr_imageData)
-              })
-          } else {
-            mpr_prom[u] = itk.readImageDICOMFileSeries(mpr_files[u]).then(function ({ image: itkImage }) {
-                mpr_imageData = convertItkToVtkImage(itkImage)
-                mpr_img.push(mpr_imageData)
-            })
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
+
+      } else if (mpr_files[u].length !== 1) {
+           mpr_prom[u] = itk.readImageFileSeries(mpr_files[u], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
+
+      } else if (mpr_files[u].length === 1) {
+           mpr_prom[u] = itk.readImageFile(null, mpr_files[u][0]).then(function ({ image: itkImage, webWorker }) {
+           webWorker.terminate()
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
       }
-    }
+   }
+   else {
+      if (mpr_arr[0][0].webkitRelativePath.slice(-4) == '.dcm') {
+           mpr_prom[u] = itk.readImageDICOMFileSeries(mpr_files[u]).then(function ({ image: itkImage }) {
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
+
+      } else if (mpr_files[u].length !== 1) {
+           mpr_prom[u] = itk.readImageFileSeries(mpr_files[u], zSpacing=1.0, zOrigin=0.0).then(function ({ image: itkImage }) {
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
+
+      } else if (mpr_files[u].length === 1) {
+           mpr_prom[u] = itk.readImageFile(null, mpr_files[u][0]).then(function ({ image: itkImage, webWorker }) {
+           webWorker.terminate()
+           mpr_imageData = convertItkToVtkImage(itkImage)
+           mpr_img.push(mpr_imageData)
+           })
+      }
+   }
 }
 
 Promise.all(mpr_prom).then((values) => {
