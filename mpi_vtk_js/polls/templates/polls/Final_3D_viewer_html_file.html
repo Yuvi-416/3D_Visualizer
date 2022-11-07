@@ -1,3 +1,10 @@
+<!--------------------------------------------------->
+<!--------------------------------------------------->
+<!----- IMAGE-IN VISUALIZER HTML PAGE --------------->
+<!------Author: Yubraj gupta, email: ygupta@ua.pt---->
+<!--------------------------------------------------->
+<!--------------------------------------------------->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,16 +17,21 @@
     <!-- Links -->
     <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static '/css/final_3D_viewer_CSS_file.css' %}">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Scripts  .css -->
     <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
+
     <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script type="text/javascript" src="{% static '/js/detect.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/vtk.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/gl_matrix.js' %}"></script>
 
 </head>
 <body>
+
 <div class="wrapper">
     <!-- First HEADER -->
     <div id="light row1">
@@ -35,25 +47,28 @@
                     <li class="nav-item active">
                         <a class="nav-link" style="color:#141314c7" href="https://yuvi.pythonanywhere.com/" target="_blank" rel="noopener noreferrer">Cell Explorer</a>
                     </li>
-                    <!--          <li class="hide_mobile"><span>|</span></li>-->
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="#">Image Analysis</a>
                     </li>
-                    <!--          <li class="hide_mobile"><span>|</span></li>-->
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="https://github.com/Yuvi-416/3D_Visualizer/tree/master/sample/" target="_blank" rel="noopener noreferrer">Sample</a>
                     </li>
                     <span class="style__vertical-bar--gcXcn">|</span>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color:#141314c7" href="https://figshare.com/articles/media/3D-Visualizer_Demo/20408103" target="_blank" rel="noopener noreferrer">Demo</a>
-                    </li>
+                    <div class="dropdown">
+                        <button onclick="myFunction()" class="dropbtn">Help</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a class="nav-link"  style="color:#141314c7; background-color: #8ebfadf7;" href="https://figshare.com/articles/media/3D-Visualizer_Demo/20408103" target="_blank" rel="noopener noreferrer">Demo Videos</a>
+                            <a class="nav-link"  style="color:#141314c7; background-color: #8ebfadf7;" href="https://github.com/Yuvi-416/3D_Visualizer/wiki/3D-Visualizer-Workflow" target="_blank" rel="noopener noreferrer">Documentation</a>
+                        </div>
+                    </div>
                     <span class="style__vertical-bar--gcXcn">|</span>
                     <li class="nav-item">
                         <a class="nav-link" style="color:#141314c7" href="https://yuvi-416.github.io/3D_Visualizer/" target="_blank" rel="noopener noreferrer">About</a>
                     </li>
                 </ul>
+                <a title="github" class="nav-link" style="margin-left:auto; color:#141314c7; padding-block:0px; " href="https://github.com/Yuvi-416/3D_Visualizer/" target="_blank" rel="noopener noreferrer"><i style="font-size:large; color:black;" class="fa">&#xf092;</i></a>
             </div>
         </nav>
     </div>
@@ -69,9 +84,9 @@
         <nav id="sidebar">
             <!-- Selection of desire viewer -->
             <div title="Before uploading files, user must first choose any one desired viewer"
-                 style="height:105px; background: #6f585a; margin-top: 3px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
-                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 14px 27px;">
-                <p>Select your desire viewer:</p>
+                 style="height:auto; background: #6f585a; margin-top: 1px; margin-bottom:3px; border-top: 4px solid #c3a0a0;
+                     border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-weight: bolder; font-size: larger; padding: 1px 42px;">
+                <p style="margin-bottom: 6px;">Select your desire viewer:</p>
                 <input title="3D viewer options" class="desire_viewer" type="Checkbox" name="Viewers" id="v1" value="3D">
                 <label title="Contain two 3D rendering techniques: volume and surface" for="v1">3D</label>
                 <input title="Drop-down box contain features for TRI-Planar" class="desire_viewer" type="Checkbox" name="Viewers" id="v2" value="TRI-Planar">
@@ -80,10 +95,10 @@
                 <label title="Orthogonal viewer" for="v3">MPR</label>
             </div>
             <!-- Implement render method -->
-            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:102px; background-color: #6f585a;
-                background: #6f585a; margin-top: 3px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
-                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 14px 27px;">
-                <p>3D Rendering techniques:</p>
+            <div id="select_render_method" title="Choose any one from the below 3D rendering options" class="section_header_2" style="height:auto; background-color: #6f585a;
+                background: #6f585a; margin-top: -1px; margin-bottom:4px; border-top: 4px solid #c3a0a0;
+                border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; display:none; font-weight: bolder; font-size: larger; padding: 1px 42px;">
+                <p style="margin-bottom: 6px;">3D Rendering techniques:</p>
                 <input title="Drop-down box contain features for Volume" class="method_selection" type="Checkbox" name="Render" id="r1" value="Volume" >
                 <label title="Volume rendering" for="r1">Volume</label>
                 <input title="Drop-down box contain features for Surface" class="method_selection" type="Checkbox" name="Render" id="r2" value="Surface" >
@@ -92,48 +107,41 @@
             <!-- DICOM TITLE -->
             <div style="height:30px; margin-bottom: -1px; margin-top: -2px;
                 background-color: #6f585a; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
-                border-radius: 2px 2px 0 0; padding: 0px 132px 26px; font-weight: 500; font-size: 18px; color: lightpink;">
+                border-radius: 2px 2px 0 0; padding: 0px 178px 26px; font-weight: 500; font-size: 18px; color: lightpink;">
                 <label>DICOM Files Loader</label>
             </div>
             <!-- Select the number of inputs-->
-            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:126px; background-color: #6f585a; margin-top:3px;
-                border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger;">
+            <div title="Before choosing files, users must first select any one desired viewer from the first section" style="height:auto; background-color: #6f585a; margin-top:2px;
+                border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; font-size: larger; padding: 0px 32px;">
                 <div id="divInput">
-                    <table style="height:31px; margin-left: 6px;">
-                        <tbody>
-                        <td title="User can upload several inputs for the vol/sur viewer, but only one input at a time for the tri/mpr viewer">Select the number of inputs:</td>
-                        <td>
-                            <input title="After inserting number press enter or roll the side wheel" min=1 max=10 type="number" id="f" value="1" style="width: 43px; height: 25px;">
-                        </td>
-                        </tbody>
-                    </table>
-                    <div>
-                        <input title="Before choosing files, users must first select any one desired viewer from the first section" name="inputFile" type="file" multiple id="btn1" style="margin-left: 6px; margin-top: 20px; padding: 0px; border: none; z-index: 1;">
-                    </div>
-                    <div>
-                        <button title="User must complete the following steps before hitting the render button: selection of any one desire viewer  > number of inputs (depends upon the selected viewer) > upload dicom files > press render" name="render" id="btn2" style="margin-top: -17px; margin-left:374px; width: 80px; border: none; z-index: 1; margin-bottom: -8px;"> Render </button>
+                    <form style="margin-left: 0px; margin-top: 4px; padding: 0px; border: none; z-index: 1; margin-bottom: 10px;">
+                        <label for="btn1"></label>
+                        <input title="Before choosing files, users must first select any one desired viewer from the first section" name="inputFile" type="file" multiple id="btn1"  webkitdirectory = "true" directory/>
+                    </form>
+                    <div style="margin-top: 0px; margin-left:374px; width: 80px; border: none; z-index: 1; margin-bottom: 10px;">
+                        <button title="User must complete the following steps before hitting the render button: selection of any one desire viewer  > number of inputs (depends upon the selected viewer) > upload dicom files > press render" name="render" id="btn2" > Render </button>
                     </div>
                 </div>
             </div>
 
             <!-- //////////////Viewing desire options based on above selected 3D rendering methods//////////////-->
             <!-- //////////////Volume Rendering features//////////////-->
-            <div id="VOL_OPTIONS" style="height:412px; background-color:#6f585a;
-                display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
+            <div id="VOL_OPTIONS" style="height:auto; background-color:#6f585a;
+                display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0;
                 border-radius: 2px 2px 0 0;">
-                <div id="set_opacity_distance_bm_Color">
-                    <p>&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;<b>Sample Distance</b>&emsp;&ensp;&ensp;<b>Blending</b>&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                <div id="set_opacity_distance_bm_Color" class="container">
+                    <p style="inline-size: max-content; margin-left: 10px;">&ensp;&ensp;&ensp;<b title="Gradient Opacity" style="margin-left: 0px;" >Gradient</b>&ensp;<b title="Scalar Opacity Unit Distance" style="margin-left: 12px;">ScalarUnit</b>&emsp;<b title="Sample Distance" style="margin-left: -3px;">Sample-Dis</b>&ensp;&ensp;<b title="Blending Modes" style="margin-left: -2px;">Blending</b>&ensp;&ensp;<b title="Color Transfer Function" style="margin-left: 6px;">Color</b>&ensp;&ensp;<b title="Z voxel Dimension Scaling" style="margin-left: -5px;">Z-Scale</b> </p>
                 </div>
             </div>
             <!--////////////// Surface Rendering features//////////////-->
-            <div id="SUR_OPTIONS" style="height:412px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+            <div id="SUR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; padding: 0px 13px;">
                 <div id="set_iso_Color">
-                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Scalar Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Color</b> </p>
+                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b style="margin-left: -11px;">Gradient Opacity</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b style="margin-left: -10px;">Iso value</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b style="margin-left: -2px;">Color</b>&ensp;&ensp;&ensp;&ensp;<b style="margin-left: 2px;">Z-Scale</b> </p>
                 </div>
             </div>
             <!--////////////// TRI-Planar features//////////////-->
-            <div id="TRI_PLANAR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
-                <table style="margin-left: 11px;">
+            <div id="TRI_PLANAR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+                <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
                         <td> <input id="XY_button" type="checkbox" checked> XY </td>
@@ -190,8 +198,8 @@
                 </table>
             </div>
             <!--////////////// MPR Rendering features//////////////-->
-            <div id="MPR_OPTIONS" style="height:527px; background-color:#6f585a; display:none; margin-top:3px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
-                <table style="margin-left: 11px;">
+            <div id="MPR_OPTIONS" style="height:auto; background-color:#6f585a; display:none; margin-top:2px; border-top: 4px solid #c3a0a0; border-bottom: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;">
+                <table style="margin-left: 38px;">
                     <tbody>
                     <tr>
                         <td>Scale in pixels:</td>
@@ -209,17 +217,17 @@
             </div>
             <!--////////////// XY Rendering features//////////////-->
             <!-- 3D rendered SLICER viewer-->
-            <div id="rendered_SLICER" style="height:116px; margin-top: 3px;
-                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0;">
-                <label style="font-size:large; padding: 1px 118px;">Region of interest clipping</label>
-                <table style="margin-left: 87px; background-color: #6f585a;">
+            <div id="rendered_SLICER" style="height:auto; margin-top: 2px;
+                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0; border-bottom: 4px solid #c3a0a0; font-size:large; padding: 0px 110px 0px;">
+                <label>&ensp;&ensp;&ensp;&ensp;Region of interest clipping</label>
+                <table>
                     <tbody>
                     <tr>
                         <td> X
-                            <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionX_inv" type="range" min="0" max="100" step="1" value="" >
                         </td>
                         <td>
-                            <input class="planePositionX" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionX" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     <tr>
@@ -227,7 +235,7 @@
                             <input class="planePositionY_inv" type="range" min="0" max="100" step="1" value="">
                         </td>
                         <td>
-                            <input class="planePositionY" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionY" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     <tr>
@@ -235,52 +243,121 @@
                             <input class="planePositionZ_inv" type="range" min="0" max="100" step="1" value="">
                         </td>
                         <td>
-                            <input class="planePositionZ" type="range" min="0" max="100" step="1" value="">
+                            <input class="planePositionZ" type="range" min="0" max="100" step="1" value="" style="-webkit-transform: rotate(180deg);">
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <!-- Scaling Slider-->
-            <div id="Scaling_slider" title="It is in the experimental stage, the output may not be satisfactory" style="height:66px; margin-top: 3px;
-                background-color: #6f585a; border-top: 4px solid #c3a0a0; border-radius: 2px 2px 0 0;
-                border-bottom: 4px solid #c3a0a0;">
-                <label style="font-size:large; padding: 1px 155px;">Z-voxel scaling </label>
-                <table style="margin-left: 113px; background-color: #6f585a;">
-                    <tbody>
-                    <tr>
-                        <td>Scaling:
-                            <input id="Slider_scale" type="range" min="0.1" max="50" step="0.1" value="1">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+
         </nav>
         <!-- CANVAS -->
-        <div id="col2" style="background:black; width: 100%; ">
+        <div id="col2" style="background:#363636; width: 100%; ">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-dark">
-                        <i class="fas fa-bars"></i><span><></span>
+                    <!-- SideBar Collapse -->
+                    <button title="SideBar Collapse" type="button" id="sidebarCollapse" style="font-size: medium; margin-left:-8px; background-color: transparent; border-color: transparent;">
+                        <i style="font-size:medium; color:greenyellow;" class="fa">&#xf0c9;</i>
                     </button>
+
+                    <!-- Reset Canvas -->
+                    <label style="margin-left:auto; color: forestgreen; font-weight: bold;" >Reset:</label>
+                    <button title="Reset Canvas View" id="Reset_canvas" style="background-color: transparent; border-color: transparent;">
+                        <i style="font-size:medium; color:greenyellow;" class="fa">&#xf021;</i>
+                    </button>
+
+                    <!--  Change Canvas Background Color-->
+                    <button title="Change Canvas Background Color" id="Reset_Background" style="background-color: transparent; border-color: transparent;">
+                        <i style="font-size:medium; color:greenyellow;" class="fa">&#xf110;</i>
+                    </button>
+
+                    <!-- Recorder -->
+                    <label style="margin-left:auto; color: forestgreen; font-weight: bold;" >REC:</label>
+                    <button title="Start REC" id ="start" style="font-size: medium; background-color: transparent; border-color: transparent;">
+                        <i style="font-size:medium; color:greenyellow;" class="fa">&#xf01d;</i>
+                    </button>
+
+                    <button title="Stop REC" id ="stop" style="font-size: medium; background-color: transparent; border-color: transparent;">
+                        <i style="font-size:medium; color:greenyellow;" class="fa">&#xf28e;</i>
+                    </button>
+
+                    <!-- ScreenShot -->
+                    <button title="ScreenShot" type="button" id ="shot" style="font-size: medium; background-color: transparent; border-color: transparent;" onclick="screenShot()">
+                        <i style="font-size:medium; color:greenyellow;" class="fa"> &#xf030;</i>
+                    </button>
+
                 </div>
             </nav>
-            <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of an canvas -->
+            <div id="viewContainer" style=" height:82vh; padding: 6px 6px;"></div> <!-- Use vh metric to control the height/width of a canvas -->
         </div>
     </div>
-
 </div>
 
+<!-- FOR TAKING SCREENSHOT -->
+<script>
+HTMLCanvasElement.prototype.getContext = function(origFn) {
+  return function(type, attribs) {
+    attribs = attribs || {};
+    attribs.preserveDrawingBuffer = true;
+    return origFn.call(this, type, attribs);
+  };
+}(HTMLCanvasElement.prototype.getContext);
+</script>
+
+<!-- integrating JS file -->
 <script type="text/javascript" src="{% static '/js/final_3D_viewer_scripts.js' %}"></script>
+
+<!-- Script to detect the browser window-->
+<script>
+var user = detect.parse(navigator.userAgent);
+
+browser_name = user.browser.family
+browser_version = user.browser.version
+
+if (browser_name== "Chrome"){
+
+}
+  else {
+
+  alert ("Please switch to Google Chrome for better performance and user interface (for other browser UI section is still in development phase");
+
+}
+</script>
+
+<!-- When the user clicks on the button, toggle between hiding and showing the dropdown content -->
+<script>
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 
 <!-- Script for a side_bar_Collapse-->
 <script>
-    $(document).ready(function() {
-      $("#sidebarCollapse").on('click',function() {
-        $("#sidebar").toggleClass('active');
-      });
-    });
+$(document).ready(function() {
+  $('#sidebarCollapse').on('click', function() {
+    $('#sidebar').toggleClass('active');
+    $('.overlay').toggle();
+  });
+
+  $('.overlay').click(function() {
+    $('#sidebar').toggleClass('active');
+    $('.overlay').toggle();
+  });
+});
 </script>
 
 <!-- Scripts for calling render functions and rendering it into CANVAS-->
@@ -297,7 +374,6 @@ $(document).ready(function() {
     // Volume-related variables we need to be able to access later
     var vol_opacity, vol_distance, vol_blending, sel;
 
-    document.getElementById("f").disabled = true;
     document.getElementById("btn1").disabled = true;
     document.getElementById("btn2").disabled = true;
 
@@ -338,11 +414,13 @@ $(document).ready(function() {
         $('#Scaling_slider').slideToggle("hide");
 
         if ($(this).is(':checked')) {
+            document.getElementById("sidebarCollapse").disabled = true;
             document.getElementById("btn1").disabled = false;
             document.getElementById("btn2").disabled = false;
             document.getElementById("v1").disabled = true;
             document.getElementById("v2").disabled = true;
         } else {
+            document.getElementById("sidebarCollapse").disabled = false;
             document.getElementById("v1").disabled = false;
             document.getElementById("v2").disabled = false;
             document.getElementById("btn1").disabled = true;
@@ -353,14 +431,10 @@ $(document).ready(function() {
     $('#r1').change(function() {
 
         if ($(this).is(':checked')) {
-            document.getElementById("f").disabled = false;
             document.getElementById("r2").disabled = true;
             document.getElementById("btn1").disabled = false;
             document.getElementById("btn2").disabled = false;
-            addVolumeStuff();
         } else {
-            deleteVolumeStuff();
-            document.getElementById("f").disabled = true;
             document.getElementById("r2").disabled = false;
             document.getElementById("btn1").disabled = true;
             document.getElementById("btn2").disabled = true;
@@ -369,69 +443,13 @@ $(document).ready(function() {
         $('#VOL_OPTIONS').slideToggle("slow");
     });
 
-    /**
-     * Add some HTML when the vol checkbox is ticked
-     */
-
-    function addVolumeStuff() {
-        vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility0" style="margin-left: 1px;">').appendTo('#set_opacity_distance_bm_Color');
-        vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance0" type="range" min="0.0" max="10" step="0.1" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-        vol_distance = $('<input class=vol_set_distance id="setSampleDistance0" type="range" min="0.1" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-
-        vol_blending = $('<select class=vol_blending_mode id=blendMode0 style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
-        vol_blending.append($("<option>").attr('value',"0").text("Composite"));
-        vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
-        vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
-
-        sel = $('<input class=colors_channels id="vol_color0" type="color" value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial" >').appendTo('#set_opacity_distance_bm_Color');
-
-        $( "#f" ).change(function() {
-            $('.vol_set_opacity').remove();
-            $('.vol_set_distance').remove();
-            $('.vol_blending_mode').remove();
-            $('.colors_channels').remove();
-            $('.vol_set_vis').remove();
-
-                for(i=0; i<$('#f').val(); i++){
-                    vol_edge_vis = $('<input class=vol_set_vis type="checkbox" checked id="visibility'+ i +'"'+ '" style="margin-left: 1px;">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_opacity = $('<input class=vol_set_opacity id="setScalarOpacityUnitDistance'+ i +'"'+ ' type="range" min="0.0" max="10" step="0.01" value="0.5" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_distance = $('<input class=vol_set_distance id="setSampleDistance'+ i + '"' + 'type="range" min="0.1" max="10" step="0.01" value="0.2" style="margin-left:2px;">').appendTo('#set_opacity_distance_bm_Color');
-
-                    vol_blending = $('<select class=vol_blending_mode id="blendMode'+ i +'"'+ ' style="margin-left:5px; vertical-align:super;">').appendTo('#set_opacity_distance_bm_Color');
-                    vol_blending.append($("<option>").attr('value',"0").text("Composite"));
-                    vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
-                    vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
-
-                    sel = $('<input class=colors_channels type="color" id="vol_color'+ i +'"'+ ' value="#f401c7" style="margin-left:6px; margin-right:6px; vertical-align:initial">').appendTo('#set_opacity_distance_bm_Color');
-
-                }
-        })
-
-    }
-
-    /**
-     * Delete the volume controls when vol checkbox is unTicked
-     */
-
-    function deleteVolumeStuff() {
-        vol_edge_vis.remove();
-        vol_opacity.remove();
-        vol_distance.remove();
-        vol_blending.remove();
-        sel.remove();
-    }
-
     $('#r2').change(function() {
 
         if ($(this).is(':checked')) {
-            document.getElementById("f").disabled = false;
             document.getElementById("r1").disabled = true;
             document.getElementById("btn1").disabled = false;
             document.getElementById("btn2").disabled = false;
-            addSurfaceStuff();
         } else {
-            deleteSurfaceStuff();
-            document.getElementById("f").disabled = true;
             document.getElementById("r1").disabled = false;
             document.getElementById("btn1").disabled = true;
             document.getElementById("btn2").disabled = true;
@@ -439,44 +457,6 @@ $(document).ready(function() {
 
         $('#SUR_OPTIONS').slideToggle("slow");
     });
-
-    /**
-     * Add some HTML when the sur checkbox is ticked
-     */
-
-    function addSurfaceStuff() {
-        sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility0" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-        sur_opacity = $('<input class=sur_set_opacity id="setOpacity0" type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-        sur_isovalue = $('<input class=sur_iso_Value id="isoValue0" type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-        sur_col = $('<input class=col_sur id="favcolor0" type="color" value="#f401c7" style="margin-left: 9px; margin-right: 38px;">').appendTo('#set_iso_Color');
-
-        $( "#f" ).change(function() {
-            $('.sur_set_opacity').remove();
-            $('.sur_iso_Value').remove();
-            $('.col_sur').remove();
-            $('.sur_edge_vis').remove();
-
-                for(j=0; j<$('#f').val(); j++){
-                    sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility'+ j +'"'+ ' style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-                    sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-                    sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ j +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: 9px; margin-right: 11px;">').appendTo('#set_iso_Color');
-                    sur_col = $('<input class=col_sur type="color" id="favcolor'+ j +'"'+ ' value="#f401c7" style="margin-left: 9px; margin-right: 38px;">').appendTo('#set_iso_Color');
-                }
-        })
-
-    }
-
-    /**
-     * Delete the surface controls when surface checkbox is unTicked
-     */
-
-    function deleteSurfaceStuff() {
-        sur_opacity.remove();
-        sur_isovalue.remove();
-        sur_col.remove();
-        sur_edge_vis.remove();
-    }
-
 });
 
 /**
@@ -485,50 +465,86 @@ $(document).ready(function() {
 
 vol_arr = []
 vol_arr2 = []
+volDiv = 0
 
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
-    $('.method_selection:checked').each(function(i) {
-        var vol_value = $(this).val();
-        console.log(vol_value)
-        if (vol_value == "Volume") {
-            vol_myFile = $('#btn1').prop('files');
-            vol_arr.push(vol_myFile)
+    if ($(btn1).val() != ""){
+        $('.method_selection:checked').each(function(i) {
+            var vol_value = $(this).val();
+            console.log(vol_value)
 
-            $('#btn2').click(function() {
-               $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
+            newvoldiv = $('<div class="splitDIVclass row" id= splitDiv'+ volDiv  +' style="max-width: max-content;"> </div>').appendTo('#set_opacity_distance_bm_Color');
 
-               var $this = $(this);
-               if ($this.data('clicked', true)) {
-                     vol_loading_message();
+            vol_edge_vis = $('<input title="Visibility" class="vol_set_vis col" type="checkbox" checked id="visibility'+ volDiv +'"'+ '" style="margin-left: 4px; max-width: max-content;">').appendTo('#splitDiv'+ volDiv );
+            vol_shade = $('<input title="Shade" class="vol_set_shade col" type="checkbox" checked id="shade'+ volDiv +'"'+ '" style="margin-left: 4px; max-width: max-content;">').appendTo('#splitDiv'+ volDiv );
 
-               } else {
-                      vol_check_console_log();
-               }
-               $("#loading").show();
-            });
+            vol_gradient_opacity = $('<input title="Gradient Opacity" class="vol_set_gradient_opacity col" id="setGradientOpacity'+ volDiv +'"'+ ' type="range" min="0" max="1" step="0.01" value="1" orient="vertical" style="margin-left: 4px; padding: initial;">').appendTo('#splitDiv'+ volDiv );
+            vol_scalar_opacity = $('<input title="Scalar Opacity" class="vol_set_scalar_opacity col" id="setScalarOpacityUnitDistance'+ volDiv +'"'+ ' type="range" min="0" max="1" step="0.01" value="0.05" orient="vertical" style="margin-left: 4px; padding: initial;">').appendTo('#splitDiv'+ volDiv );
+
+            vol_distance = $('<input title="Sample Distance" class="vol_set_distance col" id="setSampleDistance'+ volDiv + '"' + 'type="range" min="0.1" max="1" step="0.01" value="0.25" style=" margin-left: 4px; padding: initial;">').appendTo('#splitDiv'+ volDiv );
+
+            vol_blending = $('<select title="Blending" class="vol_blending_mode col" id="blendMode'+ volDiv +'"'+ ' style=" margin-left: 4px; max-width: max-content; padding: initial;">').appendTo('#splitDiv'+ volDiv );
+            vol_blending.append($("<option>").attr('value',"0").text("Composite"));
+            vol_blending.append($("<option>").attr('value',"1").text("MaxIntensity"));
+            vol_blending.append($("<option>").attr('value',"2").text("MinIntensity"));
+
+            sel = $('<input title="Color" class="colors_channels col" type="color" id="vol_color'+ volDiv +'"'+ ' value="#f401c7" style="margin-left: 4px; max-width: 55px; padding: revert;">').appendTo('#splitDiv'+ volDiv );
+
+            vol_Z_Voxel_scale = $('<input title="Z-voxel scaling" class="vol_set_z_voxel_scale col" id="Slider_scale'+ volDiv +'"'+ ' type="text" min="0.1" max="50" step="0.1" value="1" style="margin-left: 4px; max-width: 55px; padding: initial; margin-right:4px;">').appendTo('#splitDiv'+ volDiv);
+
+            volDiv = volDiv + 1
 
 
-            vol_Picked_color = $(".colors_channels");
+            if (vol_value == "Volume") {
+                vol_myFile = $('#btn1').prop('files');
+                vol_arr.push(vol_myFile)
 
-            function vol_loading_message() {
+                $('#btn2').click(function() {
+                   $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
 
-                for(var i = 0; i < vol_Picked_color.length; i++){
-                    vol_arr2.push($(vol_Picked_color[i]).val());
+                   var $this = $(this);
+                   if ($this.data('clicked', true)) {
+                         vol_loading_message();
+
+                   } else {
+                          vol_check_console_log();
+                   }
+                   $("#loading").show();
+                });
+
+                vol_Picked_color = $(".colors_channels");
+
+                function vol_loading_message() {
+
+                    for(var i = 0; i < vol_Picked_color.length; i++){
+                        vol_arr2.push($(vol_Picked_color[i]).val());
+                    }
+
+                    if (vol_arr.length==vol_arr2.length) {
+                        vol_processFile(vol_arr, vol_arr2)
+                   } else {
+                        // console.log(vol_arr.length)
+                        // console.log(vol_arr2.length)
+                        // alert("Please check the number of input vs the number of channels ")
+                   }
                 }
 
-                if (vol_arr.length==vol_arr2.length) {
-                    vol_processFile(vol_arr, vol_arr2)
-               } else {
-                    alert("Please check the number of input vs the number of channels ")
-               }
+                function vol_check_console_log() {
+                     vol_check_console_log(console.log())
+                }
             }
+        });
 
-            function vol_check_console_log() {
-                 vol_check_console_log(console.log())
-            }
+        let isChecked = $('#v1').is(':checked');
+            if (isChecked){
+                document.getElementById("btn1").disabled = false;
+            } else{
+                document.getElementById("btn1").disabled = true;
         }
-    });
+      document.getElementById("v1").disabled = true;
+      document.getElementById("r1").disabled = true;
+    }
 });
 
 /**
@@ -537,50 +553,66 @@ $("#btn1").change(function() {
 
 sur_arr = []
 sur_arr2 = []
+surDiv = 0
 
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
-    $('.method_selection:checked').each(function(i) {
-        var sur_value = $(this).val();
-        console.log(sur_value)
-        if (sur_value == "Surface") {
-            sur_myFile = $('#btn1').prop('files');
-            sur_arr.push(sur_myFile)
+    if ($(btn1).val() != ""){
+        $('.method_selection:checked').each(function(i) {
+            var sur_value = $(this).val();
+            console.log(sur_value)
 
-            $('#btn2').click(function() {
-               $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
+            newsurDiv = $('<div class= "splitsurDIVclass row" id= splitsurDiv'+ surDiv  +' style="max-width: none;"> </div>').appendTo('#set_iso_Color');
 
-               var $this = $(this);
-               if ($this.data('clicked', true)) {
-                     sur_loading_message();
+            sur_edge_vis = $('<input class=sur_edge_vis type="checkbox" checked id="sur_edge_visibility'+ surDiv +'"'+ ' style="margin-left: auto; max-width: max-content;margin-right: auto;">').appendTo('#splitsurDiv'+ surDiv);
+            sur_opacity = $('<input class=sur_set_opacity id="setOpacity'+ surDiv +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.6" style="margin-left: auto; padding: initial;max-width: max-content;margin-right: auto;">').appendTo('#splitsurDiv'+ surDiv);
+            sur_isovalue = $('<input class=sur_iso_Value id="isoValue'+ surDiv +'"'+ ' type="range" min="0.0" max="1.0" step="0.01" value="0.4" style="margin-left: auto; padding: initial;max-width: max-content;margin-right: auto;">').appendTo('#splitsurDiv'+ surDiv);
+            sur_col = $('<input class=col_sur type="color" id="favcolor'+ surDiv +'"'+ ' value="#f401c7" style="margin-left: auto; max-width: 55px; padding: revert;margin-right: auto;">').appendTo('#splitsurDiv'+ surDiv);
+            sur_Z_Voxel_scale = $('<input class=sur_set_z_voxel_scale id="sur_Slider_scale'+ surDiv +'"'+ ' type="text" min="0.1" max="50" step="0.1" value="1" style="margin-left: auto; max-width: 55px; padding: initial; margin-right:4px;margin-right: auto;">').appendTo('#splitsurDiv'+ surDiv);
 
-               } else {
-                      sur_check_console_log();
-               }
-               $("#loading").show();
-            });
+            surDiv = surDiv + 1
+
+            if (sur_value == "Surface") {
+                sur_myFile = $('#btn1').prop('files');
+                sur_arr.push(sur_myFile)
+
+                $('#btn2').click(function() {
+                   $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
+
+                   var $this = $(this);
+                   if ($this.data('clicked', true)) {
+                         sur_loading_message();
+
+                   } else {
+                          sur_check_console_log();
+                   }
+                   $("#loading").show();
+                });
 
 
-            sur_Picked_color = $(".col_sur");
+                sur_Picked_color = $(".col_sur");
 
-            function sur_loading_message() {
+                function sur_loading_message() {
 
-                for(var j = 0; j < sur_Picked_color.length; j++){
-                     sur_arr2.push($(sur_Picked_color[j]).val());
+                    for(var j = 0; j < sur_Picked_color.length; j++){
+                         sur_arr2.push($(sur_Picked_color[j]).val());
+                    }
+
+                    if (sur_arr.length==sur_arr2.length){
+                        sur_processFile(sur_arr, sur_arr2)
+                    } else {
+                       // alert("Please check the number of input vs the number of channels")
+                    }
                 }
 
-                if (sur_arr.length==sur_arr2.length){
-                    sur_processFile(sur_arr, sur_arr2)
-                } else {
-                   alert("Please check the number of input vs the number of channels ")
+                function sur_check_console_log() {
+                     sur_check_console_log(console.log())
                 }
             }
-
-            function sur_check_console_log() {
-                 sur_check_console_log(console.log())
-            }
-        }
-    });
+        });
+        document.getElementById("v1").disabled = true;
+        document.getElementById("r2").disabled = true;
+    }
 });
 
 /**
@@ -590,33 +622,35 @@ $("#btn1").change(function() {
 tri_arr = []
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
-    $('.desire_viewer:checked').each(function(i) {
-        var tri_value = $(this).val();
-        if (tri_value == "TRI-Planar") {
-            tri_myFile = $('#btn1').prop('files');
-            tri_arr.push(tri_myFile)
+    if ($(btn1).val() != ""){
+        $('.desire_viewer:checked').each(function(i) {
+            var tri_value = $(this).val();
+            if (tri_value == "TRI-Planar") {
+                tri_myFile = $('#btn1').prop('files');
+                tri_arr.push(tri_myFile)
 
-            $('#btn2').click(function() {
-                var $this = $(this);
-                if ($this.data('clicked', true)) {
-                    loading_message();
-                } else {
-                    check_console_log();
+                $('#btn2').click(function() {
+                    var $this = $(this);
+                    if ($this.data('clicked', true)) {
+                        loading_message();
+                    } else {
+                        check_console_log();
+                    }
+                });
+
+                function loading_message() {
+                    tri_loading_gif = $('<div id="loading"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
+
+                          tri_processFile(tri_arr)
                 }
-            });
 
-            function loading_message() {
-                tri_loading_gif = $('<div id="loading"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
-
-                      tri_processFile(tri_arr)
+                function check_console_log() {
+                  console.log("ERROR")
+                }
             }
-
-            function check_console_log() {
-              console.log("ERROR")
-            }
-
-        }
-    });
+        });
+        document.getElementById("v2").disabled = true;
+    }
 });
 
 
@@ -627,33 +661,159 @@ $("#btn1").change(function() {
 mpr_arr = []
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
-    $('.desire_viewer:checked').each(function(i) {
-        var mpr_value = $(this).val();
-        if (mpr_value == "MPR") {
-            mpr_myFile = $('#btn1').prop('files');
-            mpr_arr.push(mpr_myFile)
+    if ($(btn1).val() != ""){
+        $('.desire_viewer:checked').each(function(i) {
+            var mpr_value = $(this).val();
+            if (mpr_value == "MPR") {
+                mpr_myFile = $('#btn1').prop('files');
+                mpr_arr.push(mpr_myFile)
 
-            $('#btn2').click(function() {
-               var $this = $(this);
-               if ($this.data('clicked', true)) {
-                     loading_message();
-               } else {
-                      check_console_log();
-               }
-            });
+                $('#btn2').click(function() {
+                   var $this = $(this);
+                   if ($this.data('clicked', true)) {
+                         loading_message();
+                   } else {
+                          check_console_log();
+                   }
+                });
 
-            function loading_message() {
-                tri_loading_gif = $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
+                function loading_message() {
+                    tri_loading_gif = $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
 
-                   mpr_processFile(mpr_arr)
+                       mpr_processFile(mpr_arr)
+                }
+                function check_console_log() {
+                  console.log("ERROR")
+                }
             }
-            function check_console_log() {
-              console.log("ERROR")
-            }
-
-        }
-    });
+        });
+        document.getElementById("v3").disabled = true;
+    }
 });
+</script>
+
+<!-- ERROR POP-UP -->
+<script>
+window.addEventListener('error', (e) => {
+    alert(e.message);
+    // alert("Please check the number of input vs the number of channels")
+    $("#loading").hide();
+    // location.reload()
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  alert(event.promise); // [object Promise] - the promise that generated the error
+  alert("(1). Please check whether uploaded files are DICOM or not, (2). Check how many files did you upload before and if the number of uploaded files matches with select the number of inputs option or not, (3). To know more about the error press: CTRL + SHIFT + J ") ; // Error: Whoops! - the unhandled error object
+  $("#loading").hide();
+  // location.reload()
+});
+</script>
+
+<!-- STILL NOT SURE WHETHER THIS LINE HAS ANY IMPACT OR NOT -->
+<script>
+let unpkg_script_itk = document.createElement('unpkg_script_itk');
+unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";
+document.head.append(unpkg_script_itk);
+
+unpkg_script_itk.onerror = function() {
+    alert("Error loading " + this.src);
+};
+</script>
+
+<!-- Screen Recorder -->
+<script>
+    let start = document.getElementById('start'),
+    stop  = document.getElementById('stop'),
+    shot = document.getElementById('shot'),
+    mediaRecorder;
+
+start.addEventListener('click', async function(){
+    let stream = await recordScreen();
+    let mimeType = 'video/webm';
+    mediaRecorder = createRecorder(stream, mimeType);
+  // let node = document.createElement("p");
+    // node.textContent = "Started recording";
+    // document.body.appendChild(node);
+})
+
+stop.addEventListener('click', function(){
+    mediaRecorder.stop();
+    // let node = document.createElement("p");
+    // node.textContent = "Stopped recording";
+    //document.body.appendChild(node);
+})
+
+async function recordScreen() {
+    return await navigator.mediaDevices.getDisplayMedia({
+        audio: false,
+        video: { mediaSource: "screen"}
+    });
+}
+
+function createRecorder (stream, mimeType) {
+  // the stream data is stored in this array
+  let recordedChunks = [];
+
+  const mediaRecorder = new MediaRecorder(stream);
+
+  mediaRecorder.ondataavailable = function (e) {
+    if (e.data.size > 0) {
+      recordedChunks.push(e.data);
+    }
+  };
+  mediaRecorder.onstop = function () {
+     saveFile(recordedChunks);
+     recordedChunks = [];
+  };
+  mediaRecorder.start(200); // For every 200ms the stream data will be stored in a separate chunk.
+  return mediaRecorder;
+}
+
+function saveFile(recordedChunks){
+
+   const blob = new Blob(recordedChunks, {
+      type: 'video/webm'
+    });
+    let filename = window.prompt('Enter file name'),
+        downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${filename}.webm`;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    URL.revokeObjectURL(blob); // clear from memory
+    document.body.removeChild(downloadLink);
+}
+
+
+</script>
+
+<!-- ScreenShot -->
+<script>
+function screenShot(){
+    html2canvas(document.querySelector("#viewContainer")).then(canvas => {
+        var dataURL = canvas.toDataURL( "image/png" );
+        var data = atob( dataURL.substring( "data:image/png;base64,".length ) ),
+            asArray = new Uint8Array(data.length);
+
+        for( var i = 0, len = data.length; i < len; ++i ) {
+            asArray[i] = data.charCodeAt(i);
+        }
+
+        var blob = new Blob( [ asArray.buffer ], {type: "image/png"} );
+        // saveAs(blob, "photo.png");
+
+    let filename = window.prompt('Enter file name'),
+    downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${filename}.png`;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    URL.revokeObjectURL(blob); // clear from memory
+    document.body.removeChild(downloadLink);
+    });
+}
 
 </script>
 

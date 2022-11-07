@@ -4,14 +4,21 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
+<<<<<<< HEAD
           <list size="7">
+=======
+          <list size="5">
+>>>>>>> a69bc0124d7d7f390a469075dcdf0b0ba3835de6
             <item index="0" class="java.lang.String" itemvalue="viewer" />
             <item index="1" class="java.lang.String" itemvalue="image-in" />
             <item index="2" class="java.lang.String" itemvalue="pathogen" />
             <item index="3" class="java.lang.String" itemvalue="margin-left" />
             <item index="4" class="java.lang.String" itemvalue="section_layout" />
+<<<<<<< HEAD
             <item index="5" class="java.lang.String" itemvalue="webkitdirectory" />
             <item index="6" class="java.lang.String" itemvalue="directory" />
+=======
+>>>>>>> a69bc0124d7d7f390a469075dcdf0b0ba3835de6
           </list>
         </value>
       </option>

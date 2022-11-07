@@ -1,3 +1,10 @@
+/******************************************************/
+/******************************************************/
+/********** IMAGE-IN VISUALIZER CSS FILE **************/
+/********** CREATED BY YUBRAJ GUPTA *******************/
+/******************************************************/
+/******************************************************/
+
 .wrapper, html, body {
     height: 100%;
     margin: 0;
@@ -5,6 +12,10 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 /* Loading-Section */
@@ -62,7 +73,8 @@
 }
 
 #sidebar {
-  min-width: 460px;
+   position: fixed;
+  min-width: 527px;
   max-width: 460px;
   background: #482424;
   color: #fff;
@@ -72,8 +84,18 @@
  /* height: 100vh */
 }
 
+.overlay{
+  display:block;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0,0,0,0.5)
+}
+
 #sidebar.active {
-  margin-left: -460px;
+  margin-left: -527px;
   zoom: 0;
 }
 
@@ -113,6 +135,7 @@ a[data-toggle="collapse"] {
   position: relative;
 }
 
+/********************************************/
 .dropdown-toggle::after {
   display: block;
   position: absolute;
@@ -125,6 +148,7 @@ ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
   background: #1b1d24;
+}
 
 /* CANVAS-BAR-BODY-Section */
 #col2 {
@@ -133,4 +157,45 @@ ul ul a {
     min-height: 100%;/* chrome needed it a question time , not anymore */
 }
 
+/* DROPDOWN MENU NAVBAR */
+.dropbtn {
+  background-color: #d9f1e700;
+  color: #141314c7;
+  border: none;
+  cursor: pointer;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding: 0.5rem 1rem;
+}
 
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #d9f1e700;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 128px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 4px 0px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+/********************************************/

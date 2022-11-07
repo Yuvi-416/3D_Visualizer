@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (MPI_VTK_JS)" project-jdk-type="Python SDK" />
+<<<<<<< HEAD
+=======
+  <component name="PyCharmProfessionalAdvertiser">
+    <option name="shown" value="true" />
+  </component>
+>>>>>>> a69bc0124d7d7f390a469075dcdf0b0ba3835de6
 </project>
