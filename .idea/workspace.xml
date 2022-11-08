@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c199ec9a-ee3b-4a01-adeb-eb3f63ca6c90" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/static/js/detect.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/7.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/8.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgg/Pipeline.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgg/Pipeline.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/mpi_vtk_js/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/mpi_vtk_js/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/static/css/final_3D_viewer_CSS_file.css" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/static/css/final_3D_viewer_CSS_file.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/static/js/final_3D_viewer_scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/static/js/final_3D_viewer_scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/templates/polls/Final_3D_viewer_html_file.html" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/templates/polls/Final_3D_viewer_html_file.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/templates/polls/Tem_VOL_2_0.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/polls/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/polls/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpi_vtk_js/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mpi_vtk_js/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
