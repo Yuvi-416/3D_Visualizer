@@ -716,9 +716,7 @@ $("#btn1").change(function() {
 <script>
 window.addEventListener('error', (e) => {
     alert(e.message);
-    // alert("Please check the number of input vs the number of channels")
     $("#loading").hide();
-    // location.reload()
 });
 
 window.addEventListener('unhandledrejection', function(event) {
@@ -740,16 +738,10 @@ start.addEventListener('click', async function(){
     let stream = await recordScreen();
     let mimeType = 'video/webm';
     mediaRecorder = createRecorder(stream, mimeType);
-  // let node = document.createElement("p");
-    // node.textContent = "Started recording";
-    // document.body.appendChild(node);
 })
 
 stop.addEventListener('click', function(){
     mediaRecorder.stop();
-    // let node = document.createElement("p");
-    // node.textContent = "Stopped recording";
-    //document.body.appendChild(node);
 })
 
 async function recordScreen() {
@@ -810,7 +802,7 @@ function screenShot(){
         }
 
         var blob = new Blob( [ asArray.buffer ], {type: "image/png"} );
-        // saveAs(blob, "photo.png");
+       
 
     let filename = window.prompt('Enter file name'),
     downloadLink = document.createElement('a');
