@@ -22,7 +22,9 @@
     <script type="text/javascript" src="{% static '/js/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
 
-    <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/itk-wasm@1.0.0-b.48/dist/umd/itk-wasm.min.js"></script>
+    <!-- <script src="https://unpkg.com/itk@14.0.1/umd/itk.js"></script> -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script type="text/javascript" src="{% static '/js/detect.js' %}"></script>
@@ -459,6 +461,69 @@ $(document).ready(function() {
     });
 });
 
+
+/**
+ * Render Button-2
+*/
+
+$('#btn2').click(function() {
+   // 3D_render_selection
+   if( $('#v1').is(':checked') ){
+        // Volume Rendering
+        if( $('#r1').is(':checked') ){
+           $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
+
+           var $this = $(this);
+           if ($this.data('clicked', true)) {
+                 vol_loading_message();
+
+           } else {
+                  vol_check_console_log();
+           }
+           $("#loading").show();
+        }
+        // Surface Rendering
+        if( $('#r2').is(':checked') ){
+         $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
+
+            var $this = $(this);
+            if ($this.data('clicked', true)) {
+                console.log("loading surface")
+                 sur_loading_message();
+
+            } else {
+                  sur_check_console_log();
+            }
+            $("#loading").show();
+         }
+   }
+     // Tri-planar Rendering
+    if( $('#v2').is(':checked') ){
+        $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
+
+        var $this = $(this);
+        if ($this.data('clicked', true)) {
+            console.log("this call message")
+            tri_loading_message();
+        } else {
+            check_console_log();
+        }
+        $("#loading").show();
+    }
+    // MPR Rendering
+    if( $('#v3').is(':checked') ){
+       $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
+
+       var $this = $(this);
+       if ($this.data('clicked', true)) {
+             mpr_loading_message();
+       } else {
+              check_console_log();
+       }
+    }
+});
+
+
 /**
  * Volume rendering
 */
@@ -466,6 +531,24 @@ $(document).ready(function() {
 vol_arr = []
 vol_arr2 = []
 volDiv = 0
+
+function vol_loading_message() {
+    vol_Picked_color = $(".colors_channels");
+
+    for(var i = 0; i < vol_Picked_color.length; i++){
+        vol_arr2.push($(vol_Picked_color[i]).val());
+    }
+
+    if (vol_arr.length==vol_arr2.length) {
+        vol_processFile(vol_arr, vol_arr2)
+   } else {
+        // alert("Please check the number of input vs the number of channels ")
+   }
+}
+
+function vol_check_console_log() {
+     vol_check_console_log(console.log())
+}
 
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
@@ -499,40 +582,6 @@ $("#btn1").change(function() {
             if (vol_value == "Volume") {
                 vol_myFile = $('#btn1').prop('files');
                 vol_arr.push(vol_myFile)
-
-                $('#btn2').click(function() {
-                   $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
-
-                   var $this = $(this);
-                   if ($this.data('clicked', true)) {
-                         vol_loading_message();
-
-                   } else {
-                          vol_check_console_log();
-                   }
-                   $("#loading").show();
-                });
-
-                vol_Picked_color = $(".colors_channels");
-
-                function vol_loading_message() {
-
-                    for(var i = 0; i < vol_Picked_color.length; i++){
-                        vol_arr2.push($(vol_Picked_color[i]).val());
-                    }
-
-                    if (vol_arr.length==vol_arr2.length) {
-                        vol_processFile(vol_arr, vol_arr2)
-                   } else {
-                        // console.log(vol_arr.length)
-                        // console.log(vol_arr2.length)
-                        // alert("Please check the number of input vs the number of channels ")
-                   }
-                }
-
-                function vol_check_console_log() {
-                     vol_check_console_log(console.log())
-                }
             }
         });
 
@@ -555,6 +604,24 @@ sur_arr = []
 sur_arr2 = []
 surDiv = 0
 
+function sur_loading_message() {
+   sur_Picked_color = $(".col_sur");
+    for(var j = 0; j < sur_Picked_color.length; j++){
+         sur_arr2.push($(sur_Picked_color[j]).val());
+    }
+
+    if (sur_arr.length==sur_arr2.length){
+        sur_processFile(sur_arr, sur_arr2)
+    } else {
+       // alert("Please check the number of input vs the number of channels")
+    }
+}
+
+function sur_check_console_log() {
+     sur_check_console_log(console.log())
+}
+
+
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
     if ($(btn1).val() != ""){
@@ -575,39 +642,6 @@ $("#btn1").change(function() {
             if (sur_value == "Surface") {
                 sur_myFile = $('#btn1').prop('files');
                 sur_arr.push(sur_myFile)
-
-                $('#btn2').click(function() {
-                   $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
-
-                   var $this = $(this);
-                   if ($this.data('clicked', true)) {
-                         sur_loading_message();
-
-                   } else {
-                          sur_check_console_log();
-                   }
-                   $("#loading").show();
-                });
-
-
-                sur_Picked_color = $(".col_sur");
-
-                function sur_loading_message() {
-
-                    for(var j = 0; j < sur_Picked_color.length; j++){
-                         sur_arr2.push($(sur_Picked_color[j]).val());
-                    }
-
-                    if (sur_arr.length==sur_arr2.length){
-                        sur_processFile(sur_arr, sur_arr2)
-                    } else {
-                       // alert("Please check the number of input vs the number of channels")
-                    }
-                }
-
-                function sur_check_console_log() {
-                     sur_check_console_log(console.log())
-                }
             }
         });
         document.getElementById("v1").disabled = true;
@@ -620,6 +654,16 @@ $("#btn1").change(function() {
 */
 
 tri_arr = []
+
+function tri_loading_message() {
+   console.log("calling files function")
+   tri_processFile(tri_arr)
+}
+
+function check_console_log() {
+    console.log("ERROR")
+}
+
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
     if ($(btn1).val() != ""){
@@ -629,24 +673,6 @@ $("#btn1").change(function() {
                 tri_myFile = $('#btn1').prop('files');
                 tri_arr.push(tri_myFile)
 
-                $('#btn2').click(function() {
-                    var $this = $(this);
-                    if ($this.data('clicked', true)) {
-                        loading_message();
-                    } else {
-                        check_console_log();
-                    }
-                });
-
-                function loading_message() {
-                    tri_loading_gif = $('<div id="loading"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
-
-                          tri_processFile(tri_arr)
-                }
-
-                function check_console_log() {
-                  console.log("ERROR")
-                }
             }
         });
         document.getElementById("v2").disabled = true;
@@ -659,6 +685,14 @@ $("#btn1").change(function() {
 */
 
 mpr_arr = []
+
+function mpr_loading_message() {
+  mpr_processFile(mpr_arr)
+}
+function check_console_log() {
+  console.log("ERROR")
+}
+
 $("#btn1").change(function() {
     // Maybe this should only happen if a certain checkbox is checked
     if ($(btn1).val() != ""){
@@ -667,24 +701,6 @@ $("#btn1").change(function() {
             if (mpr_value == "MPR") {
                 mpr_myFile = $('#btn1').prop('files');
                 mpr_arr.push(mpr_myFile)
-
-                $('#btn2').click(function() {
-                   var $this = $(this);
-                   if ($this.data('clicked', true)) {
-                         loading_message();
-                   } else {
-                          check_console_log();
-                   }
-                });
-
-                function loading_message() {
-                    tri_loading_gif = $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
-
-                       mpr_processFile(mpr_arr)
-                }
-                function check_console_log() {
-                  console.log("ERROR")
-                }
             }
         });
         document.getElementById("v3").disabled = true;
