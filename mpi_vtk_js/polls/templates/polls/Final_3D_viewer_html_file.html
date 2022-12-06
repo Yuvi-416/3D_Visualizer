@@ -467,8 +467,10 @@ $(document).ready(function() {
 */
 
 $('#btn2').click(function() {
+
    // 3D_render_selection
    if( $('#v1').is(':checked') ){
+
         // Volume Rendering
         if( $('#r1').is(':checked') ){
            $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#VOL_OPTIONS')
@@ -476,19 +478,18 @@ $('#btn2').click(function() {
            var $this = $(this);
            if ($this.data('clicked', true)) {
                  vol_loading_message();
-
            } else {
                   vol_check_console_log();
            }
            $("#loading").show();
         }
+
         // Surface Rendering
         if( $('#r2').is(':checked') ){
          $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#SUR_OPTIONS')
 
             var $this = $(this);
             if ($this.data('clicked', true)) {
-                console.log("loading surface")
                  sur_loading_message();
 
             } else {
@@ -497,7 +498,8 @@ $('#btn2').click(function() {
             $("#loading").show();
          }
    }
-     // Tri-planar Rendering
+
+    // Tri-planar Rendering
     if( $('#v2').is(':checked') ){
         $('<div id="loading" style="display: none;"> <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#TRI_PLANAR_OPTIONS')
 
@@ -510,6 +512,7 @@ $('#btn2').click(function() {
         }
         $("#loading").show();
     }
+
     // MPR Rendering
     if( $('#v3').is(':checked') ){
        $('<div id="loading" > <img id="loading-image" src="{% static '/images/loading.gif' %}" alt="Loading..." /> </div>').appendTo('#MPR_OPTIONS')
@@ -521,6 +524,7 @@ $('#btn2').click(function() {
               check_console_log();
        }
     }
+
 });
 
 
@@ -723,17 +727,6 @@ window.addEventListener('unhandledrejection', function(event) {
   $("#loading").hide();
   // location.reload()
 });
-</script>
-
-<!-- STILL NOT SURE WHETHER THIS LINE HAS ANY IMPACT OR NOT -->
-<script>
-let unpkg_script_itk = document.createElement('unpkg_script_itk');
-unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";
-document.head.append(unpkg_script_itk);
-
-unpkg_script_itk.onerror = function() {
-    alert("Error loading " + this.src);
-};
 </script>
 
 <!-- Screen Recorder -->
