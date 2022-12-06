@@ -725,17 +725,6 @@ window.addEventListener('unhandledrejection', function(event) {
 });
 </script>
 
-<!-- STILL NOT SURE WHETHER THIS LINE HAS ANY IMPACT OR NOT -->
-<script>
-let unpkg_script_itk = document.createElement('unpkg_script_itk');
-unpkg_script_itk.src = "https://unpkg.com/itk@14.0.1/umd/itk.js";
-document.head.append(unpkg_script_itk);
-
-unpkg_script_itk.onerror = function() {
-    alert("Error loading " + this.src);
-};
-</script>
-
 <!-- Screen Recorder -->
 <script>
     let start = document.getElementById('start'),
