@@ -41,7 +41,7 @@ https://yuvi.pythonanywhere.com/
 This work was supported by the Marie Sklodowska Curie ITN-EID, Horizon 2020 project [IMAGE-IN](http://image-in-itn.eu/) (grant agreement No 861122).
 
 ## If you use this visualizer in your work then please cite below paper:
-- Y. Gupta, R.E. D. Guerrero, C. Costa, R. Jesus, E. Pinho, L. A. B. Silva, "Interactive Web-based 3D Viewer for Multidimensional Microscope Imaging Modalities," 2022 IEEE  26th International Conference Information Visualisation (IV), 2022, pp. 385-390.
+- Y. Gupta, R. E. D. Guerrero, C. Costa, R. Jesus, E. Pinho and L. A. Bastião Silva, "Interactive Web-based 3D Viewer for Multidimensional Microscope Imaging Modalities," 2022 26th International Conference Information Visualisation (IV), Vienna, Austria, 2022, pp. 379-384, doi: 10.1109/IV56949.2022.00069.
 - Gupta Y, Costa C, Pinho E, A. Bastião Silva L, Heintzmann R (2022) IMAGE-IN: Interactive web-based multidimensional 3D visualizer for multi-modal microscopy images. PLOS ONE 17(12): e0279825. https://doi.org/10.1371/journal.pone.0279825
 
 ## License:
